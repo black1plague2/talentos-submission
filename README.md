@@ -28,28 +28,26 @@ TalentOS takes a job description and a pool of candidate profiles, then produces
 ## 🗺️ How It Works
 
 ```mermaid
-flowchart LR
-    A([📄 Job + Candidates]) --> B
+flowchart TD
+    A([Job Description + Candidate Profiles])
 
-    B["🔍 Semantic Matcher\nFAISS vector search\nSkill alignment beyond keywords"]
-    B --> C["🤖 Capability Scorer\nGPT-4o-mini\nEvaluates project evidence"]
-    B --> D["✅ Credential Verifier\nLearning · Growth · Projects\nCareer progression signals"]
-    B --> E["📉 Gap Analyser\nSkill · Experience · Certification\ngaps calculated semantically"]
+    A --> B[Semantic Matcher\nFAISS · all-MiniLM-L6-v2\nSkill alignment by meaning]
+    A --> C[Capability Scorer\nGPT-4o-mini\nProject evidence evaluation]
+    A --> D[Credential Verifier\nLearning · Growth · Career\nProject quality signals]
+    A --> E[Gap Analyser\nSkill gap · Experience gap\nCertification delta]
 
+    B --> F
     C --> F
     D --> F
     E --> F
 
-    F["🌲 LightGBM Ranker\n15-feature ML model\nAuto-trained at startup"]
+    F[LightGBM Ranker\n15-feature ML model\nAuto-trained at startup]
 
-    F --> G["🏆 Ranked Shortlist\n+ Alternative roles\n+ Recruiter explanation"]
+    F --> G[Alternative Role Matcher]
+    F --> H[Recruiter Copilot\nPlain-English explanation]
 
-    style B fill:#dbeafe,stroke:#3b82f6
-    style C fill:#fce7f3,stroke:#db2777
-    style D fill:#dcfce7,stroke:#16a34a
-    style E fill:#fef9c3,stroke:#ca8a04
-    style F fill:#f3e8ff,stroke:#9333ea
-    style G fill:#fff,stroke:#111
+    G --> OUT([Ranked Shortlist\nranked_output.json])
+    H --> OUT
 ```
 
 ---
