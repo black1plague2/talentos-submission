@@ -1,0 +1,62 @@
+[
+  {
+    "job_id": "JOB001",
+    "title": "Backend Engineer",
+    "department": "Engineering",
+    "required_skills": ["Python", "FastAPI", "Docker", "AWS", "PostgreSQL"],
+    "preferred_skills": ["Redis", "Kubernetes", "CI/CD"],
+    "soft_skills": ["communication", "problem-solving"],
+    "required_experience": 3,
+    "required_certifications": ["AWS Certified Developer"],
+    "job_level": "Mid",
+    "location": "Remote"
+  },
+  {
+    "job_id": "JOB002",
+    "title": "DevOps Engineer",
+    "department": "Engineering",
+    "required_skills": ["Docker", "Kubernetes", "AWS", "Terraform", "Linux"],
+    "preferred_skills": ["Jenkins", "Helm", "Prometheus"],
+    "soft_skills": ["collaboration", "ownership"],
+    "required_experience": 3,
+    "required_certifications": [],
+    "job_level": "Mid",
+    "location": "Remote"
+  },
+  {
+    "job_id": "JOB003",
+    "title": "Data Engineer",
+    "department": "Data",
+    "required_skills": ["Python", "SQL", "Spark", "Airflow"],
+    "preferred_skills": ["Kafka", "dbt", "Snowflake"],
+    "soft_skills": ["analytical thinking"],
+    "required_experience": 2,
+    "required_certifications": [],
+    "job_level": "Mid",
+    "location": "Remote"
+  },
+  {
+    "job_id": "JOB004",
+    "title": "Cloud Engineer",
+    "department": "Infrastructure",
+    "required_skills": ["AWS", "Terraform", "Docker", "Linux"],
+    "preferred_skills": ["Kubernetes", "Python", "Ansible"],
+    "soft_skills": ["attention to detail"],
+    "required_experience": 3,
+    "required_certifications": ["AWS Solutions Architect"],
+    "job_level": "Mid",
+    "location": "Remote"
+  },
+  {
+    "job_id": "JOB005",
+    "title": "ML Engineer",
+    "department": "AI/ML",
+    "required_skills": ["Python", "PyTorch", "scikit-learn", "Docker", "AWS"],
+    "preferred_skills": ["MLflow", "FastAPI", "CUDA"],
+    "soft_skills": ["research mindset", "communication"],
+    "required_experience": 2,
+    "required_certifications": [],
+    "job_level": "Mid",
+    "location": "Remote"
+  }
+]

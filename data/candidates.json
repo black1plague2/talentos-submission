@@ -1,0 +1,141 @@
+[
+  {
+    "candidate_id": "C001",
+    "name": "John Doe",
+    "email": "john.doe@email.com",
+    "skills": ["Python", "FastAPI", "Docker", "PostgreSQL"],
+    "experience": 2,
+    "certifications": [],
+    "education": "B.Tech Computer Science",
+    "current_role": "Software Engineer",
+    "projects": [
+      {"name": "REST API Service", "technologies": ["Python", "FastAPI"], "github": true, "readme": true, "deployment": false},
+      {"name": "Task Manager App", "technologies": ["Python", "Docker"], "github": true, "readme": false, "deployment": false}
+    ],
+    "career_progression": ["Intern", "Junior Engineer", "Software Engineer"],
+    "github_verified": true,
+    "linkedin_verified": true
+  },
+  {
+    "candidate_id": "C002",
+    "name": "Sarah Wilson",
+    "email": "sarah.wilson@email.com",
+    "skills": ["Python", "FastAPI", "Docker", "AWS", "PostgreSQL", "Redis", "Kubernetes"],
+    "experience": 4,
+    "certifications": ["AWS Certified Developer"],
+    "education": "M.Tech Computer Science",
+    "current_role": "Backend Engineer",
+    "projects": [
+      {"name": "Microservices Platform", "technologies": ["FastAPI", "Docker", "Kubernetes"], "github": true, "readme": true, "deployment": true},
+      {"name": "Data Pipeline", "technologies": ["Python", "AWS", "PostgreSQL"], "github": true, "readme": true, "deployment": true},
+      {"name": "Auth Service", "technologies": ["FastAPI", "Redis"], "github": true, "readme": true, "deployment": false}
+    ],
+    "career_progression": ["Intern", "Junior Engineer", "Software Engineer", "Backend Engineer"],
+    "github_verified": true,
+    "linkedin_verified": true
+  },
+  {
+    "candidate_id": "C003",
+    "name": "Alex Martin",
+    "email": "alex.martin@email.com",
+    "skills": ["Python", "Spark", "SQL", "Airflow", "Kafka", "dbt"],
+    "experience": 3,
+    "certifications": [],
+    "education": "B.Tech Computer Science",
+    "current_role": "Data Engineer",
+    "projects": [
+      {"name": "ETL Pipeline", "technologies": ["Spark", "Airflow"], "github": true, "readme": true, "deployment": false},
+      {"name": "Real-time Analytics", "technologies": ["Kafka", "Python"], "github": true, "readme": true, "deployment": true}
+    ],
+    "career_progression": ["Data Analyst", "Junior Data Engineer", "Data Engineer"],
+    "github_verified": true,
+    "linkedin_verified": false
+  },
+  {
+    "candidate_id": "C004",
+    "name": "Emma Brown",
+    "email": "emma.brown@email.com",
+    "skills": ["AWS", "Terraform", "Docker", "Linux", "Kubernetes", "Ansible"],
+    "experience": 5,
+    "certifications": ["AWS Solutions Architect", "CKA"],
+    "education": "B.Tech Information Technology",
+    "current_role": "Cloud Engineer",
+    "projects": [
+      {"name": "Multi-region AWS Setup", "technologies": ["AWS", "Terraform"], "github": true, "readme": true, "deployment": true},
+      {"name": "K8s Cluster Automation", "technologies": ["Kubernetes", "Ansible"], "github": true, "readme": true, "deployment": true},
+      {"name": "CI/CD Pipeline", "technologies": ["Docker", "Jenkins"], "github": true, "readme": false, "deployment": true}
+    ],
+    "career_progression": ["Junior SysAdmin", "Cloud Engineer I", "Cloud Engineer II", "Senior Cloud Engineer"],
+    "github_verified": true,
+    "linkedin_verified": true
+  },
+  {
+    "candidate_id": "C005",
+    "name": "Raj Patel",
+    "email": "raj.patel@email.com",
+    "skills": ["Python", "PyTorch", "scikit-learn", "Docker", "AWS", "FastAPI", "CUDA"],
+    "experience": 3,
+    "certifications": ["AWS Machine Learning Specialty"],
+    "education": "M.Tech AI/ML",
+    "current_role": "ML Engineer",
+    "projects": [
+      {"name": "Object Detection Pipeline", "technologies": ["PyTorch", "CUDA"], "github": true, "readme": true, "deployment": true},
+      {"name": "NLP Classifier API", "technologies": ["FastAPI", "scikit-learn", "Docker"], "github": true, "readme": true, "deployment": true},
+      {"name": "AutoML Framework", "technologies": ["Python", "scikit-learn"], "github": true, "readme": true, "deployment": false}
+    ],
+    "career_progression": ["Research Intern", "Junior ML Engineer", "ML Engineer"],
+    "github_verified": true,
+    "linkedin_verified": true
+  },
+  {
+    "candidate_id": "C006",
+    "name": "Priya Sharma",
+    "email": "priya.sharma@email.com",
+    "skills": ["Python", "Docker", "Linux", "SQL"],
+    "experience": 1,
+    "certifications": [],
+    "education": "B.Tech Computer Science",
+    "current_role": "Junior Developer",
+    "projects": [
+      {"name": "Blog App", "technologies": ["Python", "SQL"], "github": true, "readme": false, "deployment": false}
+    ],
+    "career_progression": ["Intern", "Junior Developer"],
+    "github_verified": false,
+    "linkedin_verified": true
+  },
+  {
+    "candidate_id": "C007",
+    "name": "David Kim",
+    "email": "david.kim@email.com",
+    "skills": ["AWS", "Terraform", "Kubernetes", "Docker", "Python", "Prometheus", "Grafana"],
+    "experience": 6,
+    "certifications": ["AWS DevOps Professional", "CKA", "Terraform Associate"],
+    "education": "B.Sc Computer Science",
+    "current_role": "Senior DevOps Engineer",
+    "projects": [
+      {"name": "GitOps Platform", "technologies": ["Kubernetes", "Terraform"], "github": true, "readme": true, "deployment": true},
+      {"name": "Observability Stack", "technologies": ["Prometheus", "Grafana", "Docker"], "github": true, "readme": true, "deployment": true},
+      {"name": "Infrastructure as Code Library", "technologies": ["Terraform", "AWS"], "github": true, "readme": true, "deployment": false}
+    ],
+    "career_progression": ["Junior DevOps", "DevOps Engineer", "Senior DevOps Engineer"],
+    "github_verified": true,
+    "linkedin_verified": true
+  },
+  {
+    "candidate_id": "C008",
+    "name": "Meera Nair",
+    "email": "meera.nair@email.com",
+    "skills": ["Python", "Spark", "SQL", "Airflow", "AWS", "dbt", "Snowflake"],
+    "experience": 4,
+    "certifications": ["dbt Analytics Engineer"],
+    "education": "M.Sc Data Science",
+    "current_role": "Senior Data Engineer",
+    "projects": [
+      {"name": "Data Lakehouse", "technologies": ["Spark", "AWS", "dbt"], "github": true, "readme": true, "deployment": true},
+      {"name": "Streaming Analytics", "technologies": ["Kafka", "Spark", "Python"], "github": true, "readme": true, "deployment": true}
+    ],
+    "career_progression": ["Data Analyst", "Data Engineer", "Senior Data Engineer"],
+    "github_verified": true,
+    "linkedin_verified": true
+  }
+]
