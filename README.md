@@ -1,167 +1,149 @@
-# TalentOS — Unified AI Recruitment Intelligence Engine
+<div align="center">
 
-> **Branch:** `integration` | Combines all 4 team branches into a single ML-powered pipeline
+# 🧠 TalentOS
+### AI-Powered Candidate Ranking Engine
 
----
+*Goes beyond keyword matching — understands context, validates credentials, and ranks intelligently.*
 
-## Architecture Overview
+[![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-API-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![LightGBM](https://img.shields.io/badge/LightGBM-ML_Ranker-brightgreen?style=for-the-badge)](https://lightgbm.readthedocs.io)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://docker.com)
 
-```
-Job Description + Candidate Profiles
-              │
-              ▼
-    ┌─────────────────────┐
-    │  Semantic Matcher   │  ← sentence-transformers + FAISS (garv)
-    │  all-MiniLM-L6-v2   │    Finds semantic skill overlap, not just keyword match
-    └─────────┬───────────┘
-              │
-    ┌─────────▼───────────┐
-    │  Capability Engine  │  ← GPT-4o-mini (garv)
-    │  (LLM evaluation)   │    Infers practical capability from project evidence
-    └─────────┬───────────┘
-              │
-    ┌─────────▼───────────┐
-    │ Verification Scorer │  ← Multi-dimensional scoring (poojit)
-    │  6 sub-scores       │    learning / growth / career / project / evidence
-    └─────────┬───────────┘
-              │
-    ┌─────────▼───────────┐
-    │    Gap Engine       │  ← Semantic gap analysis (noel, enhanced)
-    │  (FAISS-powered)    │    Skill / experience / certification gaps
-    └─────────┬───────────┘
-              │
-    ┌─────────▼───────────┐
-    │  Feature Vector     │  15 features from all 4 modules
-    │  (15 dimensions)    │
-    └─────────┬───────────┘
-              │
-    ┌─────────▼───────────┐
-    │  LightGBM Ranker    │  ← ML model (trained on 1000 synthetic pairs)
-    │  (auto-trained)     │    Learns non-linear feature interactions
-    └─────────┬───────────┘
-              │
-    ┌─────────▼───────────┐
-    │  Role Discovery     │  ← Semantic alternative role matching (noel)
-    │  RecruiterCopilot   │  ← LLM-generated hiring explanation (noel, upgraded)
-    └─────────────────────┘
-              │
-              ▼
-    ranked_output.json  ✓
-```
+</div>
 
 ---
 
-## Why LightGBM Over a Fixed Formula
+## 🎯 What It Does
 
-The original system used:
-```
-Score = 0.35×match + 0.25×capability + 0.20×growth + 0.15×verification - 0.15×gap
-```
+TalentOS takes a job description and a pool of candidate profiles, then produces a **ranked shortlist** with scores and explanations — acting as an AI recruiter that can:
 
-This linear formula assumes features are independent and weights are known. They're not.
-
-LightGBM (gradient-boosted trees) captures:
-- **Multiplicative interactions**: a candidate needs BOTH high match AND high capability — not just one
-- **Non-linear thresholds**: a 2-year experience gap matters much more than a 0.5-year gap
-- **Optimal weights**: learned from data, not hand-tuned
-- **Feature importance ranking** printed at startup
+- **Understand job descriptions semantically** — not just by keyword
+- **See beyond buzzwords** — matches "React experience" even when a candidate lists "JavaScript framework"
+- **Validate credentials** — scores candidates on projects, certifications, GitHub activity, and career growth
+- **Explain every decision** — each ranked candidate comes with a plain-English hiring recommendation
 
 ---
 
-## Feature Vector (15 dimensions)
+## 🗺️ How It Works
 
-| Feature | Source | Description |
-|---------|--------|-------------|
-| `semantic_match_score` | garv | FAISS cosine score (0–100) |
-| `capability_score` | garv | LLM project evaluation (0–100) |
-| `matched_req_pct` | garv | % of required skills semantically matched |
-| `matched_pref_pct` | garv | % of preferred skills matched |
-| `verification_score` | poojit | Composite credential score |
-| `learning_score` | poojit | Skills × certs × projects |
-| `growth_score` | poojit | Total growth / experience years |
-| `career_score` | poojit | Career progression levels × 25 |
-| `project_score` | poojit | GitHub + readme + deployment signals |
-| `evidence_score` | poojit | Certs + GitHub projects + platform verification |
-| `skill_gap_pct` | noel | % required skills missing (semantic) |
-| `experience_gap` | noel | Years of experience shortage |
-| `cert_gap` | noel | Missing required certifications |
-| `exp_years` | data | Candidate total years of experience |
-| `cert_count` | data | Number of certifications held |
+```mermaid
+flowchart LR
+    A([📄 Job + Candidates]) --> B
+
+    B["🔍 Semantic Matcher\nFAISS vector search\nSkill alignment beyond keywords"]
+    B --> C["🤖 Capability Scorer\nGPT-4o-mini\nEvaluates project evidence"]
+    B --> D["✅ Credential Verifier\nLearning · Growth · Projects\nCareer progression signals"]
+    B --> E["📉 Gap Analyser\nSkill · Experience · Certification\ngaps calculated semantically"]
+
+    C --> F
+    D --> F
+    E --> F
+
+    F["🌲 LightGBM Ranker\n15-feature ML model\nAuto-trained at startup"]
+
+    F --> G["🏆 Ranked Shortlist\n+ Alternative roles\n+ Recruiter explanation"]
+
+    style B fill:#dbeafe,stroke:#3b82f6
+    style C fill:#fce7f3,stroke:#db2777
+    style D fill:#dcfce7,stroke:#16a34a
+    style E fill:#fef9c3,stroke:#ca8a04
+    style F fill:#f3e8ff,stroke:#9333ea
+    style G fill:#fff,stroke:#111
+```
 
 ---
 
-## Quick Start
+## 🔬 Methodology
 
-### 1. Install dependencies
+### Step 1 — Semantic Skill Matching
+Uses `all-MiniLM-L6-v2` embeddings + FAISS vector search to find skill overlap by **meaning**, not exact text. A candidate listing "Node.js" can still match a requirement for "server-side JavaScript."
+
+### Step 2 — Capability Evaluation
+GPT-4o-mini reads the candidate's project list and estimates their **practical ability** for the role — not just whether they list the right words, but whether their work shows they can do the job.
+
+### Step 3 — Credential & Growth Verification
+A 6-dimension score across:
+- Learning velocity (skills + certs + projects per year)
+- Career progression (junior → senior trajectory)
+- Project quality (GitHub + readme + live deployment)
+- Evidence of real-world application
+
+### Step 4 — Gap Intelligence
+Calculates the distance between candidate and job requirements across skills, experience years, and certifications — using semantic matching so "minor gaps" (React vs Vue) are penalised less than "hard gaps" (missing cloud experience for a cloud role).
+
+### Step 5 — ML Ranking (LightGBM)
+All signals are assembled into a **15-feature vector** and scored by a LightGBM gradient-boosted model that learns non-linear interactions — for example, that a candidate needs *both* high skill match *and* high capability (not just one), and that a 3-year experience gap matters far more than a 6-month one.
+
+The model trains automatically from data at startup in ~3 seconds. No manual weight-tuning required.
+
+---
+
+## 📊 Sample Output
+
+```
+╔══════╦══════════════════════╦═════════╦═══════════════╦══════════════════╗
+║ Rank ║ Candidate            ║  Score  ║ Missing Skills ║ Explanation      ║
+╠══════╬══════════════════════╬═════════╬═══════════════╬══════════════════╣
+║  #1  ║ Sarah Wilson         ║  84.7   ║ None          ║ Strong all-round ║
+║  #2  ║ David Kim            ║  76.3   ║ PostgreSQL    ║ Deep infra exp.  ║
+║  #3  ║ Raj Patel            ║  71.1   ║ AWS, Redis    ║ High capability  ║
+║  #4  ║ Emma Brown           ║  61.8   ║ FastAPI       ║ Cloud specialist ║
+╚══════╩══════════════════════╩═════════╩═══════════════╩══════════════════╝
+```
+
+Full output in `output/ranked_output.json` — see the format below.
+
+---
+
+## ⚡ Quick Start
+
 ```bash
+# 1. Switch to integration branch
+git checkout integration
+
+# 2. Install
 pip install -r requirements.txt
-```
 
-### 2. Configure environment
-```bash
+# 3. (Optional) Add OpenAI key for LLM scoring
 cp .env.example .env
-# Add your OPENAI_API_KEY (optional — system works without it using rule-based fallback)
-```
+# edit .env → OPENAI_API_KEY=sk-...
+# Works without a key too, using rule-based fallback
 
-### 3. Generate ranked output (competition submission)
-```bash
+# 4. Generate ranked output
 python run_ranking.py
-# Output: output/ranked_output.json
+# → output/ranked_output.json  ✅
 ```
 
-### 4. Run as API server
+### Run as API
+
 ```bash
 python main.py
-# API docs: http://localhost:8000/docs
+# Swagger UI → http://localhost:8000/docs
 ```
 
-### 5. Docker
+### Docker
+
 ```bash
 docker-compose up
 ```
 
 ---
 
-## API Endpoints
+## 🔌 API Endpoints
 
-| Method | Path | Description |
-|--------|------|-------------|
-| `POST` | `/rank` | Rank candidates for a job (full pipeline) |
-| `GET` | `/jobs` | List all jobs |
-| `GET` | `/jobs/{id}` | Get specific job |
-| `GET` | `/candidates` | List all candidates |
-| `GET` | `/candidates/{id}` | Get specific candidate |
-| `GET` | `/health` | Health check |
-
-### Example: Rank candidates
-
-```bash
-curl -X POST http://localhost:8000/rank \
-  -H "Content-Type: application/json" \
-  -d '{
-    "job": {
-      "job_id": "JOB001",
-      "title": "Backend Engineer",
-      "required_skills": ["Python", "FastAPI", "Docker", "AWS"],
-      "required_experience": 3,
-      "required_certifications": []
-    },
-    "candidates": [
-      {
-        "candidate_id": "C001",
-        "name": "John Doe",
-        "skills": ["Python", "FastAPI", "Docker"],
-        "experience": 2,
-        "certifications": [],
-        "projects": []
-      }
-    ]
-  }'
-```
+| Method | Endpoint | What it does |
+|:------:|:---------|:-------------|
+| `POST` | `/rank` | Rank candidates for a job — returns scored shortlist |
+| `GET` | `/jobs` | List all available jobs |
+| `GET` | `/candidates` | List all candidate profiles |
+| `GET` | `/health` | Status check |
 
 ---
 
-## Output Format (`ranked_output.json`)
+## 📁 Output Format
+
+`output/ranked_output.json`
 
 ```json
 [
@@ -178,33 +160,52 @@ curl -X POST http://localhost:8000/rank \
     "growth_score": 67.5,
     "gap_score": 5.2,
     "missing_skills": [],
-    "alternative_roles": [...],
-    "explanation": "Sarah Wilson demonstrates exceptional semantic alignment..."
+    "alternative_roles": [
+      { "job_id": "JOB002", "title": "DevOps Engineer", "score": 79.0 }
+    ],
+    "explanation": "Sarah demonstrates full skill coverage for the role with 4 years of verified backend experience and a strong project portfolio. Recommend for interview."
   }
 ]
 ```
 
 ---
 
-## Technical Choices
+## 🏗️ Project Structure
 
-| Decision | Choice | Why |
-|----------|--------|-----|
-| Embedding model | `all-MiniLM-L6-v2` | Fast, 384-dim, strong skill-domain semantics |
-| Skill matching | FAISS `IndexFlatIP` (cosine) | Sub-millisecond exact search on small candidate sets |
-| ML ranker | LightGBM regressor | Handles mixed feature types, captures non-linear interactions, trains in <5s |
-| Training data | 1000 synthetic pairs | Generated from domain-expert rules, covers full feature space |
-| LLM | GPT-4o-mini | Low latency, affordable, sufficient for capability/explanation tasks |
-| API | FastAPI | Async, auto-docs, Pydantic validation |
+```
+talentos/ (integration branch)
+│
+├── main.py              # API server
+├── run_ranking.py       # Standalone — generates ranked_output.json
+├── config.py
+├── requirements.txt
+├── Dockerfile
+│
+├── services/            # Core intelligence modules
+│   ├── semantic_matcher.py
+│   ├── capability_engine.py
+│   ├── verification_scorer.py
+│   ├── gap_engine.py
+│   ├── role_discovery.py
+│   └── recruiter_copilot.py
+│
+├── ml/                  # LightGBM ranking model
+│   ├── features.py
+│   ├── trainer.py
+│   └── ranker.py
+│
+├── data/
+│   ├── candidates.json  # Input candidate profiles
+│   └── jobs.json        # Input job descriptions
+│
+└── output/
+    └── ranked_output.json   ← submission file
+```
 
 ---
 
-## Team Integration Map
+<div align="center">
 
-| Branch | Person | Integrated As |
-|--------|--------|--------------|
-| `harshith` | Person 1 | Data schemas, expanded candidate/job dataset |
-| `poojit` | Person 2 | `services/verification_scorer.py` |
-| `garv` | Person 3 | `services/semantic_matcher.py`, `capability_engine.py`, `embedding_pipeline.py` |
-| `noel` | Person 4 | `services/gap_engine.py`, `role_discovery.py`, `recruiter_copilot.py` |
-| `integration` | All | `ml/ranker.py`, unified `main.py`, `run_ranking.py` |
+**TalentOS** — from job description to ranked shortlist in seconds.
+
+</div>
