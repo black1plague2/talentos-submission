@@ -9,8 +9,8 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --bg:#050d1a;
-  --bg2:#0a1628;
-  --card:rgba(12,24,50,0.6);
+  --card:rgba(10,20,44,0.58);
+  --card-h:rgba(14,28,58,0.75);
   --cyan:#00e5ff;
   --amber:#f59e0b;
   --green:#10b981;
@@ -19,59 +19,59 @@
   --txt:#e8f4f8;
   --txt2:rgba(200,220,240,0.6);
   --dim:rgba(150,180,210,0.38);
-  --bdr:rgba(0,229,255,0.11);
+  --bdr:rgba(0,229,255,0.1);
+  --bdr-h:rgba(0,229,255,0.28);
   --ff:'Syne',sans-serif;
   --fm:'JetBrains Mono',monospace;
 }
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--txt);font-family:var(--ff);min-height:100vh;overflow-x:hidden}
-body::after{content:'';position:fixed;top:-10%;left:50%;transform:translateX(-50%);width:70vw;height:50vw;background:radial-gradient(ellipse,rgba(0,80,180,0.09) 0%,transparent 70%);pointer-events:none;z-index:0}
-#cvs{position:fixed;inset:0;pointer-events:none;z-index:0}
+#three-canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
 .app{position:relative;z-index:1;max-width:1380px;margin:0 auto;padding:0 28px 80px}
 
 /* ── Header ── */
-header{padding:44px 0 36px;display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;animation:fadeUp .7s ease both}
-.logo{font-size:2.1rem;font-weight:800;letter-spacing:-.04em;background:linear-gradient(130deg,var(--cyan) 0%,#60a5fa 55%,var(--purple) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
-.logo em{font-style:normal;font-weight:400;opacity:.55}
-.tagline{font-family:var(--fm);font-size:.68rem;color:var(--dim);letter-spacing:.09em;margin-top:7px}
-.hbadge{text-align:right}
+header{padding:44px 0 36px;display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.logo{font-size:2.1rem;font-weight:800;letter-spacing:-.04em;background:linear-gradient(130deg,var(--cyan) 0%,#60a5fa 55%,var(--purple) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;opacity:0}
+.logo em{font-style:normal;font-weight:400;opacity:.5}
+.tagline{font-family:var(--fm);font-size:.68rem;color:var(--dim);letter-spacing:.09em;margin-top:7px;opacity:0}
+.hbadge{text-align:right;opacity:0}
 .hbadge-label{font-family:var(--fm);font-size:.6rem;color:var(--dim);letter-spacing:.12em;text-transform:uppercase}
 .hbadge-num{font-size:1.25rem;font-weight:800;color:var(--amber);letter-spacing:-.03em}
 .hbadge-sub{font-family:var(--fm);font-size:.58rem;color:var(--dim)}
-.hdivider{height:1px;background:linear-gradient(90deg,transparent,var(--bdr) 30%,rgba(0,229,255,.25) 50%,var(--bdr) 70%,transparent);margin-bottom:36px;animation:fadeUp .7s .15s ease both}
+.hdivider{height:1px;background:linear-gradient(90deg,transparent,var(--bdr) 30%,rgba(0,229,255,.22) 50%,var(--bdr) 70%,transparent);margin-bottom:36px;opacity:0}
 
 /* ── Setup Phase ── */
-#setup-phase{display:grid;grid-template-columns:360px 1fr;gap:28px;animation:fadeUp .7s .25s ease both}
-.job-card{background:var(--card);border:1px solid var(--bdr);border-radius:16px;backdrop-filter:blur(14px);padding:26px;position:sticky;top:20px;height:fit-content}
+#setup-phase{display:grid;grid-template-columns:360px 1fr;gap:28px;opacity:0}
+.job-card{background:var(--card);border:1px solid var(--bdr);border-radius:16px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);padding:26px;position:sticky;top:20px;height:fit-content;transition:border-color .3s}
+.job-card:hover{border-color:var(--bdr-h)}
 .jc-top{display:flex;align-items:center;gap:12px;margin-bottom:22px}
 .jc-logo{width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,#1a3555,#0c1d33);border:1px solid rgba(0,229,255,.18);display:flex;align-items:center;justify-content:center;font-size:1.05rem;font-weight:800;color:var(--cyan)}
-.jc-co{flex:1}
-.jc-co h4{font-size:.82rem;font-weight:600}
-.jc-co p{font-family:var(--fm);font-size:.6rem;color:var(--dim);margin-top:2px}
+.jc-co{flex:1}.jc-co h4{font-size:.82rem;font-weight:600}.jc-co p{font-family:var(--fm);font-size:.6rem;color:var(--dim);margin-top:2px}
 .act-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pdot 2s ease infinite}
 @keyframes pdot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(.75)}}
 .jrole{font-size:1.25rem;font-weight:800;letter-spacing:-.03em;margin-bottom:3px}
 .jcomp{font-family:var(--fm);font-size:.68rem;color:var(--cyan);margin-bottom:18px;letter-spacing:.04em}
 .jdetails{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap}
-.jchip{background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.13);border-radius:6px;padding:5px 10px;font-family:var(--fm);font-size:.6rem;color:var(--txt2)}
+.jchip{background:rgba(0,229,255,.05);border:1px solid rgba(0,229,255,.12);border-radius:6px;padding:5px 10px;font-family:var(--fm);font-size:.6rem;color:var(--txt2)}
 .jchip strong{display:block;color:var(--txt);font-size:.72rem;margin-bottom:1px}
 .slabel{font-family:var(--fm);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:8px}
 .stags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px}
-.stag{font-family:var(--fm);font-size:.58rem;padding:3px 7px;border-radius:4px;border:1px solid rgba(0,229,255,.18);color:var(--cyan);background:rgba(0,229,255,.05)}
-.stag.pref{border-color:rgba(245,158,11,.2);color:var(--amber);background:rgba(245,158,11,.05)}
+.stag{font-family:var(--fm);font-size:.58rem;padding:3px 7px;border-radius:4px;border:1px solid rgba(0,229,255,.16);color:var(--cyan);background:rgba(0,229,255,.05)}
+.stag.pref{border-color:rgba(245,158,11,.18);color:var(--amber);background:rgba(245,158,11,.05)}
 .jdivide{height:1px;background:var(--bdr);margin:14px 0}
 .slist{display:flex;flex-direction:column;gap:7px}
 .sitem{display:flex;align-items:center;gap:8px;font-family:var(--fm);font-size:.62rem;color:var(--txt2)}
 .sdot{width:5px;height:5px;border-radius:50%;background:var(--cyan);flex-shrink:0}
+
 /* ── Pool ── */
 .right-panel{display:flex;flex-direction:column;gap:18px}
 .pool-hdr{display:flex;align-items:center;justify-content:space-between}
 .pool-title{font-size:.95rem;font-weight:700;letter-spacing:-.02em}
 .pool-ct{font-family:var(--fm);font-size:.62rem;color:var(--dim);background:rgba(0,229,255,.07);border:1px solid var(--bdr);border-radius:20px;padding:3px 12px}
 .cgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
-.scard{background:var(--card);border:1px solid var(--bdr);border-radius:11px;padding:14px 15px;backdrop-filter:blur(8px);transition:all .25s ease;cursor:default;position:relative;overflow:hidden}
-.scard::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,229,255,.35),transparent);opacity:0;transition:opacity .3s}
-.scard:hover{border-color:rgba(0,229,255,.28);transform:translateY(-2px)}
+.scard{background:var(--card);border:1px solid var(--bdr);border-radius:11px;padding:14px 15px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:border-color .25s,transform .25s,box-shadow .25s;cursor:default;position:relative;overflow:hidden;opacity:0}
+.scard::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,229,255,.3),transparent);opacity:0;transition:opacity .3s}
+.scard:hover{border-color:rgba(0,229,255,.26);transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,.3)}
 .scard:hover::after{opacity:1}
 .savatar{width:30px;height:30px;border-radius:7px;background:linear-gradient(135deg,#1a3555,#0c1d33);border:1px solid rgba(0,229,255,.14);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:var(--cyan);margin-bottom:9px}
 .sname{font-size:.78rem;font-weight:600;letter-spacing:-.01em;margin-bottom:2px}
@@ -79,62 +79,62 @@ header{padding:44px 0 36px;display:flex;align-items:flex-start;justify-content:s
 .sstats{display:flex;gap:6px;flex-wrap:wrap}
 .sstat{font-family:var(--fm);font-size:.56rem;color:var(--dim);background:rgba(255,255,255,.04);border-radius:3px;padding:2px 5px}
 .sstat.otw{color:var(--green)}
+
 /* ── Run btn ── */
 .run-wrap{display:flex;justify-content:center;padding:16px 0}
-#run-btn{background:linear-gradient(135deg,#002d3f,#001628);border:1px solid rgba(0,229,255,.38);border-radius:12px;padding:17px 52px;font-family:var(--ff);font-weight:700;font-size:.95rem;color:var(--cyan);cursor:pointer;transition:all .3s;letter-spacing:-.01em;position:relative;overflow:hidden}
+#run-btn{background:linear-gradient(135deg,#002d3f,#001628);border:1px solid rgba(0,229,255,.36);border-radius:12px;padding:17px 52px;font-family:var(--ff);font-weight:700;font-size:.95rem;color:var(--cyan);cursor:pointer;transition:all .3s;letter-spacing:-.01em;position:relative;overflow:hidden}
 #run-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,229,255,.1),transparent);opacity:0;transition:opacity .3s}
-#run-btn:hover{box-shadow:0 0 32px rgba(0,229,255,.18),0 8px 30px rgba(0,0,0,.5);transform:translateY(-2px);border-color:rgba(0,229,255,.65)}
+#run-btn:hover{box-shadow:0 0 40px rgba(0,229,255,.18),0 8px 30px rgba(0,0,0,.5);transform:translateY(-2px);border-color:rgba(0,229,255,.65)}
 #run-btn:hover::before{opacity:1}
 #run-btn:active{transform:translateY(0)}
-#run-btn:disabled{opacity:.5;cursor:default;transform:none}
+#run-btn:disabled{opacity:.45;cursor:default;transform:none;box-shadow:none}
 .barrow{display:inline-block;margin-left:10px;transition:transform .3s}
-#run-btn:hover .barrow{transform:translateX(5px)}
+#run-btn:hover .barrow{transform:translateX(6px)}
 
 /* ── Analysis Phase ── */
 #analysis-phase{display:none;flex-direction:column;align-items:center;gap:52px;padding:52px 0}
-#analysis-phase.show{display:flex;animation:fadeIn .5s ease}
 .atitle{text-align:center}
 .atitle h2{font-size:1.9rem;font-weight:800;letter-spacing:-.04em;margin-bottom:7px}
-.asub{font-family:var(--fm);font-size:.7rem;color:var(--dim);letter-spacing:.07em;min-height:1.2em}
-/* Pipeline */
-.pipe-wrap{width:100%;max-width:860px;overflow-x:auto}
-.pipe-track{display:flex;align-items:flex-start;padding:0 20px;min-width:620px}
+.asub{font-family:var(--fm);font-size:.7rem;color:var(--dim);letter-spacing:.07em;min-height:1.3em;transition:opacity .3s}
+
+/* ── Pipeline ── */
+.pipe-wrap{width:100%;max-width:870px;overflow-x:auto;padding-bottom:8px}
+.pipe-track{display:flex;align-items:flex-start;padding:8px 24px;min-width:620px}
 .pstage{flex:1;display:flex;flex-direction:column;align-items:center;gap:11px}
-.pnode{width:62px;height:62px;border-radius:50%;border:2px solid rgba(0,229,255,.13);background:rgba(0,229,255,.03);display:flex;align-items:center;justify-content:center;position:relative;transition:all .5s;z-index:2}
+.pnode{width:62px;height:62px;border-radius:50%;border:2px solid rgba(0,229,255,.12);background:rgba(0,229,255,.03);display:flex;align-items:center;justify-content:center;position:relative;transition:border-color .4s,background .4s,box-shadow .4s;z-index:2}
 .pnode-ring{position:absolute;top:-7px;left:-7px;width:76px;height:76px;transform:rotate(-90deg)}
 .pr-bg{fill:none;stroke:rgba(0,229,255,.07);stroke-width:2}
-.pr-fill{fill:none;stroke:var(--cyan);stroke-width:2.5;stroke-linecap:round;stroke-dasharray:219.91;stroke-dashoffset:219.91;transition:stroke-dashoffset 1.5s cubic-bezier(.2,1,.3,1)}
-.pstage.active .pnode{border-color:rgba(0,229,255,.5);background:rgba(0,229,255,.09);box-shadow:0 0 22px rgba(0,229,255,.2)}
-.pstage.done .pnode{border-color:var(--green);background:rgba(16,185,129,.09);box-shadow:0 0 14px rgba(16,185,129,.15)}
+.pr-fill{fill:none;stroke:var(--cyan);stroke-width:2.5;stroke-linecap:round;stroke-dasharray:219.91;stroke-dashoffset:219.91;transition:stroke-dashoffset 1.5s cubic-bezier(.16,1,.3,1)}
+.pstage.active .pnode{border-color:rgba(0,229,255,.5);background:rgba(0,229,255,.08);box-shadow:0 0 28px rgba(0,229,255,.22)}
+.pstage.done .pnode{border-color:var(--green);background:rgba(16,185,129,.08);box-shadow:0 0 18px rgba(16,185,129,.18)}
 .pstage.done .pr-fill{stroke:var(--green);stroke-dashoffset:0}
 .pstage.active .pr-fill{stroke-dashoffset:0}
-.picon{font-size:.75rem;font-family:var(--fm);font-weight:500;color:var(--dim);transition:all .4s;letter-spacing:.06em}
-.pstage.active .picon,.pstage.done .picon{color:var(--txt)}
-.plabel{font-family:var(--fm);font-size:.6rem;letter-spacing:.05em;color:var(--dim);text-align:center;transition:color .4s;line-height:1.5;max-width:78px}
+.picon{font-family:var(--fm);font-size:.72rem;font-weight:500;color:var(--dim);transition:color .4s;letter-spacing:.05em}
+.pstage.active .picon{color:var(--cyan)}
+.pstage.done .picon{color:var(--green)}
+.plabel{font-family:var(--fm);font-size:.6rem;letter-spacing:.05em;color:var(--dim);text-align:center;transition:color .4s;line-height:1.5;max-width:80px}
 .pstage.active .plabel{color:var(--cyan)}
 .pstage.done .plabel{color:var(--green)}
 .pstatus{font-family:var(--fm);font-size:.56rem;color:var(--dim);text-align:center;height:14px;transition:color .3s}
 .pstage.active .pstatus{color:var(--cyan)}
 .pstage.done .pstatus{color:var(--green)}
-/* Connectors */
-.pconn{width:44px;flex-shrink:0;height:2px;margin-top:30px;background:rgba(0,229,255,.09);position:relative;overflow:hidden}
+.pconn{width:40px;flex-shrink:0;height:2px;margin-top:30px;background:rgba(0,229,255,.08);position:relative;overflow:hidden}
 .pconn-pulse{position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:0}
-.pconn.pulsing .pconn-pulse{animation:connpulse .85s ease forwards}
-.pconn.lit{background:rgba(16,185,129,.35)}
+.pconn.pulsing .pconn-pulse{animation:connpulse .9s ease forwards}
+.pconn.lit{background:rgba(16,185,129,.32)}
 @keyframes connpulse{from{left:-100%;opacity:1}to{left:100%;opacity:0}}
-/* Counter */
+
+/* ── Counter ── */
 .proc-status{text-align:center;display:none}
-.proc-status.show{display:block;animation:fadeIn .4s ease}
-.counter-num{font-family:var(--fm);font-size:3.2rem;font-weight:300;color:var(--cyan);letter-spacing:-.05em;line-height:1}
+.counter-num{font-family:var(--fm);font-size:3.4rem;font-weight:300;color:var(--cyan);letter-spacing:-.05em;line-height:1}
 .counter-cursor{animation:blink 1s ease infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 .counter-lbl{font-family:var(--fm);font-size:.62rem;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;margin-top:6px}
-.gbar{width:380px;height:2px;background:rgba(0,229,255,.09);border-radius:1px;margin:18px auto 0;overflow:hidden}
-.gbar-fill{height:100%;background:linear-gradient(90deg,var(--cyan),#60a5fa);border-radius:1px;width:0%;transition:width .25s ease}
+.gbar{width:380px;height:2px;background:rgba(0,229,255,.08);border-radius:1px;margin:18px auto 0;overflow:hidden}
+.gbar-fill{height:100%;background:linear-gradient(90deg,var(--cyan),#60a5fa);border-radius:1px;width:0%;transition:width .2s ease}
 
 /* ── Results Phase ── */
 #results-phase{display:none;flex-direction:column;gap:28px}
-#results-phase.show{display:flex;animation:fadeIn .5s ease}
 .res-hdr{display:flex;align-items:flex-end;justify-content:space-between;padding-bottom:20px;border-bottom:1px solid var(--bdr);flex-wrap:wrap;gap:16px}
 .res-hdr h2{font-size:1.7rem;font-weight:800;letter-spacing:-.04em;margin-bottom:4px}
 .res-meta{font-family:var(--fm);font-size:.62rem;color:var(--dim);letter-spacing:.04em}
@@ -144,30 +144,32 @@ header{padding:44px 0 36px;display:flex;align-items:flex-start;justify-content:s
 .stat-l{font-family:var(--fm);font-size:.56rem;color:var(--dim);text-transform:uppercase;letter-spacing:.1em}
 #reset-btn{background:none;border:1px solid var(--bdr);border-radius:7px;padding:7px 15px;font-family:var(--fm);font-size:.62rem;color:var(--dim);cursor:pointer;transition:all .2s;letter-spacing:.05em}
 #reset-btn:hover{color:var(--txt);border-color:rgba(0,229,255,.22)}
-/* Result cards */
+
+/* ── Result cards ── */
 .board{display:flex;flex-direction:column;gap:9px}
-.rcard{background:var(--card);border:1px solid var(--bdr);border-radius:13px;padding:18px 22px;backdrop-filter:blur(12px);display:grid;grid-template-columns:52px 54px 1fr auto;align-items:center;gap:18px;opacity:0;transform:translateX(-22px);transition:border-color .3s,box-shadow .3s;position:relative;overflow:hidden;cursor:default}
+.rcard{background:var(--card);border:1px solid var(--bdr);border-radius:13px;padding:18px 22px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:grid;grid-template-columns:52px 54px 1fr auto;align-items:center;gap:18px;opacity:0;position:relative;overflow:hidden;transition:border-color .3s,box-shadow .3s,transform .2s}
 .rcard::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:13px 0 0 13px}
 .rcard.t-elite::before{background:linear-gradient(180deg,var(--cyan),#60a5fa)}
 .rcard.t-strong::before{background:var(--green)}
 .rcard.t-partial::before{background:var(--amber)}
 .rcard.t-miss::before{background:var(--red)}
-.rcard.show{animation:cardIn .45s ease forwards}
-@keyframes cardIn{from{opacity:0;transform:translateX(-22px)}to{opacity:1;transform:translateX(0)}}
-.rcard:hover{border-color:rgba(0,229,255,.22);box-shadow:0 4px 24px rgba(0,0,0,.3)}
+.rcard:hover{border-color:rgba(0,229,255,.2);box-shadow:0 6px 32px rgba(0,0,0,.35);transform:translateX(3px)}
+
 /* Rank badge */
 .rbadge{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;flex-shrink:0}
 .rb-1{background:linear-gradient(135deg,#9a6f0a,#f0c040,#9a6f0a);color:#2d1a00}
 .rb-2{background:linear-gradient(135deg,#4a5a6a,#9aaabb,#4a5a6a);color:#1a2530}
 .rb-3{background:linear-gradient(135deg,#6b3312,#c07030,#6b3312);color:#200e00}
 .rb-n{background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.13);color:var(--dim);font-size:.78rem}
+
 /* Score ring */
 .ring-wrap{position:relative;width:54px;height:54px;flex-shrink:0}
 .ring-svg{width:54px;height:54px;transform:rotate(-90deg)}
 .ring-bg2{fill:none;stroke:rgba(255,255,255,.05);stroke-width:3}
-.ring-fg{fill:none;stroke-width:3;stroke-linecap:round;transition:stroke-dashoffset 1.5s cubic-bezier(.16,1,.3,1)}
-.ring-txt{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--fm);font-size:.55rem;font-weight:500;text-align:center;line-height:1.25;pointer-events:none}
-/* Cand info */
+.ring-fg{fill:none;stroke-width:3;stroke-linecap:round;stroke-dasharray:138.23;stroke-dashoffset:138.23;transition:stroke-dashoffset 1.6s cubic-bezier(.16,1,.3,1)}
+.ring-txt{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--fm);font-size:.54rem;font-weight:500;text-align:center;line-height:1.25;pointer-events:none}
+
+/* Candidate info */
 .cinfo{flex:1;min-width:0}
 .cname{font-size:.92rem;font-weight:700;letter-spacing:-.02em;margin-bottom:3px}
 .cmeta{display:flex;align-items:center;gap:9px;margin-bottom:11px;flex-wrap:wrap}
@@ -178,8 +180,9 @@ header{padding:44px 0 36px;display:flex;align-items:flex-start;justify-content:s
 .ssrow{display:flex;align-items:center;gap:7px}
 .ssname{font-family:var(--fm);font-size:.53rem;color:var(--dim);width:68px;flex-shrink:0;letter-spacing:.03em}
 .sstrack{flex:1;height:3px;background:rgba(255,255,255,.05);border-radius:2px;overflow:hidden}
-.ssfill{height:100%;border-radius:2px;width:0%;transition:width 1.2s cubic-bezier(.16,1,.3,1)}
+.ssfill{height:100%;border-radius:2px;width:0%}
 .ssval{font-family:var(--fm);font-size:.52rem;color:var(--txt2);width:24px;text-align:right;flex-shrink:0}
+
 /* Right col */
 .cright{display:flex;flex-direction:column;align-items:flex-end;gap:10px;min-width:160px}
 .verdict{font-family:var(--fm);font-size:.58rem;padding:4px 10px;border-radius:5px;letter-spacing:.04em}
@@ -188,159 +191,148 @@ header{padding:44px 0 36px;display:flex;align-items:flex-start;justify-content:s
 .v-partial{background:rgba(245,158,11,.09);color:var(--amber);border:1px solid rgba(245,158,11,.2)}
 .v-miss{background:rgba(248,113,113,.09);color:var(--red);border:1px solid rgba(248,113,113,.2)}
 .cskills{display:flex;flex-wrap:wrap;gap:4px;justify-content:flex-end}
-.csk{font-family:var(--fm);font-size:.5rem;padding:2px 5px;border-radius:3px;background:rgba(0,229,255,.05);color:rgba(0,229,255,.65);border:1px solid rgba(0,229,255,.11)}
+.csk{font-family:var(--fm);font-size:.5rem;padding:2px 5px;border-radius:3px;background:rgba(0,229,255,.05);color:rgba(0,229,255,.65);border:1px solid rgba(0,229,255,.1)}
 .csk.irr{background:rgba(255,255,255,.03);color:var(--dim);border-color:rgba(255,255,255,.06)}
 .cid{font-family:var(--fm);font-size:.52rem;color:var(--dim);letter-spacing:.04em}
+
 /* Footer */
-.res-footer{display:flex;align-items:center;justify-content:space-between;padding:22px;background:var(--card);border:1px solid var(--bdr);border-radius:13px;backdrop-filter:blur(12px);flex-wrap:wrap;gap:16px}
+.res-footer{display:flex;align-items:center;justify-content:space-between;padding:22px;background:var(--card);border:1px solid var(--bdr);border-radius:13px;backdrop-filter:blur(14px);flex-wrap:wrap;gap:16px}
 .rf-text h4{font-size:.88rem;font-weight:700;letter-spacing:-.02em;margin-bottom:4px}
 .rf-text p{font-family:var(--fm);font-size:.6rem;color:var(--dim)}
 .rf-links{display:flex;gap:10px;flex-wrap:wrap}
 .flink{display:inline-flex;align-items:center;gap:5px;padding:10px 20px;border-radius:7px;font-family:var(--ff);font-size:.78rem;font-weight:600;text-decoration:none;transition:all .2s}
-.flink.pri{background:rgba(0,229,255,.09);color:var(--cyan);border:1px solid rgba(0,229,255,.28)}
+.flink.pri{background:rgba(0,229,255,.09);color:var(--cyan);border:1px solid rgba(0,229,255,.26)}
 .flink.sec{background:rgba(255,255,255,.04);color:var(--txt2);border:1px solid var(--bdr)}
 .flink:hover{transform:translateY(-1px);filter:brightness(1.2)}
 .foot-note{text-align:center;font-family:var(--fm);font-size:.56rem;color:var(--dim);letter-spacing:.1em;padding:10px 0}
 
-/* ── Animations ── */
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-
-@media(max-width:960px){
-  #setup-phase{grid-template-columns:1fr}
-  .job-card{position:static}
-  .cgrid{grid-template-columns:repeat(2,1fr)}
-}
-@media(max-width:640px){
-  .cgrid{grid-template-columns:1fr}
-  .rcard{grid-template-columns:42px 48px 1fr;grid-template-rows:auto auto}
-  .cright{grid-column:1/-1;align-items:flex-start;flex-direction:row;flex-wrap:wrap}
-  .sscores{grid-template-columns:1fr}
-}
+@media(max-width:960px){#setup-phase{grid-template-columns:1fr}.job-card{position:static}.cgrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.cgrid{grid-template-columns:1fr}.rcard{grid-template-columns:42px 48px 1fr;grid-template-rows:auto auto}.cright{grid-column:1/-1;align-items:flex-start;flex-direction:row;flex-wrap:wrap}.sscores{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<canvas id="cvs"></canvas>
+
+<canvas id="three-canvas"></canvas>
+
 <div class="app">
-
-<!-- HEADER -->
-<header>
-  <div>
-    <div class="logo">Talent<em>OS</em></div>
-    <div class="tagline">// AI Recruitment Intelligence · Live Ranking Demo</div>
-  </div>
-  <div class="hbadge">
-    <div class="hbadge-label">Competition Dataset</div>
-    <div class="hbadge-num">100,000</div>
-    <div class="hbadge-sub">candidates · Redrob AI Challenge 2026</div>
-  </div>
-</header>
-<div class="hdivider"></div>
-
-<!-- SETUP PHASE -->
-<section id="setup-phase">
-  <div>
-    <div class="job-card">
-      <div class="jc-top">
-        <div class="jc-logo">R</div>
-        <div class="jc-co"><h4>Active Opening</h4><p>Redrob AI · Posted 2026</p></div>
-        <div class="act-dot"></div>
-      </div>
-      <div class="jrole">Senior AI Engineer</div>
-      <div class="jcomp">REDROB AI · BANGALORE (HYBRID)</div>
-      <div class="jdetails">
-        <div class="jchip"><strong>5–9 yrs</strong>Experience</div>
-        <div class="jchip"><strong>₹40–70L</strong>CTC</div>
-        <div class="jchip"><strong>Hybrid</strong>Mode</div>
-      </div>
-      <div class="slabel">Required Skills</div>
-      <div class="stags">
-        <span class="stag">Embeddings</span><span class="stag">FAISS</span><span class="stag">Vector Search</span>
-        <span class="stag">LLM Fine-tuning</span><span class="stag">PyTorch</span><span class="stag">RAG</span>
-        <span class="stag">Ranking / LTR</span><span class="stag">NLP</span>
-      </div>
-      <div class="slabel">Preferred</div>
-      <div class="stags">
-        <span class="stag pref">MLOps</span><span class="stag pref">Pinecone</span>
-        <span class="stag pref">Milvus</span><span class="stag pref">Hugging Face</span><span class="stag pref">NDCG/MRR</span>
-      </div>
-      <div class="jdivide"></div>
-      <div class="slabel">Disqualifiers</div>
-      <div class="slist">
-        <div class="sitem"><div class="sdot" style="background:var(--red)"></div>Consulting-only background (TCS / Wipro / Infosys…)</div>
-        <div class="sitem"><div class="sdot" style="background:var(--red)"></div>No hands-on ML system engineering</div>
-        <div class="sitem"><div class="sdot" style="background:var(--amber)"></div>Recruiter response rate below 0.40</div>
-      </div>
-      <div class="jdivide"></div>
-      <div class="slabel">Ranking Signals</div>
-      <div class="slist">
-        <div class="sitem"><div class="sdot"></div>Semantic skill match via FAISS embeddings</div>
-        <div class="sitem"><div class="sdot"></div>Career relevance (built ranking/retrieval systems)</div>
-        <div class="sitem"><div class="sdot"></div>Platform AI assessment scores</div>
-        <div class="sitem"><div class="sdot"></div>Behavioral: response rate, GitHub, recency</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="right-panel">
-    <div class="pool-hdr">
-      <div class="pool-title">Candidate Pool</div>
-      <div class="pool-ct">12 profiles loaded</div>
-    </div>
-    <div class="cgrid" id="cgrid"></div>
-    <div class="run-wrap">
-      <button id="run-btn">Run Intelligence Analysis <span class="barrow">→</span></button>
-    </div>
-  </div>
-</section>
-
-<!-- ANALYSIS PHASE -->
-<section id="analysis-phase">
-  <div class="atitle">
-    <h2 id="a-heading">Running Pipeline</h2>
-    <div class="asub" id="a-sub">Initializing TalentOS intelligence engine…</div>
-  </div>
-  <div class="pipe-wrap">
-    <div class="pipe-track" id="pipe-track"></div>
-  </div>
-  <div class="proc-status" id="proc-status">
-    <div class="counter-num"><span id="cnum">0</span><span class="counter-cursor">_</span></div>
-    <div class="counter-lbl">candidates processed</div>
-    <div class="gbar"><div class="gbar-fill" id="gbar-fill"></div></div>
-  </div>
-</section>
-
-<!-- RESULTS PHASE -->
-<section id="results-phase">
-  <div class="res-hdr">
+  <header>
     <div>
-      <h2>Ranked Shortlist</h2>
-      <div class="res-meta">Senior AI Engineer · Redrob AI · 100,000 candidates evaluated</div>
+      <div class="logo">Talent<em>OS</em></div>
+      <div class="tagline">// AI Recruitment Intelligence · Live Ranking Demo</div>
     </div>
-    <div class="res-stats">
-      <div class="stat"><div class="stat-v">8</div><div class="stat-l">Elite Fits</div></div>
-      <div class="stat"><div class="stat-v">0.962</div><div class="stat-l">Top Score</div></div>
-      <div class="stat"><div class="stat-v">5</div><div class="stat-l">AI Stages</div></div>
-      <button id="reset-btn">↺ Reset</button>
+    <div class="hbadge">
+      <div class="hbadge-label">Competition Dataset</div>
+      <div class="hbadge-num">100,000</div>
+      <div class="hbadge-sub">candidates · Redrob AI Challenge 2026</div>
     </div>
-  </div>
-  <div class="board" id="board"></div>
-  <div class="res-footer">
-    <div class="rf-text">
-      <h4>Full Submission Ready</h4>
-      <p>Top 100 from the 100,000-candidate dataset · Validated against official Redrob schema</p>
-    </div>
-    <div class="rf-links">
-      <a href="output/submission.csv" class="flink pri">↓ submission.csv</a>
-      <a href="https://github.com/NoelNinanSheri1307/talentos/tree/integration" class="flink sec" target="_blank">⎇ integration branch</a>
-    </div>
-  </div>
-  <div class="foot-note">TALENTOS · AI RECRUITMENT INTELLIGENCE · REDROB AI CHALLENGE 2026</div>
-</section>
+  </header>
+  <div class="hdivider"></div>
 
-</div><!-- .app -->
+  <section id="setup-phase">
+    <div>
+      <div class="job-card">
+        <div class="jc-top">
+          <div class="jc-logo">R</div>
+          <div class="jc-co"><h4>Active Opening</h4><p>Redrob AI · 2026</p></div>
+          <div class="act-dot"></div>
+        </div>
+        <div class="jrole">Senior AI Engineer</div>
+        <div class="jcomp">REDROB AI · BANGALORE (HYBRID)</div>
+        <div class="jdetails">
+          <div class="jchip"><strong>5–9 yrs</strong>Experience</div>
+          <div class="jchip"><strong>₹40–70L</strong>CTC</div>
+          <div class="jchip"><strong>Hybrid</strong>Mode</div>
+        </div>
+        <div class="slabel">Required Skills</div>
+        <div class="stags">
+          <span class="stag">Embeddings</span><span class="stag">FAISS</span><span class="stag">Vector Search</span>
+          <span class="stag">LLM Fine-tuning</span><span class="stag">PyTorch</span><span class="stag">RAG</span>
+          <span class="stag">Ranking / LTR</span><span class="stag">NLP</span>
+        </div>
+        <div class="slabel">Preferred</div>
+        <div class="stags">
+          <span class="stag pref">MLOps</span><span class="stag pref">Pinecone</span>
+          <span class="stag pref">Milvus</span><span class="stag pref">Hugging Face</span><span class="stag pref">NDCG/MRR</span>
+        </div>
+        <div class="jdivide"></div>
+        <div class="slabel">Disqualifiers</div>
+        <div class="slist">
+          <div class="sitem"><div class="sdot" style="background:var(--red)"></div>Consulting-only background (TCS / Wipro / Infosys…)</div>
+          <div class="sitem"><div class="sdot" style="background:var(--red)"></div>No hands-on ML system engineering</div>
+          <div class="sitem"><div class="sdot" style="background:var(--amber)"></div>Recruiter response rate below 0.40</div>
+        </div>
+        <div class="jdivide"></div>
+        <div class="slabel">Ranking Signals</div>
+        <div class="slist">
+          <div class="sitem"><div class="sdot"></div>Semantic skill match via FAISS embeddings</div>
+          <div class="sitem"><div class="sdot"></div>Career relevance — built ranking/retrieval systems</div>
+          <div class="sitem"><div class="sdot"></div>Platform AI assessment scores</div>
+          <div class="sitem"><div class="sdot"></div>Behavioral: response rate, GitHub activity, recency</div>
+        </div>
+      </div>
+    </div>
+    <div class="right-panel">
+      <div class="pool-hdr">
+        <div class="pool-title">Candidate Pool</div>
+        <div class="pool-ct">12 profiles loaded</div>
+      </div>
+      <div class="cgrid" id="cgrid"></div>
+      <div class="run-wrap">
+        <button id="run-btn">Run Intelligence Analysis <span class="barrow">→</span></button>
+      </div>
+    </div>
+  </section>
 
+  <section id="analysis-phase">
+    <div class="atitle">
+      <h2 id="a-heading">Running Pipeline</h2>
+      <div class="asub" id="a-sub">Initializing TalentOS intelligence engine…</div>
+    </div>
+    <div class="pipe-wrap">
+      <div class="pipe-track" id="pipe-track"></div>
+    </div>
+    <div class="proc-status" id="proc-status">
+      <div class="counter-num"><span id="cnum">0</span><span class="counter-cursor">_</span></div>
+      <div class="counter-lbl">candidates processed</div>
+      <div class="gbar"><div class="gbar-fill" id="gbar-fill"></div></div>
+    </div>
+  </section>
+
+  <section id="results-phase">
+    <div class="res-hdr">
+      <div>
+        <h2>Ranked Shortlist</h2>
+        <div class="res-meta">Senior AI Engineer · Redrob AI · 100,000 candidates evaluated</div>
+      </div>
+      <div class="res-stats">
+        <div class="stat"><div class="stat-v">8</div><div class="stat-l">Elite Fits</div></div>
+        <div class="stat"><div class="stat-v">0.962</div><div class="stat-l">Top Score</div></div>
+        <div class="stat"><div class="stat-v">5</div><div class="stat-l">AI Stages</div></div>
+        <button id="reset-btn">↺ Reset</button>
+      </div>
+    </div>
+    <div class="board" id="board"></div>
+    <div class="res-footer">
+      <div class="rf-text">
+        <h4>Full Submission Ready</h4>
+        <p>Top 100 from 100,000 candidates · Validated against official Redrob schema</p>
+      </div>
+      <div class="rf-links">
+        <a href="output/submission.csv" class="flink pri">↓ submission.csv</a>
+        <a href="https://github.com/black1plague2/talentos-submission" class="flink sec" target="_blank">⎇ GitHub</a>
+      </div>
+    </div>
+    <div class="foot-note">TALENTOS · AI RECRUITMENT INTELLIGENCE · REDROB AI CHALLENGE 2026</div>
+  </section>
+</div>
+
+<script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/motion@10.18.0/dist/motion.js"></script>
 <script>
+// ── Globals ────────────────────────────────────────────────────────────────
+const { animate, stagger, spring } = window.Motion;
+let analysisMode = false;
+
 // ── Dataset ────────────────────────────────────────────────────────────────
 const CANDS = [
   {id:"CAND_0071974",name:"Arjun Mehta",title:"Senior AI Engineer",yoe:7.8,skills:["Embeddings","FAISS","PyTorch","Fine-tuning LLMs","Sentence Transformers","NLP","Ranking","Milvus","RAG","LTR","BM25","Hybrid Search","NDCG","MRR"],rr:0.76,otw:true,gh:82,cr:0.9,as:78,fs:0.962},
@@ -356,48 +348,148 @@ const CANDS = [
   {id:"CAND_0001082",name:"Anjali Sharma",title:"HR Manager",yoe:5.0,skills:["HR","Recruitment","Excel","ChatGPT","LinkedIn"],rr:0.62,otw:true,gh:-1,cr:0.0,as:0,fs:0.215},
   {id:"CAND_0000002",name:"Saanvi Sethi",title:"Operations Manager",yoe:12.5,skills:["Project Management","React","Kafka","Feature Engineering","GCP"],rr:0.29,otw:true,gh:-1,cr:0.1,as:0,fs:0.189}
 ];
-
 const PIPE = [
   {num:"01",label:"Semantic\nMatcher",desc:"FAISS vector search · skill alignment by meaning"},
   {num:"02",label:"Capability\nScorer",desc:"GPT-4o-mini · project evidence evaluation"},
   {num:"03",label:"Credential\nVerifier",desc:"5 sub-scores · learning / growth / career"},
-  {num:"04",label:"Gap\nAnalyser",desc:"Skill gap · experience delta · cert gap"},
+  {num:"04",label:"Gap\nAnalyser",desc:"Semantic skill gap · experience & cert delta"},
   {num:"05",label:"ML\nRanker",desc:"LightGBM · 15-feature vector · R²=0.96"},
 ];
+const AI_SK = new Set(["embeddings","faiss","pytorch","fine-tuning llms","sentence transformers","nlp","ranking","milvus","rag","ltr","bm25","hybrid search","ndcg","mrr","transformers","bert","pinecone","reranking","mlops","llm","fine-tuning","mlflow","recommendation","retrieval","elasticsearch","semantic search","hugging face"]);
 
-const AI_SK = new Set(["embeddings","faiss","pytorch","fine-tuning llms","sentence transformers","nlp","ranking","milvus","rag","ltr","bm25","hybrid search","ndcg","mrr","transformers","bert","pinecone","reranking","mlops","llm","fine-tuning","mlflow","recommendation","retrieval","elasticsearch","semantic search","hugging face","llm fine-tuning"]);
+// ── Helpers ────────────────────────────────────────────────────────────────
+const ini = n => n.split(' ').map(w=>w[0]).join('').toUpperCase();
+const col = s => s>=.9?'var(--cyan)':s>=.7?'var(--green)':s>=.4?'var(--amber)':'var(--red)';
+const tier = s => s>=.9?'t-elite':s>=.7?'t-strong':s>=.4?'t-partial':'t-miss';
+const vdict = s => s>=.9?'Elite Match':s>=.7?'Strong Match':s>=.4?'Partial Match':'Mismatch';
+const vcls = s => s>=.9?'v-elite':s>=.7?'v-strong':s>=.4?'v-partial':'v-miss';
+const rbc = r => r===1?'rb-1':r===2?'rb-2':r===3?'rb-3':'rb-n';
+const rbt = r => r===1?'🥇':r===2?'🥈':r===3?'🥉':'#'+r;
+const ss = c => ({sem:Math.min(c.cr*100,100),cap:c.as,ver:Math.min(c.skills.length*7,100),beh:Math.round(c.rr*100)});
+const sleep = ms => new Promise(r=>setTimeout(r,ms));
 
-// ── Helpers ──────────────────────────────────────────────────────────────
-function ini(n){return n.split(' ').map(w=>w[0]).join('').toUpperCase()}
-function col(s){return s>=.9?'var(--cyan)':s>=.7?'var(--green)':s>=.4?'var(--amber)':'var(--red)'}
-function tier(s){return s>=.9?'t-elite':s>=.7?'t-strong':s>=.4?'t-partial':'t-miss'}
-function verdict(s){return s>=.9?'Elite Match':s>=.7?'Strong Match':s>=.4?'Partial Match':'Mismatch'}
-function vclass(s){return s>=.9?'v-elite':s>=.7?'v-strong':s>=.4?'v-partial':'v-miss'}
-function rbclass(r){return r===1?'rb-1':r===2?'rb-2':r===3?'rb-3':'rb-n'}
-function rbtext(r){return r===1?'🥇':r===2?'🥈':r===3?'🥉':'#'+r}
-function ss(c){return{sem:Math.min(c.cr*100,100),cap:c.as,ver:Math.min(c.skills.length*7,100),beh:Math.round(c.rr*100)}}
-function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
+// ── Three.js ───────────────────────────────────────────────────────────────
+function initThree() {
+  const canvas = document.getElementById('three-canvas');
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.setClearColor(0x000000, 0);
 
-// ── Render seed cards ────────────────────────────────────────────────────
-function renderSeeds(){
-  document.getElementById('cgrid').innerHTML = CANDS.map((c,i)=>`
-    <div class="scard" style="animation:fadeUp .45s ${.04*i+.3}s ease both">
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 0.1, 100);
+  camera.position.z = 6;
+
+  const clock = new THREE.Clock();
+
+  function resize() {
+    renderer.setSize(innerWidth, innerHeight);
+    camera.aspect = innerWidth / innerHeight;
+    camera.updateProjectionMatrix();
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Mouse parallax
+  let tmx = 0, tmy = 0, cmx = 0, cmy = 0;
+  document.addEventListener('mousemove', e => {
+    tmx = (e.clientX / innerWidth - 0.5) * 1.4;
+    tmy = -(e.clientY / innerHeight - 0.5) * 0.9;
+  });
+
+  // Nodes
+  const nodes = [];
+  for (let i = 0; i < 44; i++) {
+    const isPurple = Math.random() > 0.78;
+    const geo = new THREE.SphereGeometry(Math.random() * 0.038 + 0.016, 8, 8);
+    const mat = new THREE.MeshBasicMaterial({
+      color: isPurple ? 0x9333ea : 0x00e5ff,
+      transparent: true,
+      opacity: Math.random() * 0.42 + 0.1
+    });
+    const mesh = new THREE.Mesh(geo, mat);
+    const base = new THREE.Vector3(
+      (Math.random() - 0.5) * 12,
+      (Math.random() - 0.5) * 8,
+      (Math.random() - 0.5) * 5
+    );
+    mesh.position.copy(base);
+    scene.add(mesh);
+    nodes.push({ mesh, base, baseOp: mat.opacity, phase: Math.random() * Math.PI * 2 });
+  }
+
+  // Lines
+  const MAX = 1200;
+  const lpos = new Float32Array(MAX * 6);
+  const lgeo = new THREE.BufferGeometry();
+  lgeo.setAttribute('position', new THREE.BufferAttribute(lpos, 3));
+  const lmat = new THREE.LineBasicMaterial({ color: 0x00e5ff, transparent: true, opacity: 0.05 });
+  const lines = new THREE.LineSegments(lgeo, lmat);
+  scene.add(lines);
+
+  function render() {
+    requestAnimationFrame(render);
+    const t = clock.getElapsedTime();
+
+    // Organic breathing
+    nodes.forEach(n => {
+      n.mesh.position.x = n.base.x + Math.sin(t * 0.33 + n.phase) * 0.3;
+      n.mesh.position.y = n.base.y + Math.cos(t * 0.27 + n.phase * 0.7) * 0.2;
+      n.mesh.position.z = n.base.z + Math.sin(t * 0.21 + n.phase * 1.3) * 0.13;
+      n.mesh.material.opacity = n.baseOp + Math.sin(t * 1.4 + n.phase) * 0.055;
+    });
+
+    // Dynamic connections (intensify during analysis)
+    const distThresh = analysisMode ? 3.6 : 2.5;
+    lmat.opacity = analysisMode ? 0.11 : 0.048;
+    let li = 0;
+    for (let i = 0; i < nodes.length && li < MAX - 1; i++) {
+      for (let j = i + 1; j < nodes.length && li < MAX - 1; j++) {
+        const d = nodes[i].mesh.position.distanceTo(nodes[j].mesh.position);
+        if (d < distThresh) {
+          const a = nodes[i].mesh.position, b = nodes[j].mesh.position;
+          lpos[li*6]=a.x; lpos[li*6+1]=a.y; lpos[li*6+2]=a.z;
+          lpos[li*6+3]=b.x; lpos[li*6+4]=b.y; lpos[li*6+5]=b.z;
+          li++;
+        }
+      }
+    }
+    lgeo.setDrawRange(0, li * 2);
+    lgeo.attributes.position.needsUpdate = true;
+
+    // Smooth camera parallax + zoom during analysis
+    cmx += (tmx - cmx) * 0.038;
+    cmy += (tmy - cmy) * 0.038;
+    const tz = analysisMode ? 5.1 : 6;
+    camera.position.x = cmx;
+    camera.position.y = cmy;
+    camera.position.z += (tz - camera.position.z) * 0.022;
+    camera.lookAt(0, 0, 0);
+
+    renderer.render(scene, camera);
+  }
+  render();
+}
+
+// ── Render seed cards ──────────────────────────────────────────────────────
+function renderSeeds() {
+  document.getElementById('cgrid').innerHTML = CANDS.map(c => `
+    <div class="scard">
       <div class="savatar">${ini(c.name)}</div>
       <div class="sname">${c.name}</div>
       <div class="stitle-sm">${c.title}</div>
       <div class="sstats">
         <span class="sstat">${c.yoe}y</span>
         <span class="sstat">${c.skills.length} skills</span>
-        ${c.otw?'<span class="sstat otw">OTW</span>':''}
+        ${c.otw ? '<span class="sstat otw">OTW</span>' : ''}
       </div>
-    </div>`).join('')
+    </div>`).join('');
 }
 
-// ── Render pipeline ──────────────────────────────────────────────────────
-function renderPipe(){
-  const C = 2*Math.PI*35;
-  document.getElementById('pipe-track').innerHTML = PIPE.map((p,i)=>`
-    <div class="pstage" id="ps${i}">
+// ── Render pipeline ────────────────────────────────────────────────────────
+function renderPipe() {
+  const C = 2 * Math.PI * 35;
+  document.getElementById('pipe-track').innerHTML = PIPE.map((p, i) => `
+    <div class="pstage" id="ps${i}" style="opacity:0;transform:translateY(20px)">
       <div class="pnode">
         <svg class="pnode-ring" viewBox="0 0 76 76">
           <circle class="pr-bg" cx="38" cy="38" r="35"/>
@@ -406,29 +498,35 @@ function renderPipe(){
         </svg>
         <span class="picon">${p.num}</span>
       </div>
-      <div class="plabel">${p.label.replace('\n','<br>')}</div>
+      <div class="plabel">${p.label.replace('\n', '<br>')}</div>
       <div class="pstatus" id="pst${i}">—</div>
     </div>
-    ${i<4?`<div class="pconn" id="pc${i}"><div class="pconn-pulse" id="pp${i}"></div></div>`:''}
-  `).join('')
+    ${i < 4 ? `<div class="pconn" id="pc${i}" style="opacity:0"><div class="pconn-pulse" id="pp${i}"></div></div>` : ''}
+  `).join('');
 }
 
-// ── Render leaderboard ───────────────────────────────────────────────────
-function renderBoard(){
-  const ranked = [...CANDS].sort((a,b)=>b.fs-a.fs);
-  const CIRC = 2*Math.PI*22;
-  document.getElementById('board').innerHTML = ranked.map((c,i)=>{
-    const r=i+1, s=ss(c), clr=col(c.fs), off=(CIRC*(1-c.fs)).toFixed(2);
+// ── Render leaderboard ─────────────────────────────────────────────────────
+function bar(lbl, v, clr) {
+  return `<div class="ssrow">
+    <span class="ssname">${lbl}</span>
+    <div class="sstrack"><div class="ssfill" data-v="${Math.round(v)}" style="background:${clr}"></div></div>
+    <span class="ssval">${Math.round(v)}</span>
+  </div>`;
+}
+
+function renderBoard() {
+  const ranked = [...CANDS].sort((a, b) => b.fs - a.fs);
+  const CIRC = 2 * Math.PI * 22;
+  document.getElementById('board').innerHTML = ranked.map((c, i) => {
+    const r = i + 1, s = ss(c), clr = col(c.fs);
     return `
     <div class="rcard ${tier(c.fs)}" id="rc${i}">
-      <div class="rbadge ${rbclass(r)}">${rbtext(r)}</div>
+      <div class="rbadge ${rbc(r)}">${rbt(r)}</div>
       <div class="ring-wrap">
         <svg class="ring-svg" viewBox="0 0 54 54">
           <circle class="ring-bg2" cx="27" cy="27" r="22"/>
-          <circle class="ring-fg" id="rf${i}" cx="27" cy="27" r="22"
-            stroke="${clr}"
-            stroke-dasharray="${CIRC.toFixed(2)}"
-            stroke-dashoffset="${CIRC.toFixed(2)}"/>
+          <circle class="ring-fg" id="rf${i}" cx="27" cy="27" r="22" stroke="${clr}"
+            stroke-dasharray="${CIRC.toFixed(2)}" stroke-dashoffset="${CIRC.toFixed(2)}"/>
         </svg>
         <div class="ring-txt" style="color:${clr}">${c.fs.toFixed(3)}</div>
       </div>
@@ -437,183 +535,219 @@ function renderBoard(){
         <div class="cmeta">
           <span class="ctitle">${c.title}</span>
           <span class="cyoe">${c.yoe}y</span>
-          ${c.otw?'<span class="cotw">Open to work</span>':''}
+          ${c.otw ? '<span class="cotw">Open to work</span>' : ''}
         </div>
         <div class="sscores">
-          ${bar('Semantic',s.sem,clr)}${bar('Capability',s.cap,clr)}
-          ${bar('Verification',s.ver,clr)}${bar('Behavioral',s.beh,clr)}
+          ${bar('Semantic', s.sem, clr)}${bar('Capability', s.cap, clr)}
+          ${bar('Verification', s.ver, clr)}${bar('Behavioral', s.beh, clr)}
         </div>
       </div>
       <div class="cright">
-        <div class="verdict ${vclass(c.fs)}">${verdict(c.fs)}</div>
+        <div class="verdict ${vcls(c.fs)}">${vdict(c.fs)}</div>
         <div class="cskills">${c.skills.slice(0,5).map(sk=>`<span class="csk ${AI_SK.has(sk.toLowerCase())?'':'irr'}">${sk}</span>`).join('')}</div>
         <div class="cid">${c.id}</div>
       </div>
-    </div>`
-  }).join('')
+    </div>`;
+  }).join('');
 }
 
-function bar(lbl,v,clr){
-  return `<div class="ssrow">
-    <span class="ssname">${lbl}</span>
-    <div class="sstrack"><div class="ssfill" data-v="${Math.round(v)}" style="background:${clr}"></div></div>
-    <span class="ssval">${Math.round(v)}</span>
-  </div>`
-}
+// ── Pipeline stage animation ───────────────────────────────────────────────
+async function animStage(i) {
+  const stage = document.getElementById(`ps${i}`);
+  const fill = document.getElementById(`prf${i}`);
+  const status = document.getElementById(`pst${i}`);
 
-// ── Pipeline animation ───────────────────────────────────────────────────
-async function animStage(i){
-  const stage=document.getElementById(`ps${i}`);
-  const status=document.getElementById(`pst${i}`);
-  const fill=document.getElementById(`prf${i}`);
   stage.classList.add('active');
-  status.textContent='Processing…';
-  fill.style.strokeDashoffset='0';
+  status.textContent = 'Processing…';
+
+  // Spring pulse on node
+  animate(`#ps${i} .pnode`, { scale: [1, 1.07, 1] }, {
+    duration: 0.5, easing: spring({ stiffness: 400, damping: 15 })
+  });
+
+  // Ring fill
+  fill.style.strokeDashoffset = '0';
   await sleep(1600);
+
   stage.classList.remove('active');
   stage.classList.add('done');
-  status.textContent='✓ Done';
-  if(i<4){
-    const conn=document.getElementById(`pc${i}`);
+  status.textContent = '✓ Done';
+
+  // Completion bounce
+  animate(`#ps${i}`, { y: [0, -7, 0] }, {
+    duration: 0.45, easing: spring({ stiffness: 350, damping: 18 })
+  });
+
+  if (i < 4) {
+    const conn = document.getElementById(`pc${i}`);
     conn.classList.add('pulsing');
     await sleep(500);
     conn.classList.add('lit');
   }
 }
 
-async function animCounter(total,dur){
-  const el=document.getElementById('cnum');
-  const bar=document.getElementById('gbar-fill');
-  const t0=performance.now();
-  return new Promise(res=>{
-    function step(now){
-      const p=Math.min((now-t0)/dur,1);
-      const e=1-Math.pow(1-p,4);
-      el.textContent=Math.floor(e*total).toLocaleString();
-      bar.style.width=(e*100).toFixed(1)+'%';
-      p<1?requestAnimationFrame(step):(el.textContent=total.toLocaleString(),bar.style.width='100%',res());
+// ── Counter ────────────────────────────────────────────────────────────────
+async function animCounter(total, dur) {
+  const el = document.getElementById('cnum');
+  const bar = document.getElementById('gbar-fill');
+  const t0 = performance.now();
+  return new Promise(res => {
+    function step(now) {
+      const p = Math.min((now - t0) / dur, 1);
+      const e = 1 - Math.pow(1 - p, 4);
+      el.textContent = Math.floor(e * total).toLocaleString();
+      bar.style.width = (e * 100).toFixed(1) + '%';
+      p < 1 ? requestAnimationFrame(step) : (el.textContent = total.toLocaleString(), bar.style.width = '100%', res());
     }
     requestAnimationFrame(step);
   });
 }
 
-// ── Run analysis ─────────────────────────────────────────────────────────
-async function runAnalysis(){
-  document.getElementById('run-btn').disabled=true;
-  const setup=document.getElementById('setup-phase');
-  setup.style.transition='opacity .45s ease, transform .45s ease';
-  setup.style.opacity='0';
-  setup.style.transform='translateY(-18px)';
-  await sleep(460);
-  setup.style.display='none';
+// ── Main analysis flow ─────────────────────────────────────────────────────
+async function runAnalysis() {
+  document.getElementById('run-btn').disabled = true;
 
-  const ap=document.getElementById('analysis-phase');
-  ap.classList.add('show');
+  // Fade out setup
+  await animate('#setup-phase', { opacity: [1, 0], y: [0, -22] }, {
+    duration: 0.45, easing: [0.4, 0, 1, 1]
+  }).finished;
+  document.getElementById('setup-phase').style.display = 'none';
+
+  // Show analysis phase
+  const ap = document.getElementById('analysis-phase');
+  ap.style.display = 'flex';
+  analysisMode = true;
+  await animate(ap, { opacity: [0, 1] }, { duration: 0.4 }).finished;
+
   renderPipe();
-  await sleep(500);
 
-  for(let i=0;i<PIPE.length;i++){
-    document.getElementById('a-sub').textContent=`Stage ${i+1}/5 — ${PIPE[i].desc}`;
+  // Stagger pipeline stages in
+  await sleep(200);
+  const stages = document.querySelectorAll('.pstage');
+  const conns = document.querySelectorAll('.pconn');
+  animate(stages, { opacity: [0, 1], y: [22, 0] }, {
+    delay: stagger(0.09),
+    easing: spring({ stiffness: 220, damping: 22 })
+  });
+  animate(conns, { opacity: [0, 1] }, { delay: stagger(0.09, { startDelay: 0.15 }), duration: 0.4 });
+
+  await sleep(700);
+
+  // Run each stage
+  for (let i = 0; i < PIPE.length; i++) {
+    document.getElementById('a-sub').textContent = `Stage ${i+1}/5 — ${PIPE[i].desc}`;
     await animStage(i);
-    await sleep(180);
+    await sleep(160);
   }
 
-  document.getElementById('a-heading').textContent='Scoring Candidates';
-  document.getElementById('a-sub').textContent='Running LightGBM ranker across 100,000 candidate vectors…';
-  const ps=document.getElementById('proc-status');
-  ps.classList.add('show');
-  await animCounter(100000,3200);
+  // Scoring counter
+  document.getElementById('a-heading').textContent = 'Scoring Candidates';
+  document.getElementById('a-sub').textContent = 'Running LightGBM ranker across 100,000 candidate vectors…';
+  const ps = document.getElementById('proc-status');
+  ps.style.display = 'block';
+  await animate(ps, { opacity: [0, 1], y: [16, 0] }, {
+    duration: 0.5, easing: spring({ stiffness: 200, damping: 22 })
+  }).finished;
 
+  await animCounter(100000, 3200);
   await sleep(400);
-  document.getElementById('a-heading').textContent='Analysis Complete';
-  document.getElementById('a-sub').textContent='Shortlist generated — sorting by TalentOS composite score…';
+
+  document.getElementById('a-heading').textContent = 'Analysis Complete';
+  document.getElementById('a-sub').textContent = 'Shortlist generated — sorting by TalentOS score…';
   await sleep(900);
 
-  ap.style.transition='opacity .4s';
-  ap.style.opacity='0';
-  await sleep(420);
-  ap.classList.remove('show');
-  ap.style.opacity='1';
+  // Fade out analysis
+  await animate(ap, { opacity: [1, 0] }, { duration: 0.4 }).finished;
+  ap.style.display = 'none';
+  analysisMode = false;
 
+  // Show results
   renderBoard();
-  const rp=document.getElementById('results-phase');
-  rp.style.opacity='0';
-  rp.classList.add('show');
-  await sleep(30);
-  rp.style.transition='opacity .5s';
-  rp.style.opacity='1';
+  const rp = document.getElementById('results-phase');
+  rp.style.display = 'flex';
+  await animate(rp, { opacity: [0, 1] }, { duration: 0.5 }).finished;
 
-  const cards=document.querySelectorAll('.rcard');
-  for(let i=0;i<cards.length;i++){
-    await sleep(100);
-    cards[i].classList.add('show');
-    // Score ring
-    const rf=document.getElementById(`rf${i}`);
-    if(rf){
-      const ranked=[...CANDS].sort((a,b)=>b.fs-a.fs);
-      const CIRC=2*Math.PI*22;
-      rf.style.strokeDashoffset=(CIRC*(1-ranked[i].fs)).toFixed(2);
-    }
-    // Sub-score bars
-    cards[i].querySelectorAll('.ssfill').forEach((b,j)=>{
-      setTimeout(()=>{b.style.width=b.getAttribute('data-v')+'%'},280+j*80);
-    });
-  }
-  window.scrollTo({top:document.getElementById('results-phase').offsetTop-20,behavior:'smooth'});
+  // Stagger cards with spring
+  const cards = document.querySelectorAll('.rcard');
+  animate(cards, { opacity: [0, 1], x: [-28, 0] }, {
+    delay: stagger(0.08),
+    easing: spring({ stiffness: 260, damping: 25 })
+  });
+
+  const ranked = [...CANDS].sort((a, b) => b.fs - a.fs);
+  const CIRC = 2 * Math.PI * 22;
+
+  // Animate score rings + bars per card
+  cards.forEach((card, i) => {
+    const delay = i * 80;
+    setTimeout(() => {
+      // Ring
+      const ring = document.getElementById(`rf${i}`);
+      if (ring) ring.style.strokeDashoffset = (CIRC * (1 - ranked[i].fs)).toFixed(2);
+      // Sub-score bars
+      card.querySelectorAll('.ssfill').forEach((b, j) => {
+        animate(b, { width: ['0%', b.getAttribute('data-v') + '%'] }, {
+          delay: j * 0.07,
+          duration: 1.15,
+          easing: [0.16, 1, 0.3, 1]
+        });
+      });
+    }, delay + 300);
+  });
+
+  window.scrollTo({ top: rp.offsetTop - 20, behavior: 'smooth' });
 }
 
-// ── Reset ────────────────────────────────────────────────────────────────
-function reset(){
-  const rp=document.getElementById('results-phase');
-  rp.classList.remove('show');
-  const ap=document.getElementById('analysis-phase');
-  ap.classList.remove('show');
-  ap.style.opacity='1';
-  const setup=document.getElementById('setup-phase');
-  setup.style.display='grid';
-  setup.style.opacity='0';
-  setup.style.transform='translateY(18px)';
-  setTimeout(()=>{
-    setup.style.transition='opacity .45s, transform .45s';
-    setup.style.opacity='1';
-    setup.style.transform='translateY(0)';
-    document.getElementById('run-btn').disabled=false;
-  },40);
-  window.scrollTo({top:0,behavior:'smooth'});
+// ── Reset ──────────────────────────────────────────────────────────────────
+async function doReset() {
+  const rp = document.getElementById('results-phase');
+  await animate(rp, { opacity: [1, 0] }, { duration: 0.35 }).finished;
+  rp.style.display = 'none';
+
+  const setup = document.getElementById('setup-phase');
+  setup.style.display = 'grid';
+  await animate(setup, { opacity: [0, 1], y: [20, 0] }, {
+    duration: 0.5, easing: spring({ stiffness: 200, damping: 22 })
+  }).finished;
+
+  document.getElementById('run-btn').disabled = false;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ── Canvas particles ─────────────────────────────────────────────────────
-(function(){
-  const cv=document.getElementById('cvs');
-  const cx=cv.getContext('2d');
-  let W,H,pts;
-  function rsz(){W=cv.width=innerWidth;H=cv.height=innerHeight}
-  function mk(){pts=Array.from({length:55},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.28,vy:(Math.random()-.5)*.28,r:Math.random()*1.4+.4,o:Math.random()*.35+.08}))}
-  function draw(){
-    cx.clearRect(0,0,W,H);
-    pts.forEach(p=>{
-      p.x+=p.vx; p.y+=p.vy;
-      if(p.x<0||p.x>W)p.vx*=-1;
-      if(p.y<0||p.y>H)p.vy*=-1;
-      cx.beginPath();cx.arc(p.x,p.y,p.r,0,6.28);
-      cx.fillStyle=`rgba(0,229,255,${p.o})`;cx.fill();
-    });
-    for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
-      const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);
-      if(d<115){cx.beginPath();cx.moveTo(pts[i].x,pts[i].y);cx.lineTo(pts[j].x,pts[j].y);cx.strokeStyle=`rgba(0,229,255,${(1-d/115)*.07})`;cx.lineWidth=.5;cx.stroke()}
-    }
-    requestAnimationFrame(draw);
-  }
-  rsz();mk();draw();
-  window.addEventListener('resize',()=>{rsz();mk()});
-})();
-
-// ── Init ─────────────────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded',()=>{
+// ── Init ───────────────────────────────────────────────────────────────────
+function init() {
+  initThree();
   renderSeeds();
-  document.getElementById('run-btn').addEventListener('click',runAnalysis);
-  document.getElementById('reset-btn').addEventListener('click',reset);
-});
+
+  // Entrance animations
+  animate('.logo', { opacity: [0, 1], y: [30, 0] }, {
+    delay: 0.1, easing: spring({ stiffness: 180, damping: 20 })
+  });
+  animate('.tagline', { opacity: [0, 1], y: [20, 0] }, {
+    delay: 0.22, easing: spring({ stiffness: 180, damping: 22 })
+  });
+  animate('.hbadge', { opacity: [0, 1], x: [20, 0] }, {
+    delay: 0.3, easing: spring({ stiffness: 180, damping: 22 })
+  });
+  animate('.hdivider', { opacity: [0, 1] }, { delay: 0.38, duration: 0.7 });
+  animate('#setup-phase', { opacity: [0, 1], y: [18, 0] }, {
+    delay: 0.45, easing: spring({ stiffness: 160, damping: 22 })
+  });
+
+  // Seed cards stagger
+  setTimeout(() => {
+    animate('.scard', { opacity: [0, 1], y: [18, 0] }, {
+      delay: stagger(0.05),
+      easing: spring({ stiffness: 240, damping: 24 })
+    });
+  }, 500);
+
+  document.getElementById('run-btn').addEventListener('click', runAnalysis);
+  document.getElementById('reset-btn').addEventListener('click', doReset);
+}
+
+if (document.readyState !== 'loading') init();
+else document.addEventListener('DOMContentLoaded', init);
 </script>
 </body>
 </html>
