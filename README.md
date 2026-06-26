@@ -10,6 +10,8 @@
 [![LightGBM](https://img.shields.io/badge/LightGBM-ML_Ranker-brightgreen?style=for-the-badge)](https://lightgbm.readthedocs.io)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://docker.com)
 
+**[▶ Live Pipeline Demo](demo.html)** — Watch TalentOS rank 100,000 candidates in real time
+
 </div>
 
 ---
