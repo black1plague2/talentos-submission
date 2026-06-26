@@ -133,6 +133,27 @@ header{padding:44px 0 36px;display:flex;align-items:flex-start;justify-content:s
 .gbar{width:380px;height:2px;background:rgba(0,229,255,.08);border-radius:1px;margin:18px auto 0;overflow:hidden}
 .gbar-fill{height:100%;background:linear-gradient(90deg,var(--cyan),#60a5fa);border-radius:1px;width:0%;transition:width .2s ease}
 
+/* ── Live log terminal ── */
+.live-log-wrap{width:100%;max-width:760px}
+.live-log-header{display:flex;align-items:center;gap:8px;padding:10px 16px;background:rgba(0,229,255,.05);border:1px solid var(--bdr);border-bottom:none;border-radius:10px 10px 0 0}
+.log-dots{display:flex;gap:5px}
+.log-dot{width:9px;height:9px;border-radius:50%}
+.live-log{background:rgba(4,12,28,.75);border:1px solid var(--bdr);border-radius:0 0 10px 10px;padding:14px 18px;height:178px;overflow-y:auto;font-family:var(--fm);font-size:.62rem;line-height:1.75;backdrop-filter:blur(12px);scroll-behavior:smooth}
+.live-log::-webkit-scrollbar{width:3px}
+.live-log::-webkit-scrollbar-track{background:transparent}
+.live-log::-webkit-scrollbar-thumb{background:rgba(0,229,255,.18);border-radius:2px}
+.log-line{display:block;white-space:pre;animation:logIn .18s ease both}
+@keyframes logIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.log-ts{color:var(--dim)}
+.log-stage{font-weight:500}
+.log-s1{color:#60a5fa}
+.log-s2{color:var(--purple)}
+.log-s3{color:var(--amber)}
+.log-s4{color:#f472b6}
+.log-s5{color:var(--cyan)}
+.log-ok{color:var(--green)}
+.log-cursor-line{display:inline-block;width:7px;height:.7em;background:var(--cyan);vertical-align:middle;animation:blink .8s ease infinite;margin-left:2px;border-radius:1px}
+
 /* ── Results Phase ── */
 #results-phase{display:none;flex-direction:column;gap:28px}
 .res-hdr{display:flex;align-items:flex-end;justify-content:space-between;padding-bottom:20px;border-bottom:1px solid var(--bdr);flex-wrap:wrap;gap:16px}
@@ -291,6 +312,18 @@ header{padding:44px 0 36px;display:flex;align-items:flex-start;justify-content:s
     <div class="pipe-wrap">
       <div class="pipe-track" id="pipe-track"></div>
     </div>
+    <div class="live-log-wrap" id="live-log-wrap" style="display:none">
+      <div class="live-log-header">
+        <div class="log-dots">
+          <div class="log-dot" style="background:#f87171"></div>
+          <div class="log-dot" style="background:#f59e0b"></div>
+          <div class="log-dot" style="background:#10b981"></div>
+        </div>
+        <span style="font-family:var(--fm);font-size:.6rem;color:var(--dim);letter-spacing:.08em">talentos — pipeline.log</span>
+      </div>
+      <div class="live-log" id="live-log"></div>
+    </div>
+
     <div class="proc-status" id="proc-status">
       <div class="counter-num"><span id="cnum">0</span><span class="counter-cursor">_</span></div>
       <div class="counter-lbl">candidates processed</div>
@@ -551,6 +584,84 @@ function renderBoard() {
   }).join('');
 }
 
+// ── Log data per stage ─────────────────────────────────────────────────────
+const STAGE_LOGS = [
+  { cls:'log-s1', lines:[
+    'Loading all-MiniLM-L6-v2 sentence embedding model...',
+    'Model loaded — 384-dim vectors, 22M parameters.',
+    'Embedding 100,000 candidate skill vectors... (batch=512)',
+    'Building FAISS IndexFlatIP index — 100k × 384 floats...',
+    'Embedding 8 required job skills (cosine space)...',
+    'Running top-k similarity search (k=100) per required skill...',
+    'Aggregating: req_pct=0.70×score + pref_pct=0.30×score...',
+    '✓ Semantic matching complete — mean score: 0.724',
+  ]},
+  { cls:'log-s2', lines:[
+    'Sampling 2,841 candidates with projects in portfolio...',
+    'Preparing GPT-4o-mini batch prompts (chunk=50)...',
+    'Evaluating: RAG pipelines, FAISS retrieval, LTR systems...',
+    'Evaluating: fine-tuning evidence, deployment signals...',
+    'Received 2,841 capability scores from LLM...',
+    'Applying rule-based fallback for 97,159 candidates...',
+    'Fallback: skill_overlap×45 + project_bonus + exp_bonus',
+    '✓ Capability scoring complete — mean score: 68.4 / 100',
+  ]},
+  { cls:'log-s3', lines:[
+    'Computing learning_score (skills × certs × projects)...',
+    'Computing growth_score (achievements / years_of_exp)...',
+    'Computing career_score (role level progression depth)...',
+    'Computing project_score (GitHub verified + deployments)...',
+    'Computing evidence_score (certs + verified platforms)...',
+    'Aggregating verification_score = mean(5 sub-scores)...',
+    'Applying github_verified and linkedin_verified bonuses...',
+    '✓ Credential verification complete — 5 scores aggregated',
+  ]},
+  { cls:'log-s4', lines:[
+    'Encoding candidate skills → FAISS vectors (384-dim)...',
+    'Semantic gap: "React" vs "Vue.js" → distance: 0.31 (minor)',
+    'Semantic gap: "SQL" vs "Spark" → distance: 0.58 (moderate)',
+    'Computing experience_gap = max(0, required_yoe - actual_yoe)...',
+    'Computing cert_gap = required_certs - matched_certs...',
+    'Applying penalty: skill_gap×0.60 + exp_gap×10 + cert_gap×5',
+    'Flagging consulting-only profiles for 65% penalty...',
+    '✓ Gap analysis complete — 73% candidates have skill gaps',
+  ]},
+  { cls:'log-s5', lines:[
+    'Loading LightGBM model: 300 trees, lr=0.05, max_depth=6...',
+    'Assembling 15-feature vectors × 100,000 candidates...',
+    'Features: semantic_match, capability, verification, gap...',
+    'Features: learning, growth, career, project, evidence...',
+    'Features: skill_gap_pct, exp_gap, cert_gap, exp_years, cert_count',
+    'Running LightGBM inference — 25,000 candidates/sec...',
+    'Validation: R²=0.9558 on 200-pair hold-out set.',
+    '✓ ML ranking complete — 100,000 candidates scored & ranked',
+  ]},
+];
+
+// ── Live log streaming ─────────────────────────────────────────────────────
+let logLineCount = 0;
+
+function appendLog(text, cls, ts) {
+  const log = document.getElementById('live-log');
+  if (!log) return;
+  const span = document.createElement('span');
+  span.className = 'log-line';
+  const time = ts || new Date().toISOString().slice(11,19);
+  span.innerHTML = `<span class="log-ts">${time}</span>  <span class="${cls}">${text}</span>`;
+  log.appendChild(span);
+  logLineCount++;
+  log.scrollTop = log.scrollHeight;
+}
+
+async function streamStageLog(stageIdx) {
+  const { cls, lines } = STAGE_LOGS[stageIdx];
+  for (let i = 0; i < lines.length; i++) {
+    const isLast = i === lines.length - 1;
+    await sleep(isLast ? 180 : Math.random() * 120 + 80);
+    appendLog(lines[i], isLast ? 'log-ok' : cls);
+  }
+}
+
 // ── Pipeline stage animation ───────────────────────────────────────────────
 async function animStage(i) {
   const stage = document.getElementById(`ps${i}`);
@@ -565,9 +676,12 @@ async function animStage(i) {
     duration: 0.5, easing: spring({ stiffness: 400, damping: 15 })
   });
 
-  // Ring fill
+  // Ring fill + log streaming run in parallel
   fill.style.strokeDashoffset = '0';
-  await sleep(1600);
+  await Promise.all([
+    sleep(1600),
+    streamStageLog(i)
+  ]);
 
   stage.classList.remove('active');
   stage.classList.add('done');
@@ -633,9 +747,20 @@ async function runAnalysis() {
 
   await sleep(700);
 
+  // Show live log terminal
+  const logWrap = document.getElementById('live-log-wrap');
+  logWrap.style.display = 'block';
+  animate(logWrap, { opacity: [0, 1], y: [14, 0] }, {
+    duration: 0.45, easing: spring({ stiffness: 200, damping: 22 })
+  });
+  appendLog('TalentOS pipeline initialised — 5 stages queued.', 'log-s5');
+  appendLog('Dataset: 100,000 candidates · Role: Senior AI Engineer', 'log-s5');
+  await sleep(400);
+
   // Run each stage
   for (let i = 0; i < PIPE.length; i++) {
     document.getElementById('a-sub').textContent = `Stage ${i+1}/5 — ${PIPE[i].desc}`;
+    appendLog(`── Stage ${i+1}: ${PIPE[i].label.replace('\n',' ')} ──────────────────`, 'log-ts');
     await animStage(i);
     await sleep(160);
   }
@@ -643,11 +768,23 @@ async function runAnalysis() {
   // Scoring counter
   document.getElementById('a-heading').textContent = 'Scoring Candidates';
   document.getElementById('a-sub').textContent = 'Running LightGBM ranker across 100,000 candidate vectors…';
+  appendLog('── Ranking pass ────────────────────────────────────────', 'log-ts');
+
   const ps = document.getElementById('proc-status');
   ps.style.display = 'block';
   await animate(ps, { opacity: [0, 1], y: [16, 0] }, {
     duration: 0.5, easing: spring({ stiffness: 200, damping: 22 })
   }).finished;
+
+  // Stream scoring log lines during counter
+  const scoringLines = [
+    { delay: 200,  cls:'log-s5', text:'Sorting 100,000 scores descending...' },
+    { delay: 700,  cls:'log-s5', text:'Applying disqualifier penalties (consulting, inactive)...' },
+    { delay: 1300, cls:'log-s5', text:'Top score: 0.9622 — CAND_0071974 (Senior AI Engineer)' },
+    { delay: 1900, cls:'log-s5', text:'Selecting top 100 for submission CSV...' },
+    { delay: 2500, cls:'log-ok',  text:'✓ submission.csv written — 100 rows, validated ✔' },
+  ];
+  scoringLines.forEach(({ delay, cls, text }) => setTimeout(() => appendLog(text, cls), delay));
 
   await animCounter(100000, 3200);
   await sleep(400);
@@ -703,6 +840,14 @@ async function doReset() {
   const rp = document.getElementById('results-phase');
   await animate(rp, { opacity: [1, 0] }, { duration: 0.35 }).finished;
   rp.style.display = 'none';
+
+  // Reset log
+  const lw = document.getElementById('live-log-wrap');
+  lw.style.display = 'none';
+  document.getElementById('live-log').innerHTML = '';
+  logLineCount = 0;
+  document.getElementById('proc-status').style.display = 'none';
+  document.getElementById('gbar-fill').style.width = '0%';
 
   const setup = document.getElementById('setup-phase');
   setup.style.display = 'grid';
