@@ -31,17 +31,17 @@ body{background:var(--bg);color:var(--txt);font-family:var(--ff);min-height:100v
 
 /* ── Header ── */
 header{padding:44px 0 36px;display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap}
-.logo{font-size:2.1rem;font-weight:800;letter-spacing:-.04em;background:linear-gradient(130deg,var(--cyan) 0%,#60a5fa 55%,var(--purple) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;opacity:0}
+.logo{font-size:2.1rem;font-weight:800;letter-spacing:-.04em;background:linear-gradient(130deg,var(--cyan) 0%,#60a5fa 55%,var(--purple) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
 .logo em{font-style:normal;font-weight:400;opacity:.5}
-.tagline{font-family:var(--fm);font-size:.68rem;color:var(--dim);letter-spacing:.09em;margin-top:7px;opacity:0}
-.hbadge{text-align:right;opacity:0}
+.tagline{font-family:var(--fm);font-size:.68rem;color:var(--dim);letter-spacing:.09em;margin-top:7px}
+.hbadge{text-align:right}
 .hbadge-label{font-family:var(--fm);font-size:.6rem;color:var(--dim);letter-spacing:.12em;text-transform:uppercase}
 .hbadge-num{font-size:1.25rem;font-weight:800;color:var(--amber);letter-spacing:-.03em}
 .hbadge-sub{font-family:var(--fm);font-size:.58rem;color:var(--dim)}
-.hdivider{height:1px;background:linear-gradient(90deg,transparent,var(--bdr) 30%,rgba(0,229,255,.22) 50%,var(--bdr) 70%,transparent);margin-bottom:36px;opacity:0}
+.hdivider{height:1px;background:linear-gradient(90deg,transparent,var(--bdr) 30%,rgba(0,229,255,.22) 50%,var(--bdr) 70%,transparent);margin-bottom:36px}
 
 /* ── Setup Phase ── */
-#setup-phase{display:grid;grid-template-columns:360px 1fr;gap:28px;opacity:0}
+#setup-phase{display:grid;grid-template-columns:360px 1fr;gap:28px}
 .job-card{background:var(--card);border:1px solid var(--bdr);border-radius:16px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);padding:26px;position:sticky;top:20px;height:fit-content;transition:border-color .3s}
 .job-card:hover{border-color:var(--bdr-h)}
 .jc-top{display:flex;align-items:center;gap:12px;margin-bottom:22px}
@@ -69,7 +69,7 @@ header{padding:44px 0 36px;display:flex;align-items:flex-start;justify-content:s
 .pool-title{font-size:.95rem;font-weight:700;letter-spacing:-.02em}
 .pool-ct{font-family:var(--fm);font-size:.62rem;color:var(--dim);background:rgba(0,229,255,.07);border:1px solid var(--bdr);border-radius:20px;padding:3px 12px}
 .cgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
-.scard{background:var(--card);border:1px solid var(--bdr);border-radius:11px;padding:14px 15px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:border-color .25s,transform .25s,box-shadow .25s;cursor:default;position:relative;overflow:hidden;opacity:0}
+.scard{background:var(--card);border:1px solid var(--bdr);border-radius:11px;padding:14px 15px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:border-color .25s,transform .25s,box-shadow .25s;cursor:default;position:relative;overflow:hidden}
 .scard::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,229,255,.3),transparent);opacity:0;transition:opacity .3s}
 .scard:hover{border-color:rgba(0,229,255,.26);transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,.3)}
 .scard:hover::after{opacity:1}
@@ -359,11 +359,11 @@ header{padding:44px 0 36px;display:flex;align-items:flex-start;justify-content:s
   </section>
 </div>
 
-<script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/motion@10.18.0/dist/motion.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r155/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script>
 // ── Globals ────────────────────────────────────────────────────────────────
-const { animate, stagger, spring } = window.Motion;
+const g = window.gsap;
 let analysisMode = false;
 
 // ── Dataset ────────────────────────────────────────────────────────────────
@@ -522,7 +522,7 @@ function renderSeeds() {
 function renderPipe() {
   const C = 2 * Math.PI * 35;
   document.getElementById('pipe-track').innerHTML = PIPE.map((p, i) => `
-    <div class="pstage" id="ps${i}" style="opacity:0;transform:translateY(20px)">
+    <div class="pstage" id="ps${i}">
       <div class="pnode">
         <svg class="pnode-ring" viewBox="0 0 76 76">
           <circle class="pr-bg" cx="38" cy="38" r="35"/>
@@ -534,7 +534,7 @@ function renderPipe() {
       <div class="plabel">${p.label.replace('\n', '<br>')}</div>
       <div class="pstatus" id="pst${i}">—</div>
     </div>
-    ${i < 4 ? `<div class="pconn" id="pc${i}" style="opacity:0"><div class="pconn-pulse" id="pp${i}"></div></div>` : ''}
+    ${i < 4 ? `<div class="pconn" id="pc${i}"><div class="pconn-pulse" id="pp${i}"></div></div>` : ''}
   `).join('');
 }
 
@@ -672,9 +672,7 @@ async function animStage(i) {
   status.textContent = 'Processing…';
 
   // Spring pulse on node
-  animate(`#ps${i} .pnode`, { scale: [1, 1.07, 1] }, {
-    duration: 0.5, easing: spring({ stiffness: 400, damping: 15 })
-  });
+  g.to(`#ps${i} .pnode`, { scale: 1.07, duration: 0.22, ease: 'power2.out', yoyo: true, repeat: 1 });
 
   // Ring fill + log streaming run in parallel
   fill.style.strokeDashoffset = '0';
@@ -688,9 +686,7 @@ async function animStage(i) {
   status.textContent = '✓ Done';
 
   // Completion bounce
-  animate(`#ps${i}`, { y: [0, -7, 0] }, {
-    duration: 0.45, easing: spring({ stiffness: 350, damping: 18 })
-  });
+  g.to(`#ps${i}`, { y: -7, duration: 0.2, ease: 'power2.out', yoyo: true, repeat: 1 });
 
   if (i < 4) {
     const conn = document.getElementById(`pc${i}`);
@@ -722,16 +718,14 @@ async function runAnalysis() {
   document.getElementById('run-btn').disabled = true;
 
   // Fade out setup
-  await animate('#setup-phase', { opacity: [1, 0], y: [0, -22] }, {
-    duration: 0.45, easing: [0.4, 0, 1, 1]
-  }).finished;
+  await g.to('#setup-phase', { opacity: 0, y: -22, duration: 0.45, ease: 'power2.in' });
   document.getElementById('setup-phase').style.display = 'none';
 
   // Show analysis phase
   const ap = document.getElementById('analysis-phase');
   ap.style.display = 'flex';
   analysisMode = true;
-  await animate(ap, { opacity: [0, 1] }, { duration: 0.4 }).finished;
+  await g.fromTo(ap, { opacity: 0 }, { opacity: 1, duration: 0.4 });
 
   renderPipe();
 
@@ -739,20 +733,15 @@ async function runAnalysis() {
   await sleep(200);
   const stages = document.querySelectorAll('.pstage');
   const conns = document.querySelectorAll('.pconn');
-  animate(stages, { opacity: [0, 1], y: [22, 0] }, {
-    delay: stagger(0.09),
-    easing: spring({ stiffness: 220, damping: 22 })
-  });
-  animate(conns, { opacity: [0, 1] }, { delay: stagger(0.09, { startDelay: 0.15 }), duration: 0.4 });
+  g.from(stages, { opacity: 0, y: 22, stagger: 0.09, ease: 'back.out(1.4)', duration: 0.6 });
+  g.from(conns, { opacity: 0, stagger: 0.09, delay: 0.15, duration: 0.4 });
 
   await sleep(700);
 
   // Show live log terminal
   const logWrap = document.getElementById('live-log-wrap');
   logWrap.style.display = 'block';
-  animate(logWrap, { opacity: [0, 1], y: [14, 0] }, {
-    duration: 0.45, easing: spring({ stiffness: 200, damping: 22 })
-  });
+  g.fromTo(logWrap, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.45, ease: 'power3.out' });
   appendLog('TalentOS pipeline initialised — 5 stages queued.', 'log-s5');
   appendLog('Dataset: 100,000 candidates · Role: Senior AI Engineer', 'log-s5');
   await sleep(400);
@@ -772,9 +761,7 @@ async function runAnalysis() {
 
   const ps = document.getElementById('proc-status');
   ps.style.display = 'block';
-  await animate(ps, { opacity: [0, 1], y: [16, 0] }, {
-    duration: 0.5, easing: spring({ stiffness: 200, damping: 22 })
-  }).finished;
+  await g.fromTo(ps, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' });
 
   // Stream scoring log lines during counter
   const scoringLines = [
@@ -794,7 +781,7 @@ async function runAnalysis() {
   await sleep(900);
 
   // Fade out analysis
-  await animate(ap, { opacity: [1, 0] }, { duration: 0.4 }).finished;
+  await g.to(ap, { opacity: 0, duration: 0.4 });
   ap.style.display = 'none';
   analysisMode = false;
 
@@ -802,14 +789,11 @@ async function runAnalysis() {
   renderBoard();
   const rp = document.getElementById('results-phase');
   rp.style.display = 'flex';
-  await animate(rp, { opacity: [0, 1] }, { duration: 0.5 }).finished;
+  await g.fromTo(rp, { opacity: 0 }, { opacity: 1, duration: 0.5 });
 
   // Stagger cards with spring
   const cards = document.querySelectorAll('.rcard');
-  animate(cards, { opacity: [0, 1], x: [-28, 0] }, {
-    delay: stagger(0.08),
-    easing: spring({ stiffness: 260, damping: 25 })
-  });
+  g.from(cards, { opacity: 0, x: -28, stagger: 0.08, ease: 'back.out(1.2)', duration: 0.55 });
 
   const ranked = [...CANDS].sort((a, b) => b.fs - a.fs);
   const CIRC = 2 * Math.PI * 22;
@@ -823,11 +807,7 @@ async function runAnalysis() {
       if (ring) ring.style.strokeDashoffset = (CIRC * (1 - ranked[i].fs)).toFixed(2);
       // Sub-score bars
       card.querySelectorAll('.ssfill').forEach((b, j) => {
-        animate(b, { width: ['0%', b.getAttribute('data-v') + '%'] }, {
-          delay: j * 0.07,
-          duration: 1.15,
-          easing: [0.16, 1, 0.3, 1]
-        });
+        g.fromTo(b, { width: '0%' }, { width: b.getAttribute('data-v') + '%', delay: j * 0.07, duration: 1.15, ease: 'power4.out' });
       });
     }, delay + 300);
   });
@@ -838,7 +818,7 @@ async function runAnalysis() {
 // ── Reset ──────────────────────────────────────────────────────────────────
 async function doReset() {
   const rp = document.getElementById('results-phase');
-  await animate(rp, { opacity: [1, 0] }, { duration: 0.35 }).finished;
+  await g.to(rp, { opacity: 0, duration: 0.35 });
   rp.style.display = 'none';
 
   // Reset log
@@ -851,9 +831,7 @@ async function doReset() {
 
   const setup = document.getElementById('setup-phase');
   setup.style.display = 'grid';
-  await animate(setup, { opacity: [0, 1], y: [20, 0] }, {
-    duration: 0.5, easing: spring({ stiffness: 200, damping: 22 })
-  }).finished;
+  await g.fromTo(setup, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' });
 
   document.getElementById('run-btn').disabled = false;
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -865,26 +843,15 @@ function init() {
   renderSeeds();
 
   // Entrance animations
-  animate('.logo', { opacity: [0, 1], y: [30, 0] }, {
-    delay: 0.1, easing: spring({ stiffness: 180, damping: 20 })
-  });
-  animate('.tagline', { opacity: [0, 1], y: [20, 0] }, {
-    delay: 0.22, easing: spring({ stiffness: 180, damping: 22 })
-  });
-  animate('.hbadge', { opacity: [0, 1], x: [20, 0] }, {
-    delay: 0.3, easing: spring({ stiffness: 180, damping: 22 })
-  });
-  animate('.hdivider', { opacity: [0, 1] }, { delay: 0.38, duration: 0.7 });
-  animate('#setup-phase', { opacity: [0, 1], y: [18, 0] }, {
-    delay: 0.45, easing: spring({ stiffness: 160, damping: 22 })
-  });
+  g.from('.logo',      { opacity: 0, y: 30, delay: 0.1,  ease: 'power3.out', duration: 0.7 });
+  g.from('.tagline',   { opacity: 0, y: 20, delay: 0.22, ease: 'power3.out', duration: 0.7 });
+  g.from('.hbadge',    { opacity: 0, x: 20, delay: 0.3,  ease: 'power3.out', duration: 0.7 });
+  g.from('.hdivider',  { opacity: 0,        delay: 0.38, ease: 'none',       duration: 0.7 });
+  g.from('#setup-phase',{ opacity: 0, y: 18, delay: 0.45, ease: 'power3.out', duration: 0.7 });
 
   // Seed cards stagger
   setTimeout(() => {
-    animate('.scard', { opacity: [0, 1], y: [18, 0] }, {
-      delay: stagger(0.05),
-      easing: spring({ stiffness: 240, damping: 24 })
-    });
+    g.from('.scard', { opacity: 0, y: 18, stagger: 0.05, ease: 'power3.out', duration: 0.6 });
   }, 500);
 
   document.getElementById('run-btn').addEventListener('click', runAnalysis);
