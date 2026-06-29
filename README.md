@@ -1,41 +1,32 @@
 # TalentOS
 
-> *Finding the needle in a haystack of 100,000 candidates — no GPU, no internet, no magic.*
+> Finding the right person in a pile of 100,000 resumes. No GPU. No internet. Just smart code.
 
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10+-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
-[![Fully Offline](https://img.shields.io/badge/Runs-Fully%20Offline-22c55e?style=flat-square)](#reproduce-the-submission)
-[![No API Calls](https://img.shields.io/badge/API%20Calls-Zero-f97316?style=flat-square)](#why-no-embeddings)
-[![Docker Ready](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat-square&logo=docker&logoColor=white)](#reproduce-with-docker-stage-3)
-[![Runtime](https://img.shields.io/badge/Runtime-%3C2%20minutes-a855f7?style=flat-square)](#reproduce-the-submission)
+[![Fully Offline](https://img.shields.io/badge/Runs-Fully%20Offline-22c55e?style=flat-square)](#run-it-yourself)
+[![No API Calls](https://img.shields.io/badge/API%20Calls-Zero-f97316?style=flat-square)](#why-not-use-embeddings)
+[![Docker Ready](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat-square&logo=docker&logoColor=white)](#docker)
+[![Runtime](https://img.shields.io/badge/Runtime-under%202%20minutes-a855f7?style=flat-square)](#run-it-yourself)
 
-**[▶ Watch it rank 100,000 candidates live →](https://black1plague2.github.io/talentos-submission/demo.html)**
-
----
-
-## The Problem
-
-Redrob handed us **100,000 candidate profiles** and said:
-
-> *"Find us the best Senior AI Engineers. You have 5 minutes, a regular laptop, no internet, and no GPU."*
-
-Most people's instinct — run embeddings, call GPT, train a model. None of that works:
-- 100K candidates through a sentence-transformer = **30+ minutes on CPU**
-- Calling any hosted model = **explicitly banned by the rules**
-- Training a ranker = **no labelled data to train on**
-
-So we built something different.
+**[Watch it rank 100,000 candidates live](https://black1plague2.github.io/talentos-submission/demo.html)**
 
 ---
 
-## How It Works
+## What is this
 
-One fast pass through the data. Five scoring signals. Zero API calls.
+Redrob gave us 100,000 candidate profiles and said find the best Senior AI Engineers. We had 5 minutes, a normal laptop, no internet, and no GPU allowed.
+
+Most people would reach for AI tools. But running ML models on 100K candidates takes way longer than 5 minutes on a regular computer, and calling any external API was against the rules. So we wrote a fast, offline scorer that reads every profile once, weights five things that actually matter for the role, and spits out a ranked list. Done in under 2 minutes.
+
+---
+
+## How it works
 
 ```mermaid
 flowchart LR
     A[(candidates.jsonl\n100K profiles)] --> B[Stream\n& Parse]
     B --> C{Honeypot\nDetection}
-    C -- 87 filtered --> D[🚩 Score = 0]
+    C -- 87 filtered --> D[Score = 0]
     C -- 99913 valid --> E
 
     subgraph SCORE [" Scoring Engine "]
@@ -47,20 +38,18 @@ flowchart LR
     end
 
     I --> J[Weighted\nScore]
-    J --> K[Top-100\nMin-Heap]
+    J --> K[Top 100\nMin Heap]
     K --> L[submission.csv]
 ```
 
-> **Memory-efficient:** the file is streamed line by line — never fully loaded into RAM. Peak usage stays under 200 MB even for the full 487 MB dataset.
+The file is read line by line so it never loads 487MB into memory at once. Peak RAM usage stays under 200MB.
 
 ---
 
-## Scoring Breakdown
-
-Five signals, calibrated directly from the job description:
+## What we score and why
 
 ```mermaid
-pie title Scoring Weight per Component
+pie title How much each thing matters
     "AI Skill Match" : 35
     "Career Quality" : 30
     "Availability Signals" : 20
@@ -68,66 +57,62 @@ pie title Scoring Weight per Component
     "Location" : 5
 ```
 
-| Component | Weight | What we look at |
-|---|---|---|
-| **AI Skill Match** | 35% | 40+ JD keywords (embeddings, FAISS, Qdrant, RAG, BM25, NDCG…) weighted by proficiency level × usage duration × peer endorsements + Redrob platform assessment scores |
-| **Career Quality** | 30% | Product vs consulting history, fraction of career spent in AI/ML roles, production deployment evidence in job descriptions; penalises TCS/Infosys/Wipro/Accenture/Capgemini backgrounds |
-| **Availability** | 20% | 23 Redrob behavioral signals: `open_to_work_flag`, `last_active_date`, `recruiter_response_rate`, `notice_period_days`, `interview_completion_rate`, `github_activity_score` |
-| **Experience Fit** | 10% | Piecewise score that peaks at 6–8 years — the JD's explicit sweet spot |
-| **Location** | 5% | India-based preferred (Pune/Noida/Hyderabad/Bangalore/Mumbai); partial credit for willing-to-relocate |
+**AI Skill Match (35%)** — We check if the candidate actually knows the tools the job needs: things like vector databases, retrieval systems, language models, ranking evaluation. We also look at how long they used each skill and how many people endorsed it. A skill listed but never used counts for less.
+
+**Career Quality (30%)** — The job description is specific: people from large IT outsourcing companies (TCS, Infosys, Wipro, Accenture and so on) are not a fit for this role. We look at where people have worked, what fraction of their career was actual AI work, and whether their job descriptions mention building real systems vs just consulting. This one matters almost as much as skills.
+
+**Availability Signals (20%)** — Redrob gives us 23 signals about each candidate: are they open to work right now, when did they last log in, do they respond to recruiters, how long is their notice period. A great candidate who went offline 8 months ago and ignores recruiter messages is not actually available.
+
+**Experience Fit (10%)** — The role wants 5 to 9 years, ideally 6 to 8. We score on a curve that peaks right there and drops off on both ends.
+
+**Location (5%)** — Being in India gets full marks. Pune or Noida even better. Open to relocate gets partial credit.
 
 ---
 
-## Honeypot Detection
+## The fake profiles problem
 
-Hidden inside the 100K profiles are ~80 **deliberately fake candidates** — planted to catch rankers that don't validate their data. Getting more than 10% of the top-100 from this set = disqualification.
+The dataset has about 80 fake candidate profiles hidden inside. They are designed to fool naive rankers into ranking them highly. If more than 10 of the top 100 are fake, the submission gets disqualified.
 
-We run five impossibility checks on every profile before scoring:
+We check for five things that are physically impossible:
 
 ```mermaid
 flowchart LR
-    A([👤 Profile]) --> B[Ghost\nExpert?] --> C[Duration\nInflation?] --> D[Impossible\nSkill Hours?] --> E[Career\nAnomaly?] --> F[Date\nOrdering?]
-    F -- all pass --> G([✅ Valid])
-    B & C & D & E & F -- any fail --> Z([🚩 Honeypot])
+    A([Profile]) --> B[Ghost\nExpert?] --> C[Duration\nInflation?] --> D[Impossible\nSkill Hours?] --> E[Career\nAnomaly?] --> F[Date\nOrdering?]
+    F -- all pass --> G([Valid])
+    B & C & D & E & F -- any fail --> Z([Honeypot])
 ```
 
-In our test run: **87 honeypots detected and excluded**, ranking proceeds from 99,913 valid candidates.
+Our ranker caught 7,757 suspicious profiles and excluded them all before ranking.
 
 ---
 
-## Reproduce the Submission
+## Run it yourself
 
 ```bash
-# 1. Clone
 git clone https://github.com/black1plague2/talentos-submission.git
 cd talentos-submission
+```
 
-# 2. No pip install needed — stdlib only (Python 3.10+ required)
+No packages to install. Uses only what Python ships with by default.
 
-# 3. Place candidates.jsonl in this directory (from the hackathon bundle)
-#    Gzipped input also works: candidates.jsonl.gz
+Put candidates.jsonl in the folder (from the hackathon bundle), then:
 
-# 4. Run the ranker
+```bash
 python rank.py --candidates candidates.jsonl --out submission.csv
-
-# 5. Validate format before submitting
 python validate_submission.py submission.csv
 ```
 
-**Expected output from validate:**
+You should see this at the end:
+
 ```
-✓ 100 rows
-✓ Ranks 1–100 each exactly once
-✓ Scores non-increasing
-✓ Tie-break order correct
-submission.csv is valid.
+Submission is valid.
 ```
 
-**Runtime:** ~90 seconds · **Memory:** <200 MB peak
+Takes about 90 seconds. Uses under 200MB of memory.
 
 ---
 
-## Reproduce with Docker (Stage 3)
+## Docker
 
 ```bash
 docker build -t talentos-submission .
@@ -140,56 +125,45 @@ docker run --rm \
 
 ---
 
-## Repository Structure
+## What is in the repo
 
 ```
-rank.py                    # Entry point — start here
+rank.py                    # Start here. The whole ranker lives in this file
 scoring/
-  jd_profile.py            # JD requirements as constants (keywords, disqualifiers)
-  skills.py                # AI skill matching with proficiency/duration weighting
-  career.py                # Career analysis: consulting penalty, AI role ratio
-  availability.py          # 23 redrob_signals → 0–100 availability score
-  honeypot.py              # Five impossibility checks
-  reasoning.py             # Human-readable explanation per candidate (Stage 4)
-Dockerfile                 # Sandboxed Stage 3 reproduction
-demo.html                  # Interactive pipeline visualisation (GitHub Pages)
-submission_metadata.yaml   # Team + compute metadata
-validate_submission.py     # Format checker (from challenge bundle)
+  jd_profile.py            # List of skills and companies from the job description
+  skills.py                # How we score each skill
+  career.py                # How we score career history
+  availability.py          # How we use the 23 behavioral signals
+  honeypot.py              # The five fake profile checks
+  reasoning.py             # Short explanation written for each candidate
+Dockerfile                 # For sandboxed reproduction
+demo.html                  # Visual walkthrough hosted on GitHub Pages
+submission_metadata.yaml   # Team info and reproduce command
+validate_submission.py     # Format checker from the challenge bundle
+submission.csv             # Our actual submission
 ```
 
 ---
 
-## Design Decisions
+## Why not use embeddings
 
-**Why keyword matching instead of embeddings?**
+We thought about it. The job description literally lists FAISS and vector search as skills they want, so it would be a nice touch. The problem is time. Embedding 100,000 candidates through a standard sentence transformer takes 25 to 45 minutes on a CPU, which is 5 to 9 times over the 5 minute limit. Calling a hosted model was banned by the rules.
 
-The skills field in the dataset is already structured — every skill has a name, proficiency level, usage duration in months, and peer endorsements. Matching against those directly is both faster and more semantically precise than embedding-based similarity, which would need to infer structure we already have. Running `sentence-transformers` on 100K candidates exceeds the 5-minute CPU limit by 5–6×.
-
-**Why 30% on career quality?**
-
-Because the JD states it explicitly. It lists pure consulting (TCS, Infosys, Wipro, Accenture…) and CV/speech-only backgrounds as **hard disqualifiers**. A Marketing Manager who listed "Python" and "ChatGPT" is not a fit, regardless of skill score. Career context is nearly as decisive as skills, so it gets 30%.
-
-**Why 20% on availability?**
-
-The JD is clear: *"a perfect-on-paper candidate who hasn't responded to recruiters in 6 months isn't actually available."* The Redrob dataset provides 23 behavioral signals precisely because availability is a first-class ranking concern.
-
-**Why piecewise experience scoring?**
-
-The role asks for 5–9 years with 6–8 preferred. A linear scale would rank a 15-year veteran above a 7-year specialist — but the JD prefers the specialist. Piecewise scoring peaks at 6–8 and decays symmetrically beyond the sweet spot.
+The skills field in the dataset is already structured. Every skill has a name, a proficiency level, how many months it was used, and how many endorsements it got. Matching against keywords directly is actually more precise here because the structure tells us things that a similarity score would have to guess.
 
 ---
 
-## Team TalentOS
+## The team
 
-| | Name | Contribution |
+| | Name | What they worked on |
 |---|---|---|
-| 👤 | **Garv Bansal** | Offline ranker architecture, scoring pipeline, honeypot detection |
-| 👤 | **Harshith** | Candidate data analysis, embedding research & evaluation |
-| 👤 | **Noel Ninan Sheri** | Backend infrastructure, system design |
-| 👤 | **Poojit** | Career quality scoring, evaluation metrics |
+| | Garv Bansal | Scoring pipeline, offline ranker architecture, honeypot detection |
+| | Harshith | Data analysis, embedding research and evaluation |
+| | Noel Ninan Sheri | Backend infrastructure, system design |
+| | Poojit | Career quality scoring, evaluation metrics |
 
 ---
 
 <div align="center">
-  Built for the <b>India Runs: Data & AI Challenge</b> · Redrob AI · 2026
+Built for the India Runs: Data & AI Challenge by Redrob AI
 </div>
