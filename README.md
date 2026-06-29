@@ -85,18 +85,10 @@ Hidden inside the 100K profiles are ~80 **deliberately fake candidates** — pla
 We run five impossibility checks on every profile before scoring:
 
 ```mermaid
-flowchart TD
-    A([👤 Candidate Profile]) --> B{Ghost Expert?\n≥4 skills marked Expert\nwith 0 duration + 0 endorsements}
-    B -- YES --> Z([🚩 Honeypot · Score = 0])
-    B -- NO --> C{Duration Inflation?\nClaimed months > actual\ndate span × 2.5}
-    C -- YES --> Z
-    C -- NO --> D{Impossible Skill Hours?\nTotal skill_months >\nyears_exp × 12 × 8}
-    D -- YES --> Z
-    D -- NO --> E{Career Anomaly?\nTotal career months >\nyears_exp × 12 × 1.5}
-    E -- YES --> Z
-    E -- NO --> F{Date Order Error?\nstart_date > end_date\nin any role}
-    F -- YES --> Z
-    F -- NO --> G([✅ Valid · Proceed to scoring])
+flowchart LR
+    A([👤 Profile]) --> B[Ghost\nExpert?] --> C[Duration\nInflation?] --> D[Impossible\nSkill Hours?] --> E[Career\nAnomaly?] --> F[Date\nOrdering?]
+    F -- all pass --> G([✅ Valid])
+    B & C & D & E & F -- any fail --> Z([🚩 Honeypot])
 ```
 
 In our test run: **87 honeypots detected and excluded**, ranking proceeds from 99,913 valid candidates.
