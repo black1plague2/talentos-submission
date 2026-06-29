@@ -245,12 +245,32 @@ header{padding:52px 0 36px;display:flex;align-items:center;justify-content:space
 .flink:hover{transform:translateY(-1px);filter:brightness(1.18)}
 .foot{text-align:center;font-family:var(--fm);font-size:.52rem;color:var(--dim);letter-spacing:.12em;padding:10px 0 0}
 
+/* Tooltip on score bar labels */
+.sn{cursor:help;position:relative}
+.sn::after{content:attr(data-tip);position:absolute;left:0;bottom:calc(100% + 7px);background:rgba(8,4,24,.97);border:1px solid rgba(139,92,246,.28);border-radius:10px;padding:7px 11px;font-family:var(--fm);font-size:.52rem;color:var(--violet-l);white-space:nowrap;pointer-events:none;opacity:0;transform:translateY(5px);transition:opacity .18s,transform .18s;z-index:200;letter-spacing:.03em;line-height:1.6}
+.sn:hover::after{opacity:1;transform:translateY(0)}
+
+/* Pool card scan flash */
+@keyframes scanFlash{0%{border-color:rgba(139,92,246,.14);box-shadow:none}40%{border-color:rgba(167,139,250,.55);box-shadow:0 0 22px rgba(124,58,237,.22);transform:translateY(-3px)}100%{border-color:rgba(110,231,183,.3);box-shadow:0 0 10px rgba(16,185,129,.1);transform:translateY(0)}}
+.pcard.scanned{animation:scanFlash .65s ease forwards}
+
+/* Cursor glow */
+.cursor-glow{position:fixed;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,.055) 0%,transparent 70%);pointer-events:none;z-index:0;transform:translate(-50%,-50%);transition:opacity .4s;will-change:transform}
+
+/* Confetti canvas */
+#confetti-cv{position:fixed;inset:0;pointer-events:none;z-index:999}
+
+/* Rank-1 spotlight */
+.rcard.t-elite:first-child{box-shadow:0 0 0 1px rgba(167,139,250,.3),0 12px 60px rgba(124,58,237,.18)}
+
 @media(max-width:900px){#setup-phase{grid-template-columns:1fr}.job-card{position:static}.pool-grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:640px){.pool-grid{grid-template-columns:repeat(2,1fr)}.rcard{grid-template-columns:42px 52px 1fr;grid-template-rows:auto auto}.cright{grid-column:1/-1;align-items:flex-start;flex-direction:row;flex-wrap:wrap}.sbars{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <canvas id="canvas3d"></canvas>
+<canvas id="confetti-cv"></canvas>
+<div class="cursor-glow" id="cursor-glow"></div>
 <div class="app">
 
   <header>
@@ -621,10 +641,10 @@ function renderBoard() {
           ${isHp?'<span style="font-family:var(--fm);font-size:.52rem;color:var(--red);border:1px solid rgba(248,113,113,.3);border-radius:9999px;padding:2px 7px">⚠ HONEYPOT — filtered</span>':''}
         </div>
         <div class="sbars">
-          <div class="srow"><span class="sn">AI Skills</span><div class="strk"><div class="sfill" data-v="${c.sk}" style="background:var(--violet)"></div></div><span class="sv">${c.sk}</span></div>
-          <div class="srow"><span class="sn">Career</span><div class="strk"><div class="sfill" data-v="${c.ca}" style="background:var(--emerald-d)"></div></div><span class="sv">${c.ca}</span></div>
-          <div class="srow"><span class="sn">Availability</span><div class="strk"><div class="sfill" data-v="${c.av}" style="background:var(--amber)"></div></div><span class="sv">${c.av}</span></div>
-          <div class="srow"><span class="sn">Exp. Fit</span><div class="strk"><div class="sfill" data-v="${c.ex}" style="background:#60a5fa"></div></div><span class="sv">${c.ex}</span></div>
+          <div class="srow"><span class="sn" data-tip="35% weight · JD keywords × proficiency × duration × endorsements">AI Skills</span><div class="strk"><div class="sfill" data-v="${c.sk}" style="background:var(--violet)"></div></div><span class="sv">${c.sk}</span></div>
+          <div class="srow"><span class="sn" data-tip="30% weight · product vs consulting history · AI role fraction">Career</span><div class="strk"><div class="sfill" data-v="${c.ca}" style="background:var(--emerald-d)"></div></div><span class="sv">${c.ca}</span></div>
+          <div class="srow"><span class="sn" data-tip="20% weight · 23 redrob signals · open to work · recency · notice">Availability</span><div class="strk"><div class="sfill" data-v="${c.av}" style="background:var(--amber)"></div></div><span class="sv">${c.av}</span></div>
+          <div class="srow"><span class="sn" data-tip="10% weight · piecewise curve peaking at 6–8 years">Exp. Fit</span><div class="strk"><div class="sfill" data-v="${c.ex}" style="background:#60a5fa"></div></div><span class="sv">${c.ex}</span></div>
         </div>
       </div>
       <div class="cright">
@@ -704,7 +724,9 @@ async function runAnalysis(){
   g.fromTo(lw,{opacity:0,y:12},{opacity:1,y:0,duration:.38,ease:'power3.out'});
   log('rank.py — Redrob Senior AI Engineer ranker','ls5');
   log('100,000 candidates · stdlib only · no API calls · no GPU','ldim');
-  await sleep(400);
+  await sleep(200);
+  scanPoolCards();
+  await sleep(200);
 
   for(let i=0;i<PIPE_STAGES.length;i++){
     log(`── Stage ${i+1}: ${PIPE_STAGES[i].label.replace('\n',' ')} ────────────────`,'ldim');
@@ -745,6 +767,7 @@ async function runAnalysis(){
   cards.forEach((el,i)=>{
     g.fromTo(el,{opacity:0,x:-28},{opacity:1,x:0,delay:i*.07,duration:.65,ease:'back.out(1.1)'});
   });
+  setTimeout(()=>fireConfetti(), 350);
 
   const CIRC=144;
   cards.forEach((card,i)=>{
@@ -777,9 +800,49 @@ async function doReset(){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
+// ── Confetti burst ─────────────────────────────────────────────────────────
+function fireConfetti(){
+  const cv=document.getElementById('confetti-cv');
+  cv.width=innerWidth; cv.height=innerHeight;
+  const ctx=cv.getContext('2d');
+  const cols=['#c4b5fd','#f6ad55','#6ee7b7','#f687b3','#a78bfa','#fde68a'];
+  const particles=Array.from({length:120},()=>({
+    x:innerWidth*.5+(Math.random()-.5)*200, y:innerHeight*.35,
+    vx:(Math.random()-.5)*9, vy:-(Math.random()*8+4),
+    r:Math.random()*5+2, col:cols[Math.floor(Math.random()*cols.length)],
+    rot:Math.random()*360, rv:(Math.random()-.5)*8, life:1
+  }));
+  let frame;
+  (function draw(){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    let alive=false;
+    particles.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy; p.vy+=.28; p.rot+=p.rv; p.life-=.012;
+      if(p.life>0){alive=true;ctx.save();ctx.globalAlpha=Math.max(0,p.life);ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);ctx.fillStyle=p.col;ctx.fillRect(-p.r,-p.r*.5,p.r*2,p.r);ctx.restore();}
+    });
+    if(alive) frame=requestAnimationFrame(draw);
+    else ctx.clearRect(0,0,cv.width,cv.height);
+  })();
+  setTimeout(()=>{cancelAnimationFrame(frame);ctx.clearRect(0,0,cv.width,cv.height);},4000);
+}
+
+// ── Pool card scan ─────────────────────────────────────────────────────────
+function scanPoolCards(){
+  const cards=[...document.querySelectorAll('.pcard')];
+  cards.forEach((el,i)=>setTimeout(()=>el.classList.add('scanned'),i*90));
+}
+
+// ── Cursor glow ────────────────────────────────────────────────────────────
+function initCursorGlow(){
+  const g=document.getElementById('cursor-glow');
+  if(!g)return;
+  document.addEventListener('mousemove',e=>{g.style.left=e.clientX+'px';g.style.top=e.clientY+'px';});
+}
+
 // ── Init ───────────────────────────────────────────────────────────────────
 function init(){
   initThree();
+  initCursorGlow();
   renderPool();
   g.from('.logo',        {opacity:0,y:26,delay:.1, ease:'power3.out',duration:.7});
   g.from('.tagline',     {opacity:0,y:16,delay:.2, ease:'power3.out',duration:.7});

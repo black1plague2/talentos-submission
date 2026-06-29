@@ -14,17 +14,21 @@
 
 ## Why this is different
 
-| | Normal ATS | Other AI approaches | TalentOS |
-|---|---|---|---|
-| Skill matching | keyword count | embeddings + FAISS | keyword × proficiency × duration × endorsements |
-| Career context | ignored | ignored | consulting firms penalised by name |
-| Availability | not checked | not checked | 23 Redrob behavioral signals |
-| Runtime on 100K | fast | 30+ min on CPU | 90 seconds |
-| API calls needed | no | yes (OpenAI) | zero |
-| Fake profiles | not detected | not detected | 5 impossibility checks, 7757 caught |
-| Explainability | none | GPT writes it | rule-generated, no hallucinations |
+```
+Normal ATS         →   counts keywords
+Other AI systems   →   calls GPT, needs GPU, takes 30+ min
+TalentOS           →   reads the dataset structure as-is, runs in 90 sec
+```
 
-The slide deck from round 1 proposed GPT-4o-mini + FAISS + LightGBM. That pipeline cannot run 100K candidates in under 5 minutes without a GPU. This submission is what actually works under the competition constraints.
+**Skills** are weighted by how long you used them and how many people endorsed them — not just whether they appear on the resume.
+
+**Career history** is penalised if it is entirely at large IT outsourcing firms, because the job description says so explicitly.
+
+**Availability** is scored using 23 real behavioral signals already in the dataset — open to work, last active, recruiter response rate, notice period, GitHub activity.
+
+**Fake profiles** are caught before ranking using five checks that look for physically impossible combinations in the data.
+
+**No training data needed.** No API keys. No model files. Clone and run.
 
 ---
 
