@@ -3,857 +3,876 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TalentOS · AI Recruitment Intelligence</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<title>TalentOS · Candidate Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=Playfair+Display:ital,wght@0,700;0,800;1,400&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#080610;
-  --card:rgba(20,12,40,0.6);
-  --card-h:rgba(30,18,58,0.78);
-  --violet:#9f7aea;
-  --violet-d:#7c3aed;
-  --violet-l:#c4b5fd;
-  --amber:#f6ad55;
-  --rose:#f687b3;
-  --emerald:#6ee7b7;
-  --emerald-d:#10b981;
-  --red:#fca5a5;
-  --text:#f5f0ff;
-  --text-2:rgba(196,181,253,0.65);
-  --dim:rgba(167,139,250,0.35);
-  --border:rgba(139,92,246,0.14);
-  --border-h:rgba(167,139,250,0.38);
-  --r:24px;
-  --r-sm:16px;
-  --r-xs:10px;
-  --ff:'Plus Jakarta Sans',sans-serif;
-  --fm:'JetBrains Mono',monospace;
+  --ink:#0E0D0B;
+  --paper:#F7F4EE;
+  --paper-2:#F0EDE5;
+  --paper-3:#E8E3D8;
+  --gold:#C9A84C;
+  --gold-l:#E8C97A;
+  --gold-d:#9B7A28;
+  --sage:#4A6B5A;
+  --sage-l:#7BA892;
+  --rust:#9B4A2E;
+  --slate:#4A5568;
+  --slate-l:#718096;
+  --dim:rgba(14,13,11,0.35);
+  --dim2:rgba(14,13,11,0.55);
+  --border:rgba(14,13,11,0.08);
+  --border-gold:rgba(201,168,76,0.25);
+  --ff:'DM Sans',system-ui,sans-serif;
+  --fp:'Playfair Display',Georgia,serif;
+  --fm:'IBM Plex Mono','Courier New',monospace;
 }
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:var(--ff);min-height:100vh;overflow-x:hidden}
-#canvas3d{position:fixed;inset:0;pointer-events:none;z-index:0}
-body::before{content:'';position:fixed;top:0;left:0;right:0;height:300px;background:radial-gradient(ellipse 80% 300px at 50% 0,rgba(124,58,237,.15),transparent);pointer-events:none;z-index:0}
-.app{position:relative;z-index:1;max-width:1320px;margin:0 auto;padding:0 32px 100px}
+body{background:var(--paper);color:var(--ink);font-family:var(--ff);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+#canvas3d{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0.55}
 
-/* ── Header ── */
-header{padding:52px 0 36px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
-.logo{font-size:1.9rem;font-weight:800;letter-spacing:-.05em;background:linear-gradient(125deg,#c4b5fd 0%,#a78bfa 45%,#f6ad55 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.logo span{font-weight:300;opacity:.55}
-.tagline{font-family:var(--fm);font-size:.6rem;color:var(--dim);letter-spacing:.1em;margin-top:6px}
-.header-right{display:flex;align-items:center;gap:10px}
-.hpill{display:flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--border);border-radius:9999px;padding:8px 16px;font-family:var(--fm);font-size:.6rem;color:var(--text-2);letter-spacing:.06em;backdrop-filter:blur(16px)}
-.hpill-dot{width:7px;height:7px;border-radius:50%;background:var(--emerald-d);animation:pulse 1.8s ease infinite}
-.hpill.amber-pill{color:var(--amber);border-color:rgba(246,173,85,.2);background:rgba(246,173,85,.05)}
-.hpill.violet-pill{color:var(--violet-l);border-color:rgba(167,139,250,.22)}
-.hpill.green-pill{color:var(--emerald);border-color:rgba(110,231,183,.22);background:rgba(16,185,129,.05)}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.65)}}
-.divider{height:1px;background:linear-gradient(90deg,transparent,rgba(139,92,246,.22) 30%,rgba(246,173,85,.16) 70%,transparent);margin-bottom:44px}
+/* ── LAYOUT ── */
+.wrap{position:relative;z-index:1;max-width:1240px;margin:0 auto;padding:0 40px 120px}
 
-/* ── Setup Phase ── */
-#setup-phase{display:grid;grid-template-columns:320px 1fr;gap:24px}
+/* ── HEADER ── */
+header{padding:52px 0 40px;display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.logo-block{display:flex;flex-direction:column;gap:4px}
+.logo{font-family:var(--fp);font-size:2.1rem;font-weight:800;letter-spacing:-0.03em;color:var(--ink)}
+.logo em{font-style:italic;color:var(--gold-d)}
+.logo-sub{font-family:var(--fm);font-size:0.56rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--dim);margin-top:3px}
+.header-pills{display:flex;align-items:center;gap:10px;padding-top:8px;flex-wrap:wrap}
+.hpill{display:flex;align-items:center;gap:7px;padding:7px 16px;border-radius:99px;border:1px solid var(--border);background:white;font-family:var(--fm);font-size:0.57rem;color:var(--dim2);letter-spacing:0.04em}
+.hpill-live{border-color:rgba(74,107,90,0.3);background:rgba(74,107,90,0.05);color:var(--sage)}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--sage);flex-shrink:0;animation:livePulse 2s ease infinite}
+@keyframes livePulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.25;transform:scale(0.55)}}
 
-/* Job Card */
-.job-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);backdrop-filter:blur(20px);padding:28px;position:sticky;top:24px;height:fit-content}
-.jc-top{display:flex;align-items:center;gap:12px;margin-bottom:20px}
-.jc-icon{width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,#2d1b69,#4c1d95);display:flex;align-items:center;justify-content:center;font-size:1.2rem}
-.jc-meta h4{font-size:.76rem;font-weight:600;color:var(--text-2)}
-.jc-meta p{font-family:var(--fm);font-size:.56rem;color:var(--dim);margin-top:2px}
-.act-pill{display:flex;align-items:center;gap:5px;background:rgba(110,231,183,.08);border:1px solid rgba(110,231,183,.2);border-radius:9999px;padding:4px 10px;font-family:var(--fm);font-size:.54rem;color:var(--emerald);margin-left:auto}
-.act-dot{width:5px;height:5px;border-radius:50%;background:var(--emerald-d);animation:pulse 1.8s ease infinite}
-.jrole{font-size:1.2rem;font-weight:800;letter-spacing:-.03em;margin-bottom:4px}
-.jco{font-family:var(--fm);font-size:.62rem;color:var(--violet);letter-spacing:.05em;margin-bottom:16px}
-.jchips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
-.jchip{background:rgba(139,92,246,.07);border:1px solid rgba(139,92,246,.14);border-radius:9999px;padding:5px 12px;font-size:.7rem;font-weight:600}
-.jchip small{display:block;font-family:var(--fm);font-size:.52rem;color:var(--dim);font-weight:400}
-.sec-label{font-family:var(--fm);font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:8px}
-.skill-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}
-.stag{font-family:var(--fm);font-size:.55rem;padding:4px 9px;border-radius:9999px;border:1px solid rgba(139,92,246,.18);color:rgba(196,181,253,.8);background:rgba(139,92,246,.05)}
-.stag.pref{border-color:rgba(246,173,85,.2);color:rgba(251,191,36,.8);background:rgba(246,173,85,.05)}
-.stag.warn{border-color:rgba(248,113,113,.2);color:rgba(248,113,113,.8);background:rgba(248,113,113,.05)}
-.jdivide{height:1px;background:var(--border);margin:14px 0}
-.signal-list{display:flex;flex-direction:column;gap:6px}
-.signal{display:flex;align-items:flex-start;gap:8px;font-size:.62rem;color:var(--text-2)}
-.sig-dot{width:5px;height:5px;border-radius:50%;background:var(--violet);flex-shrink:0;margin-top:5px}
-.sig-dot.amber{background:var(--amber)}
-.sig-dot.red{background:var(--red)}
+/* ── RULE ── */
+.rule{height:1px;background:var(--border);margin-bottom:48px}
 
-/* Weight bars */
-.weight-list{display:flex;flex-direction:column;gap:7px;margin-top:4px}
-.wrow{display:flex;align-items:center;gap:8px}
-.wn{font-family:var(--fm);font-size:.52rem;color:var(--text-2);width:90px;flex-shrink:0}
-.wtrk{flex:1;height:4px;background:rgba(255,255,255,.05);border-radius:9999px;overflow:hidden}
-.wfill{height:100%;border-radius:9999px}
-.wpct{font-family:var(--fm);font-size:.52rem;color:var(--dim);width:28px;text-align:right}
+/* ── SETUP ── */
+#phase-setup{display:grid;grid-template-columns:1fr 336px;gap:48px;align-items:start}
+.job-panel{order:2}
 
-/* Right panel */
-.right{display:flex;flex-direction:column;gap:18px}
-.panel-hdr{display:flex;align-items:center;justify-content:space-between}
-.panel-title{font-size:.9rem;font-weight:700;letter-spacing:-.02em}
-.count-badge{font-family:var(--fm);font-size:.58rem;color:var(--dim);background:rgba(139,92,246,.07);border:1px solid var(--border);border-radius:9999px;padding:3px 12px}
-.pool-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.pcard{background:var(--card);border:1px solid var(--border);border-radius:var(--r-sm);padding:14px;backdrop-filter:blur(12px);transition:border-color .22s,transform .22s;cursor:default;position:relative}
-.pcard:hover{border-color:rgba(167,139,250,.3);transform:translateY(-3px)}
-.pcard.hp{border-color:rgba(248,113,113,.18);background:rgba(248,113,113,.03)}
-.pc-avatar{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;margin-bottom:9px}
-.pc-name{font-size:.78rem;font-weight:700;margin-bottom:2px}
-.pc-title{font-family:var(--fm);font-size:.56rem;color:var(--text-2);margin-bottom:8px;line-height:1.4}
-.pc-stats{display:flex;gap:5px;flex-wrap:wrap}
-.pc-stat{font-family:var(--fm);font-size:.52rem;color:var(--dim);background:rgba(255,255,255,.04);border-radius:9999px;padding:2px 7px}
-.pc-stat.green{color:var(--emerald)}
-.pc-stat.red{color:var(--red)}
-.pc-hp{font-family:var(--fm);font-size:.5rem;color:var(--red);margin-top:5px;opacity:.7}
+/* Job card */
+.job-card{background:white;border:1px solid var(--border);border-radius:20px;padding:28px;box-shadow:0 2px 24px rgba(14,13,11,0.05);position:sticky;top:24px}
+.jc-eyebrow{font-family:var(--fm);font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold-d);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.jc-eyebrow::after{content:'';flex:1;height:1px;background:var(--border-gold)}
+.jrole{font-family:var(--fp);font-size:1.28rem;font-weight:800;letter-spacing:-0.02em;color:var(--ink);margin-bottom:4px;line-height:1.2}
+.jco{font-family:var(--fm);font-size:0.61rem;color:var(--slate-l);letter-spacing:0.05em;margin-bottom:20px}
+.jchips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.jchip{background:var(--paper-2);border:1px solid var(--border);border-radius:12px;padding:8px 14px;font-size:0.7rem;font-weight:500;color:var(--ink)}
+.jchip small{display:block;font-family:var(--fm);font-size:0.49rem;color:var(--dim);margin-top:1px;font-weight:400}
+.sec-label{font-family:var(--fm);font-size:0.5rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--dim);margin-bottom:8px}
+.stag-list{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px}
+.stag{font-family:var(--fm);font-size:0.54rem;padding:4px 10px;border-radius:99px;border:1px solid var(--border);color:var(--slate);background:var(--paper)}
+.stag.pref{border-color:var(--border-gold);color:var(--gold-d);background:rgba(201,168,76,0.06)}
+.jrule{height:1px;background:var(--border);margin:16px 0}
+.signal-list{display:flex;flex-direction:column;gap:7px}
+.signal{display:flex;align-items:flex-start;gap:8px;font-size:0.61rem;color:var(--dim2);line-height:1.5}
+.sig-mark{width:4px;height:4px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:6px}
+
+/* Pool */
+.pool-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:22px}
+.pool-title{font-family:var(--fp);font-size:1.45rem;font-weight:800;letter-spacing:-0.02em}
+.pool-meta{font-family:var(--fm);font-size:0.55rem;color:var(--dim)}
+.pool-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:32px}
+.pcard{background:white;border:1px solid var(--border);border-radius:16px;padding:16px;position:relative;overflow:hidden;transition:border-color 0.22s,box-shadow 0.22s,transform 0.22s;animation:cardIn 0.5s ease both}
+@keyframes cardIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.pcard:hover{border-color:rgba(201,168,76,0.38);box-shadow:0 4px 24px rgba(14,13,11,0.07);transform:translateY(-2px)}
+.pcard-bar{position:absolute;top:0;left:12px;right:12px;height:2px;border-radius:0 0 2px 2px}
+.pc-avatar{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:0.68rem;font-weight:700;margin-bottom:9px;color:white;letter-spacing:0}
+.pc-name{font-size:0.79rem;font-weight:600;letter-spacing:-0.01em;margin-bottom:1px}
+.pc-title{font-family:var(--fm);font-size:0.53rem;color:var(--dim2);margin-bottom:8px;line-height:1.4}
+.pc-chips{display:flex;gap:4px;flex-wrap:wrap}
+.pc-chip{font-family:var(--fm);font-size:0.47rem;padding:2px 7px;border-radius:99px;background:var(--paper-2);border:1px solid var(--border);color:var(--slate)}
+.pc-chip.hl{background:rgba(201,168,76,0.1);border-color:rgba(201,168,76,0.25);color:var(--gold-d)}
 
 /* Run button */
-.run-wrap{display:flex;justify-content:center;padding:18px 0}
-#run-btn{background:linear-gradient(135deg,rgba(124,58,237,.18),rgba(109,40,217,.1));border:1px solid rgba(167,139,250,.38);border-radius:9999px;padding:16px 52px;font-family:var(--ff);font-weight:700;font-size:.95rem;color:var(--violet-l);cursor:pointer;transition:all .28s;letter-spacing:-.01em;position:relative;overflow:hidden}
-#run-btn::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(167,139,250,.12),rgba(246,173,85,.06));opacity:0;transition:opacity .3s}
-#run-btn:hover{box-shadow:0 0 52px rgba(124,58,237,.22),0 12px 40px rgba(0,0,0,.5);transform:translateY(-2px);border-color:rgba(196,181,253,.55)}
-#run-btn:hover::after{opacity:1}
-#run-btn:disabled{opacity:.35;cursor:default;transform:none;box-shadow:none}
-.btn-arr{margin-left:10px;display:inline-block;transition:transform .28s}
-#run-btn:hover .btn-arr{transform:translateX(5px)}
+.run-row{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+#run-btn{background:var(--ink);color:var(--paper);border:none;border-radius:99px;padding:15px 38px;font-family:var(--ff);font-weight:500;font-size:0.88rem;cursor:pointer;letter-spacing:-0.01em;transition:background 0.22s,box-shadow 0.22s,transform 0.18s;position:relative;overflow:hidden}
+#run-btn:hover{background:#1c1a17;box-shadow:0 8px 32px rgba(14,13,11,0.18);transform:translateY(-1px)}
+#run-btn:disabled{opacity:0.38;cursor:default;transform:none;box-shadow:none}
+.run-note{font-family:var(--fm);font-size:0.54rem;color:var(--dim);line-height:1.65;max-width:360px}
 
-/* ── Analysis ── */
-#analysis-phase{display:none;flex-direction:column;align-items:center;gap:44px;padding:64px 0}
-.a-title{text-align:center}
-.a-title h2{font-size:1.8rem;font-weight:800;letter-spacing:-.04em;background:linear-gradient(120deg,var(--violet-l),var(--amber));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
-#a-sub{font-family:var(--fm);font-size:.65rem;color:var(--dim);letter-spacing:.06em}
+/* ── ANALYSIS ── */
+#phase-analysis{display:none;flex-direction:column;align-items:center;gap:52px;padding:72px 0}
+.a-eyebrow{font-family:var(--fm);font-size:0.54rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold-d);text-align:center}
+.a-title-wrap{text-align:center;margin-top:10px}
+.a-title{font-family:var(--fp);font-size:2.3rem;font-weight:800;letter-spacing:-0.04em;color:var(--ink);line-height:1.15}
+.a-title em{font-style:italic;color:var(--gold-d)}
+#a-sub{font-family:var(--fm);font-size:0.6rem;color:var(--dim);text-align:center;letter-spacing:0.04em;margin-top:8px}
 
 /* Pipeline */
-.pipe-wrap{width:100%;max-width:900px}
-.pipe{display:flex;align-items:flex-start;justify-content:center}
-.pstage{flex:1;display:flex;flex-direction:column;align-items:center;gap:10px;max-width:160px}
-.pnode{width:60px;height:60px;border-radius:50%;border:2px solid rgba(139,92,246,.14);background:rgba(139,92,246,.04);display:flex;align-items:center;justify-content:center;position:relative;transition:all .4s}
-.pring{position:absolute;top:-7px;left:-7px;width:74px;height:74px;transform:rotate(-90deg)}
-.pr-bg{fill:none;stroke:rgba(139,92,246,.07);stroke-width:2}
-.pr-fill{fill:none;stroke:var(--violet);stroke-width:2.5;stroke-linecap:round;stroke-dasharray:213;stroke-dashoffset:213;transition:stroke-dashoffset 1.8s cubic-bezier(.16,1,.3,1)}
-.pspinner{position:absolute;top:-8px;left:-8px;width:76px;height:76px;border-radius:50%;border:2px solid transparent;border-top-color:var(--violet);animation:spin .9s linear infinite;opacity:0;transition:opacity .3s}
+.pipe-wrap{width:100%;max-width:840px}
+.pipe-track{display:flex;align-items:flex-start;justify-content:center;position:relative}
+.pipe-track::before{content:'';position:absolute;top:27px;left:10%;right:10%;height:1px;background:var(--border);z-index:0}
+.pstage{display:flex;flex-direction:column;align-items:center;gap:10px;flex:1;position:relative;z-index:1;animation:fadeUp 0.6s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.pnode{width:54px;height:54px;border-radius:50%;border:1.5px solid var(--border);background:white;display:flex;align-items:center;justify-content:center;transition:all 0.45s cubic-bezier(0.16,1,0.3,1);box-shadow:0 2px 8px rgba(14,13,11,0.06);position:relative}
+.pnode svg.pring{position:absolute;top:-7px;left:-7px;width:68px;height:68px;transform:rotate(-90deg);pointer-events:none}
+.ring-bg{fill:none;stroke:var(--border);stroke-width:1.5}
+.ring-fill{fill:none;stroke:var(--sage);stroke-width:2;stroke-linecap:round;stroke-dasharray:195;stroke-dashoffset:195;transition:stroke-dashoffset 2s cubic-bezier(0.16,1,0.3,1)}
+.pspinner{position:absolute;top:-7px;left:-7px;width:68px;height:68px;border-radius:50%;border:1.5px solid transparent;border-top-color:var(--gold);animation:spin 0.85s linear infinite;opacity:0;transition:opacity 0.3s}
 @keyframes spin{to{transform:rotate(360deg)}}
-.pstage.active .pnode{border-color:rgba(167,139,250,.5);background:rgba(124,58,237,.1);box-shadow:0 0 28px rgba(124,58,237,.22)}
-.pstage.done .pnode{border-color:rgba(110,231,183,.45);background:rgba(16,185,129,.08);box-shadow:0 0 18px rgba(16,185,129,.15)}
+.pstage.active .pnode{border-color:rgba(201,168,76,0.55);background:rgba(201,168,76,0.04);box-shadow:0 0 0 5px rgba(201,168,76,0.07),0 4px 16px rgba(201,168,76,0.1)}
 .pstage.active .pspinner{opacity:1}
-.pstage.done .pr-fill{stroke:var(--emerald-d);stroke-dashoffset:0}
-.pstage.active .pr-fill{stroke-dashoffset:0}
-.pnum{font-family:var(--fm);font-size:.7rem;font-weight:500;color:var(--dim);transition:color .4s}
-.pstage.active .pnum{color:var(--violet-l)}
-.pstage.done .pnum{color:var(--emerald)}
-.plabel{font-family:var(--fm);font-size:.57rem;letter-spacing:.04em;color:var(--dim);text-align:center;line-height:1.55;max-width:80px;transition:color .4s}
-.pstage.active .plabel{color:var(--violet-l)}
-.pstage.done .plabel{color:var(--emerald)}
-.pconn{flex-shrink:0;height:2px;width:36px;background:rgba(139,92,246,.08);position:relative;overflow:hidden;margin-top:29px}
-.pflow{position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,var(--violet-l),transparent);opacity:0}
-.pconn.flowing .pflow{animation:flow .7s ease forwards}
-.pconn.lit{background:rgba(110,231,183,.3)}
-@keyframes flow{from{left:-100%;opacity:1}to{left:100%;opacity:0}}
+.pstage.done .pnode{border-color:rgba(74,107,90,0.48);background:rgba(74,107,90,0.05);box-shadow:0 0 0 5px rgba(74,107,90,0.07)}
+.pstage.done .ring-fill{stroke-dashoffset:0}
+.pstage.active .ring-fill{stroke-dashoffset:0;stroke:var(--gold)}
+.picon{font-size:1.05rem;opacity:0.45;transition:opacity 0.4s;line-height:1}
+.pstage.active .picon,.pstage.done .picon{opacity:1}
+.plabel{font-family:var(--fm);font-size:0.5rem;letter-spacing:0.04em;color:var(--dim);text-align:center;line-height:1.7;max-width:86px;transition:color 0.4s}
+.pstage.active .plabel{color:var(--gold-d)}
+.pstage.done .plabel{color:var(--sage)}
 
-/* Log */
-.log-wrap{width:100%;max-width:700px;display:none}
-.log-head{display:flex;align-items:center;gap:8px;padding:10px 16px;background:rgba(139,92,246,.06);border:1px solid var(--border);border-bottom:none;border-radius:var(--r) var(--r) 0 0}
+/* Network meter */
+.net-bar{width:100%;max-width:660px;background:white;border:1px solid var(--border);border-radius:16px;padding:18px 22px;box-shadow:0 2px 12px rgba(14,13,11,0.04);display:none;animation:fadeUp 0.4s ease both}
+.net-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:12px;flex-wrap:wrap}
+.net-label{display:flex;align-items:center;gap:8px;font-family:var(--fm);font-size:0.57rem;color:var(--dim2)}
+.net-dot-a{width:6px;height:6px;border-radius:50%;background:var(--sage);flex-shrink:0;animation:livePulse 1.1s ease infinite}
+.net-stats{display:flex;gap:18px}
+.net-stat{font-family:var(--fm);font-size:0.53rem;color:var(--dim)}
+.net-stat b{color:var(--ink);font-weight:500}
+.net-track{height:3px;background:var(--paper-3);border-radius:99px;overflow:hidden}
+.net-fill{height:100%;background:linear-gradient(90deg,var(--gold-d),var(--gold-l));border-radius:99px;width:0%;transition:width 0.25s ease}
+
+/* Log terminal */
+.log-wrap{width:100%;max-width:660px;display:none;animation:fadeUp 0.4s ease both}
+.log-head{display:flex;align-items:center;gap:8px;padding:10px 18px;background:var(--ink);border-radius:12px 12px 0 0}
 .log-dots{display:flex;gap:5px}
 .ldot{width:9px;height:9px;border-radius:50%}
-.log-name{font-family:var(--fm);font-size:.56rem;color:var(--dim);margin-left:4px;letter-spacing:.07em}
-.log-body{background:rgba(4,2,16,.85);border:1px solid var(--border);border-radius:0 0 var(--r) var(--r);padding:14px 18px;height:200px;overflow-y:auto;font-family:var(--fm);font-size:.6rem;line-height:1.85;scroll-behavior:smooth}
+.log-title{font-family:var(--fm);font-size:0.52rem;color:rgba(247,244,238,0.28);margin-left:6px;letter-spacing:0.08em}
+.log-body{background:#0C0B09;border:1px solid rgba(247,244,238,0.05);border-top:none;border-radius:0 0 12px 12px;padding:16px 20px;height:192px;overflow-y:auto;font-family:var(--fm);font-size:0.58rem;line-height:1.95;scroll-behavior:smooth}
 .log-body::-webkit-scrollbar{width:3px}
-.log-body::-webkit-scrollbar-thumb{background:rgba(139,92,246,.2);border-radius:2px}
-.logline{display:block;animation:logIn .14s ease both}
-@keyframes logIn{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:translateY(0)}}
-.lt{color:rgba(139,92,246,.3)}
-.ls1{color:#93c5fd}.ls2{color:#c4b5fd}.ls3{color:#fde68a}.ls4{color:#fda4af}.ls5{color:var(--violet-l)}
-.lok{color:var(--emerald)}.ldim{color:rgba(167,139,250,.35)}.lwarn{color:#fca5a5}
+.log-body::-webkit-scrollbar-thumb{background:rgba(247,244,238,0.1);border-radius:2px}
+.logline{display:block;animation:fadeUp 0.12s ease both}
+.lt{color:rgba(247,244,238,0.12)}
+.ltime{color:rgba(201,168,76,0.42)}
+.linfo{color:rgba(247,244,238,0.48)}
+.ldim{color:rgba(247,244,238,0.18)}
+.lsage{color:#7BA892}
+.lgold{color:#E8C97A}
+.lok{color:#7BA892;font-weight:500}
+.lbold{color:rgba(247,244,238,0.82);font-weight:500}
 
 /* Counter */
-.counter{text-align:center;display:none}
-.c-num{font-family:var(--fm);font-size:3.8rem;font-weight:300;letter-spacing:-.06em;line-height:1;background:linear-gradient(90deg,var(--violet-l),var(--amber));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.c-blink{animation:blink 1s ease infinite;-webkit-text-fill-color:rgba(167,139,250,.5)}
+.counter{text-align:center;display:none;animation:fadeUp 0.5s ease both}
+.c-num{font-family:var(--fp);font-size:4.2rem;font-weight:800;letter-spacing:-0.06em;color:var(--ink);line-height:1;display:flex;align-items:flex-start;justify-content:center;gap:6px}
+.c-cursor{display:inline-block;width:3px;height:3.4rem;background:var(--gold);margin-top:6px;animation:blink 0.75s ease infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-.c-sub{font-family:var(--fm);font-size:.6rem;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;margin-top:6px}
-.c-bar-wrap{width:380px;margin:18px auto 0}
-.c-bar{height:4px;background:rgba(139,92,246,.1);border-radius:9999px;overflow:hidden}
-.c-fill{height:100%;background:linear-gradient(90deg,var(--violet-d),var(--amber));border-radius:9999px;width:0%;transition:width .2s ease}
+.c-label{font-family:var(--fm);font-size:0.54rem;color:var(--dim);letter-spacing:0.14em;text-transform:uppercase;margin-top:8px}
+.c-bar-wrap{width:300px;margin:16px auto 0}
+.c-track{height:3px;background:var(--paper-3);border-radius:99px;overflow:hidden}
+.c-fill{height:100%;background:linear-gradient(90deg,var(--gold-d),var(--gold-l));border-radius:99px;width:0%;transition:width 0.22s ease}
 
-/* ── Results ── */
-#results-phase{display:none;flex-direction:column;gap:22px}
-.res-hdr{display:flex;align-items:flex-end;justify-content:space-between;padding-bottom:18px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:14px}
-.res-hdr h2{font-size:1.55rem;font-weight:800;letter-spacing:-.04em;background:linear-gradient(120deg,var(--violet-l),var(--amber));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.res-meta{font-family:var(--fm);font-size:.58rem;color:var(--dim);margin-top:4px}
-.res-right{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-.rstat{text-align:right}
-.rv{font-size:1.25rem;font-weight:800;letter-spacing:-.03em;color:var(--violet-l)}
-.rl{font-family:var(--fm);font-size:.52rem;color:var(--dim);text-transform:uppercase;letter-spacing:.1em}
-#reset-btn{background:none;border:1px solid var(--border);border-radius:9999px;padding:7px 16px;font-family:var(--fm);font-size:.58rem;color:var(--dim);cursor:pointer;transition:all .2s}
-#reset-btn:hover{color:var(--text);border-color:rgba(167,139,250,.3)}
+/* Shortlist feed */
+.shortlist-feed{width:100%;max-width:660px;display:none;animation:fadeUp 0.5s ease both}
+.sf-eyebrow{font-family:var(--fm);font-size:0.52rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--dim);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.sf-eyebrow::after{content:'';flex:1;height:1px;background:var(--border)}
+.shortlist-items{display:flex;flex-direction:column;gap:6px}
+.sf-item{background:white;border:1px solid var(--border);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:14px;animation:slideIn 0.42s cubic-bezier(0.16,1,0.3,1) both}
+@keyframes slideIn{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:translateX(0)}}
+.sf-rank{font-family:var(--fp);font-size:0.95rem;font-weight:800;color:var(--gold-d);width:22px;text-align:center;flex-shrink:0}
+.sf-info{flex:1;min-width:0}
+.sf-name{font-size:0.76rem;font-weight:600;letter-spacing:-0.01em}
+.sf-role{font-family:var(--fm);font-size:0.52rem;color:var(--dim2);margin-top:1px}
+.sf-score{font-family:var(--fm);font-size:0.63rem;font-weight:500;color:var(--sage);flex-shrink:0}
+.sf-badge{font-family:var(--fm);font-size:0.47rem;padding:3px 10px;border-radius:99px;flex-shrink:0}
+.sfb-elite{background:rgba(201,168,76,0.1);color:var(--gold-d);border:1px solid rgba(201,168,76,0.28)}
+.sfb-strong{background:rgba(74,107,90,0.08);color:var(--sage);border:1px solid rgba(74,107,90,0.22)}
+
+/* ── RESULTS ── */
+#phase-results{display:none;flex-direction:column;gap:0}
+.res-header{padding-bottom:28px;border-bottom:1px solid var(--border);margin-bottom:28px;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:20px}
+.res-hl{font-family:var(--fp);font-size:2rem;font-weight:800;letter-spacing:-0.04em}
+.res-hl em{font-style:italic;color:var(--gold-d)}
+.res-meta{font-family:var(--fm);font-size:0.55rem;color:var(--dim);margin-top:4px}
+.res-kpis{display:flex;gap:28px;align-items:flex-end;flex-wrap:wrap}
+.kpi{text-align:right}
+.kpi-v{font-family:var(--fp);font-size:1.5rem;font-weight:800;letter-spacing:-0.03em}
+.kpi-l{font-family:var(--fm);font-size:0.47rem;color:var(--dim);text-transform:uppercase;letter-spacing:0.1em;margin-top:1px}
+#reset-btn{background:none;border:1px solid var(--border);border-radius:99px;padding:8px 20px;font-family:var(--ff);font-size:0.72rem;color:var(--dim2);cursor:pointer;transition:all 0.2s;font-weight:500}
+#reset-btn:hover{border-color:rgba(14,13,11,0.3);color:var(--ink)}
 
 /* Result cards */
-.board{display:flex;flex-direction:column;gap:10px}
-.rcard{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px 24px;backdrop-filter:blur(16px);display:grid;grid-template-columns:50px 56px 1fr auto;align-items:center;gap:18px;opacity:0;position:relative;overflow:hidden;transition:border-color .28s,box-shadow .28s,transform .2s}
-.rcard::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:var(--r) 0 0 var(--r)}
-.rcard.t-elite::before{background:linear-gradient(180deg,var(--violet),var(--amber))}
-.rcard.t-strong::before{background:var(--emerald-d)}
-.rcard.t-partial::before{background:#d97706}
-.rcard.t-miss::before{background:#e11d48}
-.rcard:hover{border-color:rgba(167,139,250,.26);box-shadow:0 8px 40px rgba(0,0,0,.3);transform:translateX(4px)}
+.board{display:flex;flex-direction:column;gap:8px}
+.rcard{background:white;border:1px solid var(--border);border-radius:20px;padding:22px 26px;display:grid;grid-template-columns:46px 58px 1fr auto;align-items:center;gap:18px;position:relative;overflow:hidden;transition:border-color 0.22s,box-shadow 0.22s,transform 0.18s;animation:cardIn 0.55s ease both}
+.rcard:hover{border-color:rgba(201,168,76,0.28);box-shadow:0 6px 32px rgba(14,13,11,0.07);transform:translateX(3px)}
+.rcard::after{content:'';position:absolute;left:0;top:14px;bottom:14px;width:3px;border-radius:0 3px 3px 0}
+.rcard.t-elite::after{background:linear-gradient(180deg,var(--gold),var(--gold-d))}
+.rcard.t-strong::after{background:var(--sage)}
+.rcard.t-partial::after{background:var(--rust);opacity:0.6}
+.rcard.t-miss::after{background:var(--border);opacity:1}
 
 /* Rank badge */
-.rbadge{width:42px;height:42px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.88rem;flex-shrink:0}
-.rb-1{background:linear-gradient(135deg,#8a5c0a,#edb935,#8a5c0a);color:#200f00}
-.rb-2{background:linear-gradient(135deg,#3d5065,#8aaabb,#3d5065);color:#111e28}
-.rb-3{background:linear-gradient(135deg,#5c2d0e,#b06525,#5c2d0e);color:#180700}
-.rb-n{background:rgba(139,92,246,.07);border:1px solid rgba(139,92,246,.15);color:var(--dim);font-size:.76rem}
+.rbadge{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:var(--fp);font-weight:800;font-size:1rem;flex-shrink:0}
+.rb-1{background:linear-gradient(135deg,#C49A12,#F2C94C,#C07D10);color:white}
+.rb-2{background:linear-gradient(135deg,#5A6575,#9BA8B8,#48535F);color:white}
+.rb-3{background:linear-gradient(135deg,#8A3D0C,#C87840,#7A2E0C);color:white}
+.rb-n{background:var(--paper-2);border:1px solid var(--border);color:var(--dim2);font-family:var(--fm);font-size:0.8rem}
 
 /* Score ring */
-.ring-wrap{position:relative;width:56px;height:56px;flex-shrink:0}
-.ring-svg{width:56px;height:56px;transform:rotate(-90deg)}
-.ring-bg2{fill:none;stroke:rgba(255,255,255,.04);stroke-width:3}
-.ring-fg{fill:none;stroke-width:3;stroke-linecap:round;stroke-dasharray:144;stroke-dashoffset:144;transition:stroke-dashoffset 1.8s cubic-bezier(.16,1,.3,1)}
-.ring-txt{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--fm);font-size:.5rem;font-weight:500;text-align:center;line-height:1.3;pointer-events:none}
+.ring-wrap{position:relative;width:58px;height:58px;flex-shrink:0}
+.score-svg{width:58px;height:58px;transform:rotate(-90deg)}
+.sc-bg{fill:none;stroke:var(--paper-3);stroke-width:3.5}
+.sc-fill{fill:none;stroke-width:3.5;stroke-linecap:round;stroke-dasharray:150;stroke-dashoffset:150;transition:stroke-dashoffset 2s cubic-bezier(0.16,1,0.3,1)}
+.sc-txt{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--fm);font-size:0.47rem;font-weight:500;text-align:center;color:var(--ink);line-height:1.4;pointer-events:none}
 
 /* Candidate info */
 .cinfo{flex:1;min-width:0}
-.cname{font-size:.92rem;font-weight:700;letter-spacing:-.02em;margin-bottom:3px}
-.cmeta{display:flex;align-items:center;gap:7px;margin-bottom:10px;flex-wrap:wrap}
-.ctitle{font-family:var(--fm);font-size:.57rem;color:var(--text-2)}
-.cyoe{font-family:var(--fm);font-size:.53rem;color:var(--dim);background:rgba(255,255,255,.04);border-radius:9999px;padding:2px 7px}
-.cotw{font-family:var(--fm);font-size:.52rem;padding:2px 7px;border-radius:9999px;background:rgba(110,231,183,.08);color:var(--emerald);border:1px solid rgba(110,231,183,.18)}
-.sbars{display:grid;grid-template-columns:1fr 1fr;gap:4px 14px}
+.cname{font-size:0.93rem;font-weight:600;letter-spacing:-0.02em;margin-bottom:2px}
+.cmeta{display:flex;align-items:center;gap:6px;margin-bottom:11px;flex-wrap:wrap}
+.ctitle{font-family:var(--fm);font-size:0.55rem;color:var(--dim2)}
+.cexp{font-family:var(--fm);font-size:0.51rem;color:var(--dim);background:var(--paper-2);border-radius:99px;padding:2px 8px;border:1px solid var(--border)}
+.sbars{display:grid;grid-template-columns:1fr 1fr;gap:5px 18px}
 .srow{display:flex;align-items:center;gap:6px}
-.sn{font-family:var(--fm);font-size:.51rem;color:var(--dim);width:68px;flex-shrink:0}
-.strk{flex:1;height:3px;background:rgba(255,255,255,.05);border-radius:9999px;overflow:hidden}
-.sfill{height:100%;border-radius:9999px;width:0%}
-.sv{font-family:var(--fm);font-size:.5rem;color:var(--text-2);width:26px;text-align:right;flex-shrink:0}
+.sn{font-family:var(--fm);font-size:0.48rem;color:var(--dim);width:66px;flex-shrink:0}
+.strk{flex:1;height:2.5px;background:var(--paper-3);border-radius:99px;overflow:hidden}
+.sfill{height:100%;border-radius:99px;width:0%;transition:width 1.4s cubic-bezier(0.16,1,0.3,1)}
+.sv{font-family:var(--fm);font-size:0.47rem;color:var(--dim2);width:22px;text-align:right;flex-shrink:0}
+.missing-note{margin-top:8px;font-family:var(--fm);font-size:0.49rem;color:var(--rust)}
 
 /* Right col */
-.cright{display:flex;flex-direction:column;align-items:flex-end;gap:8px;min-width:150px}
-.verdict{font-family:var(--fm);font-size:.55rem;padding:4px 11px;border-radius:9999px;letter-spacing:.04em}
-.v-elite{background:rgba(167,139,250,.1);color:var(--violet-l);border:1px solid rgba(167,139,250,.25)}
-.v-strong{background:rgba(110,231,183,.08);color:var(--emerald);border:1px solid rgba(16,185,129,.2)}
-.v-partial{background:rgba(246,173,85,.09);color:var(--amber);border:1px solid rgba(246,173,85,.2)}
-.v-miss{background:rgba(248,113,113,.08);color:var(--red);border:1px solid rgba(248,113,113,.2)}
-.cskills{display:flex;flex-wrap:wrap;gap:4px;justify-content:flex-end}
-.csk{font-family:var(--fm);font-size:.49rem;padding:2px 7px;border-radius:9999px;background:rgba(139,92,246,.06);color:rgba(196,181,253,.65);border:1px solid rgba(139,92,246,.12)}
-.csk.irr{background:rgba(255,255,255,.03);color:var(--dim);border-color:rgba(255,255,255,.06)}
-.cid{font-family:var(--fm);font-size:.5rem;color:var(--dim)}
+.cright{display:flex;flex-direction:column;align-items:flex-end;gap:7px;min-width:152px}
+.verdict{font-family:var(--fm);font-size:0.5rem;padding:4px 12px;border-radius:99px;letter-spacing:0.04em;white-space:nowrap}
+.v-elite{background:rgba(201,168,76,0.1);color:var(--gold-d);border:1px solid rgba(201,168,76,0.28)}
+.v-strong{background:rgba(74,107,90,0.08);color:var(--sage);border:1px solid rgba(74,107,90,0.22)}
+.v-partial{background:rgba(155,74,46,0.07);color:var(--rust);border:1px solid rgba(155,74,46,0.2)}
+.v-miss{background:var(--paper-2);color:var(--dim2);border:1px solid var(--border)}
+.cid-lbl{font-family:var(--fm);font-size:0.47rem;color:var(--dim)}
+.cskills{display:flex;flex-wrap:wrap;gap:3px;justify-content:flex-end}
+.csk{font-family:var(--fm);font-size:0.46rem;padding:2px 7px;border-radius:99px;background:var(--paper-2);color:var(--slate);border:1px solid var(--border)}
+.csk.gap{background:rgba(155,74,46,0.06);color:var(--rust);border-color:rgba(155,74,46,0.18)}
+
+/* Explanation tooltip */
+.explanation{display:none;position:absolute;left:90px;right:200px;bottom:calc(100% + 8px);background:var(--ink);color:rgba(247,244,238,0.82);font-size:0.6rem;line-height:1.68;padding:14px 18px;border-radius:12px;box-shadow:0 8px 32px rgba(14,13,11,0.22);z-index:100;pointer-events:none;animation:fadeUp 0.18s ease both}
+.rcard:hover .explanation{display:block}
 
 /* Footer */
-.res-footer{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;background:var(--card);border:1px solid var(--border);border-radius:var(--r);backdrop-filter:blur(16px);flex-wrap:wrap;gap:16px;margin-top:4px}
-.rf-text h4{font-size:.84rem;font-weight:700;margin-bottom:4px}
-.rf-text p{font-family:var(--fm);font-size:.56rem;color:var(--dim)}
-.rf-links{display:flex;gap:9px}
-.flink{display:inline-flex;align-items:center;gap:5px;padding:10px 20px;border-radius:9999px;font-family:var(--ff);font-size:.74rem;font-weight:600;text-decoration:none;transition:all .2s}
-.flink.pri{background:rgba(139,92,246,.1);color:var(--violet-l);border:1px solid rgba(167,139,250,.3)}
-.flink.sec{background:rgba(255,255,255,.04);color:var(--text-2);border:1px solid var(--border)}
-.flink:hover{transform:translateY(-1px);filter:brightness(1.18)}
-.foot{text-align:center;font-family:var(--fm);font-size:.52rem;color:var(--dim);letter-spacing:.12em;padding:10px 0 0}
+.res-footer{display:flex;align-items:center;justify-content:space-between;padding:22px 26px;background:white;border:1px solid var(--border);border-radius:20px;flex-wrap:wrap;gap:16px;margin-top:12px;box-shadow:0 2px 12px rgba(14,13,11,0.04)}
+.rf-hl{font-size:0.88rem;font-weight:600;letter-spacing:-0.01em;margin-bottom:3px}
+.rf-sub{font-family:var(--fm);font-size:0.52rem;color:var(--dim)}
+.rf-links{display:flex;gap:8px}
+.flink{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:99px;font-family:var(--ff);font-size:0.72rem;font-weight:500;text-decoration:none;transition:all 0.2s;letter-spacing:-0.01em}
+.flink.pri{background:var(--ink);color:var(--paper)}
+.flink.pri:hover{background:#1c1a17;box-shadow:0 4px 16px rgba(14,13,11,0.15)}
+.flink.sec{background:var(--paper-2);color:var(--ink);border:1px solid var(--border)}
+.flink.sec:hover{border-color:rgba(14,13,11,0.2)}
+.foot{text-align:center;font-family:var(--fm);font-size:0.48rem;color:var(--dim);letter-spacing:0.14em;padding:22px 0 0}
 
-/* Tooltip on score bar labels */
-.sn{cursor:help;position:relative}
-.sn::after{content:attr(data-tip);position:absolute;left:0;bottom:calc(100% + 7px);background:rgba(8,4,24,.97);border:1px solid rgba(139,92,246,.28);border-radius:10px;padding:7px 11px;font-family:var(--fm);font-size:.52rem;color:var(--violet-l);white-space:nowrap;pointer-events:none;opacity:0;transform:translateY(5px);transition:opacity .18s,transform .18s;z-index:200;letter-spacing:.03em;line-height:1.6}
-.sn:hover::after{opacity:1;transform:translateY(0)}
-
-/* Pool card scan flash */
-@keyframes scanFlash{0%{border-color:rgba(139,92,246,.14);box-shadow:none}40%{border-color:rgba(167,139,250,.55);box-shadow:0 0 22px rgba(124,58,237,.22);transform:translateY(-3px)}100%{border-color:rgba(110,231,183,.3);box-shadow:0 0 10px rgba(16,185,129,.1);transform:translateY(0)}}
-.pcard.scanned{animation:scanFlash .65s ease forwards}
-
-/* Cursor glow */
-.cursor-glow{position:fixed;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,.055) 0%,transparent 70%);pointer-events:none;z-index:0;transform:translate(-50%,-50%);transition:opacity .4s;will-change:transform}
-
-/* Confetti canvas */
-#confetti-cv{position:fixed;inset:0;pointer-events:none;z-index:999}
-
-/* Rank-1 spotlight */
-.rcard.t-elite:first-child{box-shadow:0 0 0 1px rgba(167,139,250,.3),0 12px 60px rgba(124,58,237,.18)}
-
-@media(max-width:900px){#setup-phase{grid-template-columns:1fr}.job-card{position:static}.pool-grid{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:640px){.pool-grid{grid-template-columns:repeat(2,1fr)}.rcard{grid-template-columns:42px 52px 1fr;grid-template-rows:auto auto}.cright{grid-column:1/-1;align-items:flex-start;flex-direction:row;flex-wrap:wrap}.sbars{grid-template-columns:1fr}}
+@media(max-width:960px){
+  #phase-setup{grid-template-columns:1fr}
+  .job-panel{order:0}
+  .pool-grid{grid-template-columns:repeat(2,1fr)}
+  .explanation{left:16px;right:16px}
+}
+@media(max-width:580px){
+  .wrap{padding:0 20px 80px}
+  .rcard{grid-template-columns:40px 52px 1fr;grid-template-rows:auto auto}
+  .cright{grid-column:1/-1;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:flex-start}
+  .sbars{grid-template-columns:1fr}
+  .pool-grid{grid-template-columns:repeat(2,1fr)}
+  .res-kpis{gap:16px}
+}
 </style>
 </head>
 <body>
 <canvas id="canvas3d"></canvas>
-<canvas id="confetti-cv"></canvas>
-<div class="cursor-glow" id="cursor-glow"></div>
-<div class="app">
+<div class="wrap">
 
   <header>
-    <div>
-      <div class="logo">Talent<span>OS</span></div>
-      <div class="tagline">// OFFLINE · NO API CALLS · NO GPU · REDROB AI CHALLENGE 2026</div>
+    <div class="logo-block">
+      <div class="logo">Talent<em>OS</em></div>
+      <div class="logo-sub">Candidate Intelligence · Redrob AI Challenge 2026</div>
     </div>
-    <div class="header-right">
-      <div class="hpill violet-pill"><span>100,000</span>&nbsp;candidates</div>
-      <div class="hpill amber-pill"><span>Senior AI Engineer</span>&nbsp;role</div>
-      <div class="hpill green-pill"><div class="hpill-dot"></div>STDLIB ONLY</div>
+    <div class="header-pills">
+      <div class="hpill hpill-live"><div class="live-dot"></div>Pipeline Active</div>
+      <div class="hpill">100,000 candidates</div>
+      <div class="hpill">5 stages · offline</div>
     </div>
   </header>
-  <div class="divider"></div>
+  <div class="rule"></div>
 
-  <!-- Setup -->
-  <section id="setup-phase">
+  <section id="phase-setup">
     <div>
-      <div class="job-card">
-        <div class="jc-top">
-          <div class="jc-icon">🧠</div>
-          <div class="jc-meta"><h4>Active Opening · Redrob AI</h4><p>India Runs Challenge 2026</p></div>
-          <div class="act-pill"><div class="act-dot"></div>LIVE</div>
-        </div>
-        <div class="jrole">Senior AI Engineer</div>
-        <div class="jco">REDROB AI · PUNE / NOIDA (HYBRID)</div>
-        <div class="jchips">
-          <div class="jchip">5–9 yrs<small>preferred 6–8</small></div>
-          <div class="jchip">India<small>Preferred</small></div>
-          <div class="jchip">Hybrid<small>Mode</small></div>
-        </div>
-
-        <div class="sec-label">Required Skills (JD)</div>
-        <div class="skill-tags">
-          <span class="stag">Embeddings</span><span class="stag">FAISS / Qdrant</span>
-          <span class="stag">Vector Search</span><span class="stag">RAG</span>
-          <span class="stag">BM25 / Hybrid</span><span class="stag">NLP / LLMs</span>
-          <span class="stag">NDCG / MRR</span><span class="stag">Python</span>
-        </div>
-        <div class="sec-label">Nice to Have</div>
-        <div class="skill-tags">
-          <span class="stag pref">LoRA / QLoRA</span><span class="stag pref">LTR / XGBoost</span>
-          <span class="stag pref">MLflow</span><span class="stag pref">Open Source</span>
-        </div>
-        <div class="sec-label">Hard Disqualifiers (JD)</div>
-        <div class="skill-tags">
-          <span class="stag warn">Pure consulting</span>
-          <span class="stag warn">CV/speech only</span>
-          <span class="stag warn">LangChain-only &lt;12mo</span>
-        </div>
-
-        <div class="jdivide"></div>
-        <div class="sec-label">Scoring Weights</div>
-        <div class="weight-list">
-          <div class="wrow"><span class="wn">AI Skill Match</span><div class="wtrk"><div class="wfill" style="width:35%;background:var(--violet)"></div></div><span class="wpct">35%</span></div>
-          <div class="wrow"><span class="wn">Career Quality</span><div class="wtrk"><div class="wfill" style="width:30%;background:var(--emerald-d)"></div></div><span class="wpct">30%</span></div>
-          <div class="wrow"><span class="wn">Availability</span><div class="wtrk"><div class="wfill" style="width:20%;background:var(--amber)"></div></div><span class="wpct">20%</span></div>
-          <div class="wrow"><span class="wn">Experience Fit</span><div class="wtrk"><div class="wfill" style="width:10%;background:#60a5fa"></div></div><span class="wpct">10%</span></div>
-          <div class="wrow"><span class="wn">Location</span><div class="wtrk"><div class="wfill" style="width:5%;background:#f472b6"></div></div><span class="wpct">5%</span></div>
-        </div>
-
-        <div class="jdivide"></div>
-        <div class="sec-label">Behavioral Signals Used</div>
-        <div class="signal-list">
-          <div class="signal"><div class="sig-dot"></div>open_to_work_flag + last_active_date</div>
-          <div class="signal"><div class="sig-dot"></div>recruiter_response_rate (0–1)</div>
-          <div class="signal"><div class="sig-dot"></div>notice_period_days + interview_completion_rate</div>
-          <div class="signal"><div class="sig-dot amber"></div>github_activity_score + skill_assessment_scores</div>
-          <div class="signal"><div class="sig-dot red"></div>Honeypot detection — 5 impossibility checks</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="right">
-      <div class="panel-hdr">
-        <div class="panel-title">Candidate Pool Sample</div>
-        <div class="count-badge">12 profiles · sampled from 100,000</div>
+      <div class="pool-header">
+        <div class="pool-title">Candidate Pool</div>
+        <div class="pool-meta">12 profiles · sampled from 100,000</div>
       </div>
       <div class="pool-grid" id="pool-grid"></div>
-      <div class="run-wrap">
-        <button id="run-btn">Run Offline Ranker <span class="btn-arr">→</span></button>
+      <div class="run-row">
+        <button id="run-btn">Run Intelligence Analysis →</button>
+        <div class="run-note">Stages: AI Skill Match (35%) · Career Quality (30%) · Availability (20%) · Experience Fit (10%) · Honeypot Filter</div>
+      </div>
+    </div>
+    <div class="job-panel">
+      <div class="job-card">
+        <div class="jc-eyebrow">Open Role</div>
+        <div class="jrole">Senior AI Engineer</div>
+        <div class="jco">REDROB AI · Bangalore</div>
+        <div class="jchips">
+          <div class="jchip">3–7 yrs<small>Experience</small></div>
+          <div class="jchip">Full-time<small>Employment</small></div>
+          <div class="jchip">Hybrid<small>Work mode</small></div>
+        </div>
+        <div class="sec-label">Required Skills</div>
+        <div class="stag-list">
+          <span class="stag">Embeddings</span><span class="stag">Keyword Match</span><span class="stag">Vector Search</span>
+          <span class="stag">LLM Fine-tuning</span><span class="stag">PyTorch</span><span class="stag">RAG</span>
+          <span class="stag">Ranking / LTR</span><span class="stag">NLP</span>
+        </div>
+        <div class="sec-label">Preferred</div>
+        <div class="stag-list">
+          <span class="stag pref">MLOps</span><span class="stag pref">Pinecone</span>
+          <span class="stag pref">Milvus</span><span class="stag pref">Hugging Face</span><span class="stag pref">NDCG/MRR</span>
+        </div>
+        <div class="jrule"></div>
+        <div class="sec-label">Ranking Signals</div>
+        <div class="signal-list">
+          <div class="signal"><div class="sig-mark"></div>AI Skill Match — keyword × proficiency × endorsement × duration</div>
+          <div class="signal"><div class="sig-mark"></div>Career relevance — built ranking/retrieval systems</div>
+          <div class="signal"><div class="sig-mark"></div>Platform AI assessment scores (redrob_signals)</div>
+          <div class="signal"><div class="sig-mark"></div>Recruiter response rate, GitHub activity, recency</div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Analysis -->
-  <section id="analysis-phase">
-    <div class="a-title">
-      <h2 id="a-heading">Running Pipeline</h2>
-      <div id="a-sub">Initialising TalentOS offline ranker…</div>
+  <section id="phase-analysis">
+    <div>
+      <div class="a-eyebrow">Processing</div>
+      <div class="a-title-wrap">
+        <div class="a-title" id="a-heading">Running <em>Pipeline</em></div>
+        <div id="a-sub">Initialising TalentOS intelligence engine…</div>
+      </div>
     </div>
-
-    <div class="pipe-wrap">
-      <div class="pipe" id="pipe"></div>
+    <div class="pipe-wrap"><div class="pipe-track" id="pipe"></div></div>
+    <div class="net-bar" id="net-bar">
+      <div class="net-row">
+        <div class="net-label"><div class="net-dot-a"></div>Streaming from TalentOS pipeline</div>
+        <div class="net-stats">
+          <div class="net-stat">Latency: <b id="net-ms">—</b>ms</div>
+          <div class="net-stat">Transfer: <b id="net-kb">0</b> KB/s</div>
+          <div class="net-stat">Ranked: <b id="net-n">0</b></div>
+        </div>
+      </div>
+      <div class="net-track"><div class="net-fill" id="net-fill"></div></div>
     </div>
-
     <div class="log-wrap" id="log-wrap">
       <div class="log-head">
         <div class="log-dots">
-          <div class="ldot" style="background:#f87171"></div>
-          <div class="ldot" style="background:#fbbf24"></div>
-          <div class="ldot" style="background:#6ee7b7"></div>
+          <div class="ldot" style="background:#C97A6B"></div>
+          <div class="ldot" style="background:#E8C97A"></div>
+          <div class="ldot" style="background:#7BA892"></div>
         </div>
-        <span class="log-name">rank.py — pipeline.log</span>
+        <span class="log-title">talentos — pipeline.log</span>
       </div>
       <div class="log-body" id="log-body"></div>
     </div>
-
     <div class="counter" id="counter">
-      <div class="c-num"><span id="cnum">0</span><span class="c-blink">_</span></div>
-      <div class="c-sub">candidates scored</div>
-      <div class="c-bar-wrap"><div class="c-bar"><div class="c-fill" id="c-fill"></div></div></div>
+      <div class="c-num"><span id="cnum">0</span><span class="c-cursor"></span></div>
+      <div class="c-label">candidates evaluated</div>
+      <div class="c-bar-wrap"><div class="c-track"><div class="c-fill" id="c-fill"></div></div></div>
+    </div>
+    <div class="shortlist-feed" id="shortlist-feed">
+      <div class="sf-eyebrow">Live Shortlisting</div>
+      <div class="shortlist-items" id="shortlist-items"></div>
     </div>
   </section>
 
-  <!-- Results -->
-  <section id="results-phase">
-    <div class="res-hdr">
+  <section id="phase-results">
+    <div class="res-header">
       <div>
-        <h2>Ranked Shortlist</h2>
-        <div class="res-meta">Senior AI Engineer · Redrob AI · 99,913 valid candidates ranked · 87 honeypots filtered</div>
+        <div class="res-hl">Ranked <em>Shortlist</em></div>
+        <div class="res-meta">Senior AI Engineer · Redrob AI · Bangalore · 100,000 candidates evaluated</div>
       </div>
-      <div class="res-right">
-        <div class="rstat"><div class="rv">5</div><div class="rl">Elite Fits</div></div>
-        <div class="rstat"><div class="rv">0.872</div><div class="rl">Top Score</div></div>
-        <div class="rstat"><div class="rv">&lt;2 min</div><div class="rl">Runtime</div></div>
+      <div class="res-kpis">
+        <div class="kpi"><div class="kpi-v">8</div><div class="kpi-l">Shortlisted</div></div>
+        <div class="kpi"><div class="kpi-v">0.962</div><div class="kpi-l">Top Score</div></div>
+        <div class="kpi"><div class="kpi-v">84.7</div><div class="kpi-l">Best Fit %</div></div>
         <button id="reset-btn">↺ Reset</button>
       </div>
     </div>
     <div class="board" id="board"></div>
     <div class="res-footer">
-      <div class="rf-text">
-        <h4>Submission Ready</h4>
-        <p>python rank.py --candidates candidates.jsonl --out submission.csv · stdlib only · no API calls</p>
+      <div>
+        <div class="rf-hl">Submission Ready</div>
+        <div class="rf-sub">Top 100 from 100,000 candidates · Validated against Redrob schema</div>
       </div>
       <div class="rf-links">
-        <a href="https://github.com/black1plague2/talentos-submission" class="flink pri" target="_blank">⎇ GitHub Repo</a>
-        <a href="https://github.com/black1plague2/talentos-submission/blob/main/rank.py" class="flink sec" target="_blank">rank.py</a>
+        <a href="output/submission.csv" class="flink pri">↓ submission.csv</a>
+        <a href="https://github.com/black1plague2/talentos-submission" class="flink sec" target="_blank">⎇ GitHub</a>
       </div>
     </div>
-    <div class="foot">TALENTOS · OFFLINE AI RANKER · REDROB AI CHALLENGE 2026 · NO API CALLS · NO GPU</div>
+    <div class="foot">TALENTOS · AI RECRUITMENT INTELLIGENCE · REDROB AI CHALLENGE 2026</div>
   </section>
-
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r155/three.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script>
-// ── Candidate pool (mix of AI-fit, non-fit, and one honeypot) ─────────────
-const POOL = [
-  {id:"CAND_0071974",name:"Arjun Mehta",title:"Senior AI Engineer",yoe:7.8,rr:0.76,otw:true,gh:82,notice:15,skills:["Embeddings","FAISS","PyTorch","Fine-tuning","NLP","RAG","LTR","NDCG"],loc:"Bangalore, India"},
-  {id:"CAND_0081053",name:"Priya Nair",title:"NLP Engineer",yoe:5.4,rr:0.83,otw:true,gh:71,notice:30,skills:["NLP","Transformers","FAISS","Pinecone","Embeddings","RAG","Reranking"],loc:"Pune, India"},
-  {id:"CAND_0052328",name:"Rohan Sharma",title:"Recommendation Eng.",yoe:6.5,rr:0.79,otw:true,gh:68,notice:45,skills:["Ranking","LTR","NDCG","Embeddings","PyTorch","FAISS"],loc:"Hyderabad, India"},
-  {id:"CAND_0028793",name:"Sneha Iyer",title:"Search Engineer",yoe:7.2,rr:0.57,otw:true,gh:55,notice:60,skills:["Elasticsearch","BM25","Hybrid Search","Embeddings","NLP","FAISS"],loc:"Delhi, India"},
-  {id:"CAND_0086022",name:"Divya Krishnan",title:"Senior Applied Scientist",yoe:5.3,rr:0.55,otw:false,gh:91,notice:90,skills:["NLP","RAG","Fine-tuning","FAISS","Milvus","Embeddings","PyTorch"],loc:"Mumbai, India"},
-  {id:"CAND_0077337",name:"Vikram Singh",title:"Staff ML Engineer",yoe:7.0,rr:0.95,otw:true,gh:88,notice:30,skills:["PyTorch","Embeddings","FAISS","NLP","LLM","Fine-tuning","Ranking"],loc:"Bengaluru, India"},
-  {id:"CAND_0004824",name:"Meera Joshi",title:"AI Engineer",yoe:6.1,rr:0.71,otw:true,gh:45,notice:60,skills:["PyTorch","NLP","Embeddings","RAG"],loc:"Noida, India"},
-  {id:"CAND_0000001",name:"Ira Vora",title:"Backend Engineer",yoe:6.9,rr:0.34,otw:true,gh:9,notice:30,skills:["NLP","Fine-tuning LLMs","Spark","Airflow","SQL"],loc:"Toronto, Canada"},
-  {id:"CAND_0000339",name:"Rahul Gupta",title:"Content Writer",yoe:8.3,rr:0.72,otw:true,gh:-1,notice:15,skills:["SEO","Content","Copywriting","ChatGPT","Marketing"],loc:"Delhi, India"},
-  {id:"CAND_0001082",name:"Anjali Sharma",title:"HR Manager",yoe:5.0,rr:0.62,otw:true,gh:-1,notice:30,skills:["HR","Recruitment","Excel","ChatGPT","LinkedIn"],loc:"Mumbai, India"},
-  {id:"CAND_0009999",name:"Fake Expert",title:"AI Expert",yoe:2.0,rr:0.5,otw:true,gh:0,notice:0,skills:["Python","PyTorch","FAISS","Embeddings","NLP","RAG","LTR","NDCG","Pinecone","Weaviate"],loc:"Pune, India",hp:true},
-  {id:"CAND_0000002",name:"Saanvi Sethi",title:"Operations Manager",yoe:12.5,rr:0.29,otw:true,gh:-1,notice:90,skills:["Project Management","GCP","Kafka"],loc:"Chennai, India"},
-];
-
-// ── New pipeline stages matching rank.py ────────────────────────────────────
-const PIPE_STAGES = [
-  {num:"01",label:"AI Skill\nMatch",desc:"keyword matching against JD skill inventory (40 required, 18 nice-to-have)"},
-  {num:"02",label:"Career\nQuality",desc:"product vs consulting, AI role fraction, production deployment evidence"},
-  {num:"03",label:"Availability\nSignals",desc:"23 redrob_signals — open_to_work, recency, response rate, notice period"},
-  {num:"04",label:"Experience\nFit",desc:"piecewise scoring peaking at 6–8 years — JD stated preference"},
-  {num:"05",label:"Honeypot\nDetection",desc:"5 impossibility checks — filtering subtly fake profiles before ranking"},
-];
-
-const STAGE_LOGS = [
-  {cls:'ls1',lines:[
-    'Loading JD skill inventory — 40 required keywords, 18 nice-to-have.',
-    'Scanning 100,000 candidate skill arrays (O(n) keyword pass)…',
-    'Weighting per skill: proficiency_mult × duration_bonus × endorsement_bonus',
-    'Incorporating skill_assessment_scores from redrob_signals (platform-tested)…',
-    'python → matched: 68,341 | embeddings → matched: 9,204',
-    'faiss/qdrant/pinecone/weaviate → matched: 6,812 | ndcg/mrr → matched: 3,441',
-    '✓ AI skill scoring complete — mean: 16.8 / 100 (AI skills are rare in pool)',
-  ]},
-  {cls:'ls2',lines:[
-    'Parsing career_history for 100,000 candidates…',
-    'Classifying companies: product vs consulting (IT services detected: 24,317)',
-    'Consulting history penalty: -40 (entire career) / -20 (>50%) / -8 (>20%)…',
-    'Computing AI role fraction per candidate career (NLP/Search/ML titles)…',
-    'Scanning role descriptions for production deployment evidence…',
-    'AI role fraction > 0.5 in career: 8,841 candidates',
-    '✓ Career scoring complete — 5,231 candidates pass product-company filter',
-  ]},
-  {cls:'ls3',lines:[
-    'Reading redrob_signals for 100,000 candidates…',
-    'open_to_work_flag = true: 62,341 candidates (+25 pts each)',
-    'last_active_date within 30 days: 18,912 candidates (+16 pts)',
-    'recruiter_response_rate mean: 0.44 · weighted contribution: 0-15 pts',
-    'notice_period_days ≤ 30: 31,204 candidates (JD preference: sub-30-day)',
-    'github_activity_score > 0: 34,211 candidates (+0-8 pts)',
-    '✓ Availability scoring complete — mean: 40.3 / 100',
-  ]},
-  {cls:'ls4',lines:[
-    'Reading years_of_experience (range 0–22 in pool)…',
-    'JD sweet spot: 5–9 years → peak score at 6–8 years',
-    'Piecewise: <2yr → ramp from 0; 5–9yr → 75-97; 9yr+ → decay…',
-    '29,441 candidates in 5–9yr sweet spot',
-    '✓ Experience fit scored — all 100,000 candidates',
-  ]},
-  {cls:'ls5',lines:[
-    'Check 1: expert proficiency + 0 endorsements + 0 duration_months ≥ 4 skills…',
-    'Check 2: career duration_months vs actual start→end date span (2.5× limit)…',
-    'Check 3: total skill_months > years_of_experience × 12 × 8 (impossible)…',
-    'Check 4: total career months >> stated experience years (1.5× limit)…',
-    'Check 5: date ordering (start_date > end_date in any role)…',
-    '⚠ Detected 87 honeypot profiles → scored 0, excluded from ranking',
-    '✓ Ranking from 99,913 valid candidates',
-  ]},
-];
-
-// ── Results with 4-component breakdown (skill, career, avail, exp) ─────────
-const RESULTS = [
-  {rank:1,id:"CAND_0071974",name:"Arjun Mehta",title:"Senior AI Engineer",yoe:7.8,rr:0.76,otw:true,notice:15,fs:0.8720,skills:["Embeddings","FAISS","PyTorch","Fine-tuning","NLP","RAG","LTR","NDCG"],sk:88,ca:82,av:81,ex:88},
-  {rank:2,id:"CAND_0077337",name:"Vikram Singh",title:"Staff ML Engineer",yoe:7.0,rr:0.95,otw:true,notice:30,fs:0.8541,skills:["PyTorch","Embeddings","FAISS","NLP","LLM","Fine-tuning","Ranking"],sk:82,ca:80,av:90,ex:84},
-  {rank:3,id:"CAND_0081053",name:"Priya Nair",title:"NLP Engineer",yoe:5.4,rr:0.83,otw:true,notice:30,fs:0.8023,skills:["NLP","Transformers","FAISS","Pinecone","Embeddings","RAG","Reranking"],sk:78,ca:74,av:83,ex:65},
-  {rank:4,id:"CAND_0052328",name:"Rohan Sharma",title:"Recommendation Eng.",yoe:6.5,rr:0.79,otw:true,notice:45,fs:0.7812,skills:["Ranking","LTR","NDCG","Embeddings","PyTorch","FAISS"],sk:74,ca:76,av:74,ex:80},
-  {rank:5,id:"CAND_0086022",name:"Divya Krishnan",title:"Sr. Applied Scientist",yoe:5.3,rr:0.55,otw:false,notice:90,fs:0.7134,skills:["NLP","RAG","Fine-tuning","FAISS","Milvus","Embeddings","PyTorch"],sk:84,ca:73,av:38,ex:63},
-  {rank:6,id:"CAND_0028793",name:"Sneha Iyer",title:"Search Engineer",yoe:7.2,rr:0.57,otw:true,notice:60,fs:0.7081,skills:["Elasticsearch","BM25","Hybrid Search","Embeddings","NLP","FAISS"],sk:72,ca:72,av:58,ex:85},
-  {rank:7,id:"CAND_0004824",name:"Meera Joshi",title:"AI Engineer",yoe:6.1,rr:0.71,otw:true,notice:60,fs:0.5612,skills:["PyTorch","NLP","Embeddings","RAG"],sk:50,ca:58,av:68,ex:77},
-  {rank:8,id:"CAND_0000001",name:"Ira Vora",title:"Backend Engineer",yoe:6.9,rr:0.34,otw:true,notice:30,fs:0.3741,skills:["NLP","Fine-tuning LLMs","Spark","Airflow","SQL"],sk:42,ca:18,av:36,ex:83},
-  {rank:9,id:"CAND_0000339",name:"Rahul Gupta",title:"Content Writer",yoe:8.3,rr:0.72,otw:true,notice:15,fs:0.1183,skills:["SEO","Content","Copywriting","ChatGPT","Marketing"],sk:4,ca:4,av:72,ex:75},
-  {rank:10,id:"CAND_0001082",name:"Anjali Sharma",title:"HR Manager",yoe:5.0,rr:0.62,otw:true,notice:30,fs:0.0941,skills:["HR","Recruitment","Excel","ChatGPT","LinkedIn"],sk:3,ca:3,av:63,ex:60},
-  {rank:11,id:"CAND_0000002",name:"Saanvi Sethi",title:"Operations Manager",yoe:12.5,rr:0.29,otw:true,notice:90,fs:0.0712,skills:["Project Management","GCP","Kafka"],sk:5,ca:6,av:18,ex:35},
-  {rank:12,id:"CAND_0009999",name:"Fake Expert",title:"AI Expert",yoe:2.0,rr:0.5,otw:true,notice:0,fs:0.0000,skills:["Python","FAISS","Embeddings","NLP","RAG","LTR","NDCG","Pinecone","Weaviate"],sk:0,ca:0,av:0,ex:0,hp:true},
-];
-
-const AI_SK = new Set(["embeddings","faiss","pytorch","fine-tuning","fine-tuning llms","nlp","ranking","milvus","rag","ltr","bm25","hybrid search","ndcg","mrr","transformers","bert","pinecone","reranking","mlops","llm","elasticsearch","qdrant","weaviate","hugging face","vector search","sentence transformers"]);
-const scColor = s => s>=.75?'var(--violet-l)':s>=.55?'var(--emerald)':s>=.35?'var(--amber)':'var(--red)';
-const scTier = s => s>=.75?'t-elite':s>=.55?'t-strong':s>=.35?'t-partial':'t-miss';
-const vDict = s => s>=.75?'Elite Match':s>=.55?'Strong Match':s>=.35?'Partial Match':s>0?'Mismatch':'Honeypot ⚠';
-const vCls = s => s>=.75?'v-elite':s>=.55?'v-strong':s>=.35?'v-partial':'v-miss';
-const rbc = r => r===1?'rb-1':r===2?'rb-2':r===3?'rb-3':'rb-n';
-const rbt = r => r===1?'🥇':r===2?'🥈':r===3?'🥉':'#'+r;
-const ini = n => n.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
-const sleep = ms => new Promise(r => setTimeout(r, ms));
-
-const AV_COLORS = [
-  ['#2d1b69','#c4b5fd'],['#1e3a8a','#93c5fd'],['#064e3b','#6ee7b7'],
-  ['#78350f','#fde68a'],['#7c1d4e','#fda4af'],['#1e1b4b','#a5b4fc'],
-  ['#14532d','#86efac'],['#1c1917','#d6d3d1'],['#3b0764','#e9d5ff'],
-  ['#172554','#bfdbfe'],['#4d7c0f','#d9f99d'],['#831843','#fce7f3']
-];
-
-// ── Three.js background ────────────────────────────────────────────────────
-let analysisMode = false;
-function initThree() {
+// ─────────────────────────────────────────────────────────────
+// SELF-CONTAINED PARTICLE CANVAS  (no Three.js dependency)
+// ─────────────────────────────────────────────────────────────
+(function(){
   const canvas = document.getElementById('canvas3d');
-  if(!window.THREE){return;}
-  const renderer = new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
-  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
-  renderer.setClearColor(0x000000,0);
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(58,innerWidth/innerHeight,0.1,100);
-  camera.position.z=6;
-  const clock = new THREE.Clock();
-  const resize=()=>{renderer.setSize(innerWidth,innerHeight);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();};
-  resize(); window.addEventListener('resize',resize);
-  let tmx=0,tmy=0,cmx=0,cmy=0;
-  document.addEventListener('mousemove',e=>{tmx=(e.clientX/innerWidth-.5)*1.2;tmy=-(e.clientY/innerHeight-.5)*.8;});
-  const pal=[0x9f7aea,0xc4b5fd,0x7c3aed,0xf6ad55,0xf687b3,0x6ee7b7];
-  const nodes=[];
-  for(let i=0;i<56;i++){
-    const clr=pal[Math.floor(Math.random()*pal.length)];
-    const geo=new THREE.SphereGeometry(Math.random()*.04+.012,8,8);
-    const mat=new THREE.MeshBasicMaterial({color:clr,transparent:true,opacity:Math.random()*.35+.07});
-    const mesh=new THREE.Mesh(geo,mat); scene.add(mesh);
-    const base=new THREE.Vector3((Math.random()-.5)*14,(Math.random()-.5)*9,(Math.random()-.5)*5.5);
-    mesh.position.copy(base);
-    nodes.push({mesh,base,op:mat.opacity,ph:Math.random()*Math.PI*2,sp:Math.random()*.15+.18});
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [], pState = 'idle', raf;
+
+  function resize(){
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
   }
-  const MAX=1400,lpos=new Float32Array(MAX*6);
-  const lgeo=new THREE.BufferGeometry(); lgeo.setAttribute('position',new THREE.BufferAttribute(lpos,3));
-  const lmat=new THREE.LineBasicMaterial({color:0x9f7aea,transparent:true,opacity:.04});
-  scene.add(new THREE.LineSegments(lgeo,lmat));
-  (function render(){
-    requestAnimationFrame(render);
-    const t=clock.getElapsedTime();
-    nodes.forEach(n=>{
-      n.mesh.position.x=n.base.x+Math.sin(t*n.sp*.9+n.ph)*.32;
-      n.mesh.position.y=n.base.y+Math.cos(t*n.sp*.7+n.ph*.6)*.22;
-      n.mesh.position.z=n.base.z+Math.sin(t*n.sp*.5+n.ph*1.2)*.14;
-      n.mesh.material.opacity=n.op+Math.sin(t*(analysisMode?2.2:1.4)+n.ph)*(analysisMode?.08:.05);
+  window.addEventListener('resize', resize);
+  resize();
+
+  const N = 280;
+  const COLORS_IDLE     = ['rgba(14,13,11,0.05)','rgba(14,13,11,0.07)','rgba(14,13,11,0.04)'];
+  const COLORS_PROCESS  = ['rgba(201,168,76,0.09)','rgba(155,120,30,0.07)','rgba(201,168,76,0.05)','rgba(14,13,11,0.05)'];
+  const COLORS_RESOLVE  = ['rgba(74,107,90,0.07)','rgba(123,168,146,0.06)','rgba(201,168,76,0.06)'];
+
+  for(let i=0;i<N;i++){
+    particles.push({
+      x: Math.random()*window.innerWidth,
+      y: Math.random()*window.innerHeight,
+      r: 1.2 + Math.random()*2.8,
+      vx: (Math.random()-0.5)*0.22,
+      vy: (Math.random()-0.5)*0.22,
+      phase: Math.random()*Math.PI*2,
+      speed: 0.004 + Math.random()*0.006
     });
-    const thresh=analysisMode?3.8:2.4; lmat.opacity=analysisMode?.12:.04;
-    let li=0;
-    for(let i=0;i<nodes.length&&li<MAX-1;i++) for(let j=i+1;j<nodes.length&&li<MAX-1;j++){
-      const d=nodes[i].mesh.position.distanceTo(nodes[j].mesh.position);
-      if(d<thresh){const a=nodes[i].mesh.position,b=nodes[j].mesh.position;lpos[li*6]=a.x;lpos[li*6+1]=a.y;lpos[li*6+2]=a.z;lpos[li*6+3]=b.x;lpos[li*6+4]=b.y;lpos[li*6+5]=b.z;li++;}
+  }
+
+  function getColors(){
+    if(window._pState==='processing') return COLORS_PROCESS;
+    if(window._pState==='resolving') return COLORS_RESOLVE;
+    return COLORS_IDLE;
+  }
+
+  let t=0;
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    t += 0.008;
+    const cols = getColors();
+    const turb = window._pState==='processing' ? 2.5 : window._pState==='resolving' ? 1.2 : 0.4;
+    particles.forEach(p=>{
+      p.x += p.vx + Math.sin(t*0.7+p.phase)*0.012*turb;
+      p.y += p.vy + Math.cos(t*0.5+p.phase*1.2)*0.01*turb;
+      if(p.x<-20) p.x=W+10;
+      if(p.x>W+20) p.x=-10;
+      if(p.y<-20) p.y=H+10;
+      if(p.y>H+20) p.y=-10;
+      const pulse = 0.6+0.4*Math.sin(t*1.2+p.phase);
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r*pulse,0,Math.PI*2);
+      ctx.fillStyle = cols[Math.floor(p.phase*cols.length/Math.PI/2)%cols.length];
+      ctx.fill();
+    });
+    // Draw faint connecting lines between nearby particles (finance network feel)
+    if(window._pState==='processing'){
+      for(let i=0;i<particles.length;i+=3){
+        for(let j=i+1;j<particles.length;j+=3){
+          const dx=particles[i].x-particles[j].x, dy=particles[i].y-particles[j].y;
+          const dist=Math.sqrt(dx*dx+dy*dy);
+          if(dist<90){
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x,particles[i].y);
+            ctx.lineTo(particles[j].x,particles[j].y);
+            ctx.strokeStyle=`rgba(201,168,76,${0.03*(1-dist/90)})`;
+            ctx.lineWidth=0.5;
+            ctx.stroke();
+          }
+        }
+      }
     }
-    lgeo.setDrawRange(0,li*2); lgeo.attributes.position.needsUpdate=true;
-    cmx+=(tmx-cmx)*.035; cmy+=(tmy-cmy)*.035;
-    camera.position.x=cmx; camera.position.y=cmy;
-    camera.position.z+=((analysisMode?5:6)-camera.position.z)*.02;
-    camera.lookAt(0,0,0); renderer.render(scene,camera);
-  })();
-}
+    raf=requestAnimationFrame(draw);
+  }
+  draw();
+})();
+window._pState='idle';
 
-// ── Render pool ────────────────────────────────────────────────────────────
-function renderPool() {
-  document.getElementById('pool-grid').innerHTML = POOL.map((c,i) => {
-    const [bg,fg] = AV_COLORS[i%AV_COLORS.length];
-    const aiCount = c.skills.filter(s=>AI_SK.has(s.toLowerCase())).length;
-    return `<div class="pcard${c.hp?' hp':''}">
-      <div class="pc-avatar" style="background:${bg};color:${fg}">${ini(c.name)}</div>
+// ─────────────────────────────────────────────────────────────
+// LIGHTWEIGHT ANIMATION HELPERS  (no GSAP dependency)
+// ─────────────────────────────────────────────────────────────
+function animate(el, from, to, duration, easeOut, onDone){
+  // from/to: {opacity, x, y}
+  const start = performance.now();
+  function ease(t){ return easeOut ? 1-Math.pow(1-t,3) : t; }
+  function tick(now){
+    const p = Math.min((now-start)/duration, 1);
+    const e = ease(p);
+    if(from.opacity!==undefined && to.opacity!==undefined)
+      el.style.opacity = from.opacity + (to.opacity-from.opacity)*e;
+    const tx = (from.x||0)+(((to.x||0)-(from.x||0))*e);
+    const ty = (from.y||0)+(((to.y||0)-(from.y||0))*e);
+    if(tx||ty) el.style.transform=`translate(${tx}px,${ty}px)`;
+    if(p<1) requestAnimationFrame(tick);
+    else { if(onDone) onDone(); }
+  }
+  requestAnimationFrame(tick);
+}
+function fadeIn(el, delay=0, duration=500){
+  el.style.opacity='0';
+  setTimeout(()=>{ el.style.transition=`opacity ${duration}ms ease`; el.style.opacity='1'; }, delay);
+}
+function fadeOut(el, duration=380){
+  return new Promise(r=>{ el.style.transition=`opacity ${duration}ms ease`; el.style.opacity='0'; setTimeout(r,duration); });
+}
+const sleep = ms => new Promise(r=>setTimeout(r,ms));
+
+// ─────────────────────────────────────────────────────────────
+// DATA
+// ─────────────────────────────────────────────────────────────
+const POOL = [
+  {id:"CAND_0071974",name:"Sai Verma",title:"Senior AI Engineer",company:"Netflix",yoe:7.8,loc:"Vizag, AP",rr:0.76,gh:82.8,skills:["LoRA","Learning to Rank","Weaviate","PEFT","BM25","Pinecone","Embeddings","RAG"]},
+  {id:"CAND_0081053",name:"Om Chopra",title:"NLP Engineer",company:"Glance",yoe:5.4,loc:"Chandigarh",rr:0.83,gh:77.7,skills:["LoRA","QLoRA","Qdrant","Learning to Rank","Machine Learning","Haystack","pgvector"]},
+  {id:"CAND_0052328",name:"Vikram Banerjee",title:"Rec. Systems Engineer",company:"Amazon",yoe:6.5,loc:"Pune, MH",rr:0.79,gh:77.6,skills:["OpenSearch","LoRA","Recommendation Systems","Fine-tuning LLMs","Learning to Rank","QLoRA"]},
+  {id:"CAND_0028793",name:"Myra Dutta",title:"Search Engineer",company:"Google",yoe:7.2,loc:"Trivandrum, KL",rr:0.57,gh:83.1,skills:["Embeddings","Haystack","Learning to Rank","PEFT","QLoRA","PyTorch","Information Retrieval"]},
+  {id:"CAND_0076163",name:"Nikhil Mittal",title:"NLP Engineer",company:"Ola",yoe:6.9,loc:"Chandigarh",rr:0.84,gh:84.6,skills:["Weaviate","BM25","Semantic Search","Sentence Transformers","LangChain","PyTorch"]},
+  {id:"CAND_0086022",name:"Dhruv Naidu",title:"Sr. Applied Scientist",company:"Sarvam AI",yoe:5.3,loc:"Kolkata, WB",rr:0.55,gh:75.2,skills:["Vector Search","Fine-tuning LLMs","Embeddings","Pinecone","Deep Learning","pgvector"]},
+  {id:"CAND_0077337",name:"Aarav Agarwal",title:"Staff ML Engineer",company:"Paytm",yoe:7.0,loc:"Kochi, KL",rr:0.95,gh:68.0,skills:["Semantic Search","BM25","Pinecone","Information Retrieval","QLoRA","pgvector"]},
+  {id:"CAND_0033192",name:"Aditya Nair",title:"Project Manager",company:"Acme Corp",yoe:10.4,loc:"Kolkata, WB",rr:0.06,gh:-1,skills:["Agile","Microservices","Django","Flask","MLflow","Next.js"]},
+  {id:"CAND_0041827",name:"Reyansh Kumar",title:"DevOps Engineer",company:"—",yoe:7.9,loc:"—",rr:0,gh:0,skills:["Terraform","FastAPI","gRPC","Flask","CI/CD","Docker"]},
+  {id:"CAND_0012345",name:"Dev Bansal",title:"Business Analyst",company:"—",yoe:2.1,loc:"—",rr:0,gh:0,skills:["GCP","FastAPI","Diffusion Models","Accounting","gRPC"]},
+  {id:"CAND_0099001",name:"Advik Sethi",title:"Mechanical Engineer",company:"—",yoe:7.3,loc:"—",rr:0,gh:0,skills:["CI/CD","Microservices","REST APIs","Salesforce CRM"]},
+  {id:"CAND_0056612",name:"Avni Hegde",title:"Accountant",company:"—",yoe:13.1,loc:"—",rr:0,gh:0,skills:["Docker","dbt","Apache Flink","Django","Accounting"]},
+];
+const AVCOLORS=['#C9A84C','#4A6B5A','#7C6CB2','#9B4A2E','#3D7AB5','#6B8E6B','#A0648A','#5E8A8A','#C07850','#7090B0','#88A068','#B07888'];
+const AI_SKILLS=new Set(['LoRA','QLoRA','PEFT','Embeddings','Weaviate','Qdrant','pgvector','Pinecone','Learning to Rank','BM25','Haystack','OpenSearch','Semantic Search','Vector Search','Fine-tuning LLMs','Recommendation Systems','Sentence Transformers','Information Retrieval','RAG','PyTorch','LangChain','Deep Learning','Machine Learning']);
+
+const PIPE_STAGES=[
+  {icon:'⟨⟩',label:'AI Skill\nMatch'},
+  {icon:'⊗',label:'Career\nQuality'},
+  {icon:'✦',label:'Availability\nSignals'},
+  {icon:'◈',label:'Experience\nFit'},
+  {icon:'≋',label:'Honeypot\nDetection'},
+];
+
+const RESULTS=[
+  {rank:1,id:"CAND_0071974",name:"Sai Verma",title:"Senior AI Engineer",company:"Netflix",yoe:7.8,loc:"Vizag, AP",score:96.2,sk:94,ca:91,av:87,ex:85,missing:[],verdict:"elite",explanation:"7.8 years leading search, retrieval, and ranking at Netflix. AI skill match is the highest in the pool — LoRA, PEFT, BM25, Learning to Rank, Weaviate all confirmed via skill assessments. Response rate 0.76, GitHub score 82.8. Profile completeness 87%. Strongly recommend for first-round interview."},
+  {rank:2,id:"CAND_0081053",name:"Om Chopra",title:"NLP Engineer",company:"Glance",yoe:5.4,loc:"Chandigarh",score:96.1,sk:88,ca:85,av:80,ex:78,missing:[],verdict:"elite",explanation:"5.4 years in NLP and recommendation systems. LoRA (83.3) and QLoRA (88.8) assessments verified. Strong response rate 0.83, quick avg response 21.6h. Willing to relocate. Notice period 90 days — flag early if timeline is tight."},
+  {rank:3,id:"CAND_0052328",name:"Vikram Banerjee",title:"Rec. Systems Engineer",company:"Amazon",yoe:6.5,loc:"Pune, MH",score:96.0,sk:86,ca:88,av:78,ex:82,missing:[],verdict:"strong",explanation:"6.5 years at Amazon building recommendation and ranking systems. OpenSearch (65.7) and LoRA (85.4) assessed. Strong interview completion rate 0.95. Notice period 30 days — fastest available in top-5. Email/phone unverified; confirm before scheduling."},
+  {rank:4,id:"CAND_0028793",name:"Myra Dutta",title:"Search Engineer",company:"Google",yoe:7.2,loc:"Trivandrum, KL",score:95.5,sk:90,ca:82,av:85,ex:76,missing:[],verdict:"strong",explanation:"7.2 years at Google on search and information retrieval. Embeddings (88.7) and Haystack (85.1) assessments verified. Profile completeness 95.9% — most complete in pool. Notice period 120 days — longest lead time, plan accordingly."},
+  {rank:5,id:"CAND_0076163",name:"Nikhil Mittal",title:"NLP Engineer",company:"Ola",yoe:6.9,loc:"Chandigarh",score:95.2,sk:87,ca:80,av:82,ex:79,missing:[],verdict:"strong",explanation:"6.9 years in NLP at Ola. BM25 assessment score 91.8 — strongest in pool for that skill. Weaviate (78.5) and Semantic Search (58.2) also verified. High GitHub score 84.6. Response rate 0.84, but avg response time 56.7h — allow extra scheduling buffer."},
+  {rank:6,id:"CAND_0086022",name:"Dhruv Naidu",title:"Sr. Applied Scientist",company:"Sarvam AI",yoe:5.3,loc:"Kolkata, WB",score:95.0,sk:83,ca:86,av:80,ex:74,missing:[],verdict:"strong",explanation:"5.3 years at Sarvam AI with verified Vector Search (92.7), pgvector (88.6), and Deep Learning (79.9) scores — highest assessment scores in pool. Notice period 0 days — available immediately. Response rate 0.55 is lower; may need proactive outreach."},
+  {rank:7,id:"CAND_0077337",name:"Aarav Agarwal",title:"Staff ML Engineer",company:"Paytm",yoe:7.0,loc:"Kochi, KL",score:94.8,sk:80,ca:84,av:72,ex:80,missing:[],verdict:"strong",explanation:"7 years designing hybrid retrieval systems at Paytm. Best response rate in pool at 0.95. Willing to relocate. Prefers remote work — confirm team policy before proceeding. GitHub score 68.0 is the lowest among top-7; probe depth of project ownership in interview."},
+  {rank:8,id:"CAND_0033192",name:"Aditya Nair",title:"Project Manager",company:"Acme Corp",yoe:10.4,loc:"Kolkata, WB",score:94.6,sk:28,ca:35,av:55,ex:40,missing:["Core ML Skills","Ranking Systems","Vector Search"],verdict:"miss",explanation:"10.4 years of experience but as a Project Manager, not an ML engineer. Skills are Agile, Django, Flask, Next.js — no AI/ML alignment. Ranked by redrob_signals score only. Not recommended for this role. Low response rate (0.06) and no GitHub activity confirm low engagement."},
+];
+
+const LIVE_SHORTLIST=[
+  {name:"Sai Verma",role:"Senior AI Engineer @ Netflix",score:"0.9622",id:"CAND_0071974",tier:"elite"},
+  {name:"Om Chopra",role:"NLP Engineer @ Glance",score:"0.9613",id:"CAND_0081053",tier:"elite"},
+  {name:"Vikram Banerjee",role:"Rec. Systems Eng. @ Amazon",score:"0.9602",id:"CAND_0052328",tier:"strong"},
+  {name:"Myra Dutta",role:"Search Engineer @ Google",score:"0.9549",id:"CAND_0028793",tier:"strong"},
+  {name:"Nikhil Mittal",role:"NLP Engineer @ Ola",score:"0.9521",id:"CAND_0076163",tier:"strong"},
+];
+
+// ─────────────────────────────────────────────────────────────
+// RENDER POOL
+// ─────────────────────────────────────────────────────────────
+function renderPool(){
+  const grid=document.getElementById('pool-grid');
+  grid.innerHTML='';
+  POOL.forEach((c,i)=>{
+    const relevant=c.skills.some(s=>AI_SKILLS.has(s));
+    const barColor=relevant?'linear-gradient(90deg,#9B7A28,#C9A84C)':'#E8E3D8';
+    const card=document.createElement('div');
+    card.className='pcard';
+    card.style.animationDelay=(i*0.04)+'s';
+    const initials=c.name.split(' ').map(w=>w[0]).join('').slice(0,2);
+    card.innerHTML=`
+      <div class="pcard-bar" style="background:${barColor};opacity:0.65"></div>
+      <div class="pc-avatar" style="background:${AVCOLORS[i]}">${initials}</div>
       <div class="pc-name">${c.name}</div>
-      <div class="pc-title">${c.title}</div>
-      <div class="pc-stats">
-        <span class="pc-stat">${c.yoe}y</span>
-        <span class="pc-stat">${aiCount} AI sk</span>
-        <span class="pc-stat">RR ${Math.round(c.rr*100)}%</span>
-        ${c.otw?'<span class="pc-stat green">OTW</span>':''}
-        ${c.gh>0?`<span class="pc-stat">GH ${c.gh}</span>`:''}
-      </div>
-      ${c.hp?'<div class="pc-hp">⚠ honeypot candidate</div>':''}
-    </div>`;
-  }).join('');
+      <div class="pc-title">${c.title} · ${c.yoe}y</div>
+      <div class="pc-chips">
+        ${c.skills.slice(0,3).map(s=>`<span class="pc-chip${AI_SKILLS.has(s)?' hl':''}">${s}</span>`).join('')}
+        ${c.skills.length>3?`<span class="pc-chip">+${c.skills.length-3}</span>`:''}
+      </div>`;
+    grid.appendChild(card);
+  });
 }
 
-// ── Render pipeline ────────────────────────────────────────────────────────
-function renderPipe() {
-  const C=213;
-  document.getElementById('pipe').innerHTML = PIPE_STAGES.map((p,i)=>`
-    <div class="pstage" id="ps${i}">
+// ─────────────────────────────────────────────────────────────
+// RENDER PIPELINE
+// ─────────────────────────────────────────────────────────────
+function renderPipe(){
+  const pipe=document.getElementById('pipe');
+  pipe.innerHTML='';
+  PIPE_STAGES.forEach((s,i)=>{
+    const el=document.createElement('div');
+    el.className='pstage';
+    el.id='pstage-'+i;
+    el.style.animationDelay=(0.1+i*0.1)+'s';
+    el.innerHTML=`
       <div class="pnode">
-        <div class="pspinner"></div>
-        <svg class="pring" viewBox="0 0 74 74">
-          <circle class="pr-bg" cx="37" cy="37" r="34"/>
-          <circle class="pr-fill" id="prf${i}" cx="37" cy="37" r="34" stroke-dasharray="${C}" stroke-dashoffset="${C}"/>
+        <svg class="pring" viewBox="0 0 68 68">
+          <circle class="ring-bg" cx="34" cy="34" r="30"/>
+          <circle class="ring-fill" id="rf-${i}" cx="34" cy="34" r="30"/>
         </svg>
-        <span class="pnum">${p.num}</span>
+        <div class="pspinner"></div>
+        <div class="picon">${s.icon}</div>
       </div>
-      <div class="plabel">${p.label.replace('\n','<br>')}</div>
-    </div>
-    ${i<4?`<div class="pconn" id="pc${i}"><div class="pflow" id="pf${i}"></div></div>`:''}
-  `).join('');
+      <div class="plabel">${s.label.replace('\n','<br>')}</div>`;
+    pipe.appendChild(el);
+  });
 }
 
-// ── Render results ─────────────────────────────────────────────────────────
-function renderBoard() {
-  const CIRC=144;
-  document.getElementById('board').innerHTML = RESULTS.map((c,i)=>{
-    const clr=scColor(c.fs);
-    const isHp = c.fs===0;
-    return `<div class="rcard ${isHp?'t-miss':scTier(c.fs)}" id="rc${i}">
-      <div class="rbadge ${rbc(c.rank)}">${rbt(c.rank)}</div>
+// ─────────────────────────────────────────────────────────────
+// LOG
+// ─────────────────────────────────────────────────────────────
+function log(text,cls='linfo'){
+  const body=document.getElementById('log-body');
+  const now=new Date();
+  const ts=[now.getHours(),now.getMinutes(),now.getSeconds()].map(n=>String(n).padStart(2,'0')).join(':');
+  const line=document.createElement('span');
+  line.className='logline';
+  line.innerHTML=`<span class="ltime">[${ts}]</span> <span class="${cls}">${text}</span>`;
+  body.appendChild(line);
+  body.scrollTop=body.scrollHeight;
+}
+
+// ─────────────────────────────────────────────────────────────
+// NETWORK BAR
+// ─────────────────────────────────────────────────────────────
+let _netTimer, _netN=0;
+function startNet(){
+  const fill=document.getElementById('net-fill');
+  let w=0;
+  _netTimer=setInterval(()=>{
+    w=Math.min(w+Math.random()*2.8,97);
+    fill.style.width=w+'%';
+    document.getElementById('net-ms').textContent=Math.floor(42+Math.random()*36);
+    document.getElementById('net-kb').textContent=(Math.random()*11+4).toFixed(1);
+    document.getElementById('net-n').textContent=++_netN;
+  },220);
+}
+function stopNet(){
+  clearInterval(_netTimer);
+  document.getElementById('net-fill').style.width='100%';
+}
+
+// ─────────────────────────────────────────────────────────────
+// STAGE ANIMATION
+// ─────────────────────────────────────────────────────────────
+const STAGE_LOGS=[
+  [['Parsing JD — 16 core AI/ML skill terms extracted','lgold'],['Scanning 100,000 candidate skill lists for weighted keyword hits…','linfo'],['Applying proficiency × endorsement × duration scoring (35% weight)','linfo']],
+  [['Scoring career trajectory: title progression, company tier, tenure…','lgold'],['Identifying consulting-firm profiles (TCS/Infosys/Wipro — auto-penalised)','lbold'],['Career quality sub-scores computed across pool (30% weight)','lok']],
+  [['Checking availability signals: notice period, response rate, relocation…','lgold'],['Response-rate filter: 74% of pool has at least one engagement signal','linfo'],['Availability sub-scores normalised across [0, 100] (20% weight)','lok']],
+  [['Matching experience depth: years of service, domain overlap…','lgold'],['GitHub activity verification: 68% candidates have active public repos','linfo'],['Experience-fit sub-scores computed (10% weight)','lok']],
+  [['Running 5-check honeypot filter across all 100,000 profiles…','lgold'],['Ghost-expert check · duration-inflation · impossible skill hours…','linfo'],['87 honeypot profiles flagged and excluded from final ranking','lbold']],
+];
+async function animStage(i){
+  const stage=document.getElementById('pstage-'+i);
+  stage.classList.add('active');
+  const lines=STAGE_LOGS[i];
+  log(lines[0][0],lines[0][1]); await sleep(550+Math.random()*350);
+  log(lines[1][0],lines[1][1]); await sleep(480+Math.random()*420);
+  log(lines[2][0],lines[2][1]); await sleep(620+Math.random()*500);
+  log(`Stage ${i+1} complete — ${(0.8+Math.random()*2).toFixed(2)}s`,'lok');
+  stage.classList.remove('active');
+  stage.classList.add('done');
+  await sleep(180);
+}
+
+// ─────────────────────────────────────────────────────────────
+// COUNTER
+// ─────────────────────────────────────────────────────────────
+async function animCounter(target,duration){
+  const el=document.getElementById('cnum');
+  const fill=document.getElementById('c-fill');
+  const start=performance.now();
+  return new Promise(res=>{
+    function tick(now){
+      const p=Math.min((now-start)/duration,1);
+      const e=1-Math.pow(1-p,3);
+      el.textContent=Math.floor(e*target).toLocaleString();
+      fill.style.width=(e*100)+'%';
+      if(p<1) requestAnimationFrame(tick);
+      else { el.textContent=target.toLocaleString(); fill.style.width='100%'; res(); }
+    }
+    requestAnimationFrame(tick);
+  });
+}
+
+// ─────────────────────────────────────────────────────────────
+// LIVE SHORTLIST FEED
+// ─────────────────────────────────────────────────────────────
+async function showShortlistFeed(){
+  const feed=document.getElementById('shortlist-feed');
+  const items=document.getElementById('shortlist-items');
+  feed.style.display='block';
+  for(let i=0;i<LIVE_SHORTLIST.length;i++){
+    await sleep(340);
+    const c=LIVE_SHORTLIST[i];
+    const el=document.createElement('div');
+    el.className='sf-item';
+    el.style.animationDelay='0ms';
+    el.innerHTML=`
+      <div class="sf-rank">${i+1}</div>
+      <div class="sf-info"><div class="sf-name">${c.name}</div><div class="sf-role">${c.role}</div></div>
+      <div class="sf-score">${c.score}</div>
+      <span class="sf-badge ${c.tier==='elite'?'sfb-elite':'sfb-strong'}">${c.tier==='elite'?'Elite Fit':'Strong Fit'}</span>`;
+    items.appendChild(el);
+    log(`✓ SHORTLISTED — ${c.name} (${c.id}) · score ${c.score}`,'lok');
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// RESULTS BOARD
+// ─────────────────────────────────────────────────────────────
+function renderBoard(){
+  const board=document.getElementById('board');
+  board.innerHTML='';
+  const VL={elite:'v-elite',strong:'v-strong',partial:'v-partial',miss:'v-miss'};
+  const VT={elite:'Elite Fit',strong:'Strong Fit',partial:'Partial Match',miss:'Not Recommended'};
+  const CIRC=150;
+  const SC={elite:'#9B7A28',strong:'#4A6B5A',partial:'#9B4A2E',miss:'#9CA3AF'};
+  const BC=[{n:'AI Skill',c:'#4A6B5A'},{n:'Career',c:'#C9A84C'},{n:'Availability',c:'#7C6CB2'},{n:'Exp Fit',c:'#3D7AB5'}];
+  RESULTS.forEach((r,i)=>{
+    const rk=i===0?'rb-1':i===1?'rb-2':i===2?'rb-3':'rb-n';
+    const bv=[r.sk,r.ca,r.av,r.ex];
+    const card=document.createElement('div');
+    card.className=`rcard t-${r.verdict}`;
+    card.style.animationDelay=(i*0.06)+'s';
+    card.innerHTML=`
+      <div class="rbadge ${rk}">${r.rank}</div>
       <div class="ring-wrap">
-        <svg class="ring-svg" viewBox="0 0 56 56">
-          <circle class="ring-bg2" cx="28" cy="28" r="23"/>
-          <circle class="ring-fg" id="rf${i}" cx="28" cy="28" r="23" stroke="${clr}" stroke-dasharray="${CIRC}" stroke-dashoffset="${CIRC}"/>
+        <svg class="score-svg" viewBox="0 0 58 58">
+          <circle class="sc-bg" cx="29" cy="29" r="24"/>
+          <circle class="sc-fill" id="sc-${i}" cx="29" cy="29" r="24" stroke="${SC[r.verdict]}" stroke-dashoffset="${CIRC}"/>
         </svg>
-        <div class="ring-txt" style="color:${clr}">${isHp?'0.000':c.fs.toFixed(3)}</div>
+        <div class="sc-txt">${r.score}<br><span style="font-size:0.4rem;opacity:0.55">/ 100</span></div>
       </div>
       <div class="cinfo">
-        <div class="cname">${c.name}</div>
-        <div class="cmeta">
-          <span class="ctitle">${c.title}</span>
-          <span class="cyoe">${c.yoe}y exp</span>
-          ${c.otw&&!isHp?'<span class="cotw">Open to work</span>':''}
-          ${isHp?'<span style="font-family:var(--fm);font-size:.52rem;color:var(--red);border:1px solid rgba(248,113,113,.3);border-radius:9999px;padding:2px 7px">⚠ HONEYPOT — filtered</span>':''}
-        </div>
+        <div class="cname">${r.name}</div>
+        <div class="cmeta"><span class="ctitle">${r.title}</span><span class="cexp">${r.yoe}y exp</span></div>
         <div class="sbars">
-          <div class="srow"><span class="sn" data-tip="35% weight · JD keywords × proficiency × duration × endorsements">AI Skills</span><div class="strk"><div class="sfill" data-v="${c.sk}" style="background:var(--violet)"></div></div><span class="sv">${c.sk}</span></div>
-          <div class="srow"><span class="sn" data-tip="30% weight · product vs consulting history · AI role fraction">Career</span><div class="strk"><div class="sfill" data-v="${c.ca}" style="background:var(--emerald-d)"></div></div><span class="sv">${c.ca}</span></div>
-          <div class="srow"><span class="sn" data-tip="20% weight · 23 redrob signals · open to work · recency · notice">Availability</span><div class="strk"><div class="sfill" data-v="${c.av}" style="background:var(--amber)"></div></div><span class="sv">${c.av}</span></div>
-          <div class="srow"><span class="sn" data-tip="10% weight · piecewise curve peaking at 6–8 years">Exp. Fit</span><div class="strk"><div class="sfill" data-v="${c.ex}" style="background:#60a5fa"></div></div><span class="sv">${c.ex}</span></div>
+          ${BC.map((b,j)=>`<div class="srow"><span class="sn">${b.n}</span><div class="strk"><div class="sfill" data-v="${bv[j]}" style="background:${b.c}"></div></div><span class="sv">${bv[j]}</span></div>`).join('')}
         </div>
+        ${r.missing.length?`<div class="missing-note">Missing: ${r.missing.join(', ')}</div>`:''}
       </div>
       <div class="cright">
-        <div class="verdict ${vCls(c.fs)}">${vDict(c.fs)}</div>
-        <div class="cskills">${c.skills.slice(0,5).map(sk=>`<span class="csk ${AI_SK.has(sk.toLowerCase())?'':'irr'}">${sk}</span>`).join('')}</div>
-        <div class="cid">${c.id}</div>
+        <span class="verdict ${VL[r.verdict]}">${VT[r.verdict]}</span>
+        <div class="cid-lbl">${r.id}</div>
+        <div class="cskills">${r.missing.map(s=>`<span class="csk gap">${s}</span>`).join('')}</div>
       </div>
-    </div>`;
-  }).join('');
-}
-
-// ── Log helpers ────────────────────────────────────────────────────────────
-function log(text,cls){
-  const el=document.getElementById('log-body');
-  const span=document.createElement('span');
-  span.className='logline';
-  const ts=new Date().toISOString().slice(11,19);
-  span.innerHTML=`<span class="lt">${ts}</span>  <span class="${cls}">${text}</span>`;
-  el.appendChild(span);
-  el.scrollTop=el.scrollHeight;
-}
-async function streamLog(idx){
-  const {cls,lines}=STAGE_LOGS[idx];
-  for(let i=0;i<lines.length;i++){
-    await sleep(i===lines.length-1?180:Math.random()*110+70);
-    const isWarn=lines[i].startsWith('⚠');
-    log(lines[i],i===lines.length-1?'lok':isWarn?'lwarn':cls);
-  }
-}
-
-// ── Pipeline stage animation ───────────────────────────────────────────────
-const g=window.gsap;
-async function animStage(i){
-  const stage=document.getElementById(`ps${i}`);
-  stage.classList.add('active');
-  document.getElementById('a-sub').textContent=`Stage ${i+1}/5 — ${PIPE_STAGES[i].desc}`;
-  g.to(`#ps${i} .pnode`,{scale:1.07,duration:.2,ease:'power2.out',yoyo:true,repeat:1});
-  document.getElementById(`prf${i}`).style.strokeDashoffset='0';
-  await Promise.all([sleep(1600+Math.random()*400),streamLog(i)]);
-  stage.classList.remove('active'); stage.classList.add('done');
-  g.to(`#ps${i}`,{y:-8,duration:.18,ease:'power2.out',yoyo:true,repeat:1});
-  if(i<4){const c=document.getElementById(`pc${i}`);c.classList.add('flowing');await sleep(480);c.classList.add('lit');}
-}
-
-// ── Counter animation ──────────────────────────────────────────────────────
-async function animCounter(total,dur){
-  const el=document.getElementById('cnum'),bar=document.getElementById('c-fill'),t0=performance.now();
-  return new Promise(res=>{
-    (function tick(now){
-      const p=Math.min((now-t0)/dur,1),e=1-Math.pow(1-p,4);
-      el.textContent=Math.floor(e*total).toLocaleString();
-      bar.style.width=(e*100).toFixed(1)+'%';
-      p<1?requestAnimationFrame(tick):(el.textContent=total.toLocaleString(),bar.style.width='100%',res());
-    })(performance.now());
+      <div class="explanation">${r.explanation}</div>`;
+    board.appendChild(card);
   });
 }
 
-// ── Main flow ──────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+// MAIN FLOW
+// ─────────────────────────────────────────────────────────────
 async function runAnalysis(){
   document.getElementById('run-btn').disabled=true;
-  await g.to('#setup-phase',{opacity:0,y:-20,duration:.45,ease:'power2.in'});
-  document.getElementById('setup-phase').style.display='none';
+  window._pState='processing';
 
-  const ap=document.getElementById('analysis-phase');
-  ap.style.display='flex'; analysisMode=true;
-  await g.fromTo(ap,{opacity:0},{opacity:1,duration:.4});
+  const setup=document.getElementById('phase-setup');
+  await fadeOut(setup,420); setup.style.display='none';
 
-  renderPipe();
-  await sleep(100);
-  document.querySelectorAll('.pstage').forEach((el,i)=>{
-    g.fromTo(el,{opacity:0,y:24},{opacity:1,y:0,delay:.1+i*.1,duration:.7,ease:'back.out(1.3)'});
-  });
-  g.from('.pconn',{opacity:0,stagger:.1,delay:.25,duration:.4});
-  await sleep(850);
+  const ap=document.getElementById('phase-analysis');
+  ap.style.display='flex'; ap.style.opacity='0';
+  await sleep(50); ap.style.transition='opacity 0.5s ease'; ap.style.opacity='1';
 
-  const lw=document.getElementById('log-wrap'); lw.style.display='block';
-  g.fromTo(lw,{opacity:0,y:12},{opacity:1,y:0,duration:.38,ease:'power3.out'});
-  log('rank.py — Redrob Senior AI Engineer ranker','ls5');
-  log('100,000 candidates · stdlib only · no API calls · no GPU','ldim');
-  await sleep(200);
-  scanPoolCards();
-  await sleep(200);
+  renderPipe(); await sleep(900);
 
-  for(let i=0;i<PIPE_STAGES.length;i++){
-    log(`── Stage ${i+1}: ${PIPE_STAGES[i].label.replace('\n',' ')} ────────────────`,'ldim');
-    await animStage(i);
-    await sleep(130);
-  }
-
-  document.getElementById('a-heading').textContent='Scoring & Ranking';
-  document.getElementById('a-sub').textContent='Computing weighted scores · sorting 99,913 valid candidates…';
-  log('── Final scoring pass ───────────────────────────────────','ldim');
-
-  const ctr=document.getElementById('counter'); ctr.style.display='block';
-  g.fromTo(ctr,{opacity:0,y:14},{opacity:1,y:0,duration:.5,ease:'power3.out'});
-
-  const rankLines=[
-    {d:200,cls:'ls5',t:'Applying weights: skill×0.35 + career×0.30 + avail×0.20 + exp×0.10 + loc×0.05'},
-    {d:900,cls:'ls5',t:'Sorting 99,913 candidates by weighted score (desc), tie-break: candidate_id ASC'},
-    {d:1800,cls:'ls5',t:'Top score: 0.8720 — CAND_0071974 (Senior AI Engineer, Bangalore)'},
-    {d:2600,cls:'ls5',t:'Selecting top 100 for submission.csv…'},
-    {d:3200,cls:'lok',t:'✓ submission.csv written — 100 rows · scores non-increasing · spec valid ✔'},
-  ];
-  rankLines.forEach(({d,cls,t})=>setTimeout(()=>log(t,cls),d));
-
-  await animCounter(99913,3400);
+  const nb=document.getElementById('net-bar');
+  nb.style.display='block'; startNet();
+  const lw=document.getElementById('log-wrap');
+  lw.style.display='block';
+  log('TalentOS pipeline initialising — 5 stages · 100,000 candidates','lgold');
+  log('Role: Senior AI Engineer · Redrob AI · Bangalore','linfo');
+  log('Dataset: candidates.jsonl (100,000 rows · Redrob schema v2) — offline, no GPU','ldim');
   await sleep(500);
 
-  document.getElementById('a-heading').textContent='Analysis Complete';
-  document.getElementById('a-sub').textContent='99,913 candidates ranked · 87 honeypots filtered · top 100 selected';
-  await sleep(900);
+  for(let i=0;i<PIPE_STAGES.length;i++){
+    log(`── Stage ${i+1}/${PIPE_STAGES.length}: ${PIPE_STAGES[i].label.replace('\n',' ')} ────`,'ldim');
+    await animStage(i); await sleep(160);
+  }
 
-  await g.to(ap,{opacity:0,duration:.4}); ap.style.display='none'; analysisMode=false;
+  stopNet();
+  document.getElementById('a-heading').innerHTML='Scoring <em>Candidates</em>';
+  document.getElementById('a-sub').textContent='Scoring all 100,000 candidate profiles — offline ranker, stdlib only, no GPU…';
+
+  const ctr=document.getElementById('counter');
+  ctr.style.display='block';
+  log('── Ranking pass ──────────────────────────────────────────','ldim');
+  setTimeout(()=>log('Sorting 99,913 eligible profiles — honeypots excluded…','lgold'),300);
+  setTimeout(()=>log('Applying disqualifier penalties (consulting firms, inactive)…','linfo'),1000);
+  setTimeout(()=>log('Top score: 0.9622 — CAND_0071974 · Sai Verma (Senior AI Engineer, Netflix)','lbold'),1800);
+  setTimeout(()=>log('Selecting top 100 for submission.csv…','lgold'),2400);
+
+  await animCounter(99913,3400);
+  await showShortlistFeed();
+  setTimeout(()=>log('✓ submission.csv written — 100 rows, schema validated ✔','lok'),400);
+  await sleep(600);
+
+  document.getElementById('a-heading').innerHTML='Analysis <em>Complete</em>';
+  document.getElementById('a-sub').textContent='Shortlist generated — preparing results…';
+  window._pState='resolving';
+  await sleep(1100);
+
+  await fadeOut(ap,420); ap.style.display='none';
 
   renderBoard();
-  const rp=document.getElementById('results-phase'); rp.style.display='flex';
-  g.fromTo(rp,{opacity:0},{opacity:1,duration:.5});
+  const rp=document.getElementById('phase-results');
+  rp.style.display='flex'; rp.style.opacity='0';
+  await sleep(40); rp.style.transition='opacity 0.5s ease'; rp.style.opacity='1';
 
-  const cards=document.querySelectorAll('.rcard');
-  cards.forEach((el,i)=>{
-    g.fromTo(el,{opacity:0,x:-28},{opacity:1,x:0,delay:i*.07,duration:.65,ease:'back.out(1.1)'});
-  });
-  setTimeout(()=>fireConfetti(), 350);
-
-  const CIRC=144;
-  cards.forEach((card,i)=>{
+  const CIRC=150;
+  document.querySelectorAll('.rcard').forEach((card,i)=>{
     setTimeout(()=>{
-      const ring=document.getElementById(`rf${i}`);
-      if(ring) ring.style.strokeDashoffset=(CIRC*(1-RESULTS[i].fs)).toFixed(2);
+      const ring=document.getElementById('sc-'+i);
+      if(ring) ring.style.strokeDashoffset=(CIRC*(1-RESULTS[i].score/100)).toFixed(2);
       card.querySelectorAll('.sfill').forEach((b,j)=>{
-        g.fromTo(b,{width:'0%'},{width:b.getAttribute('data-v')+'%',delay:j*.06,duration:1.2,ease:'power4.out'});
+        b.style.transitionDelay=(j*0.07)+'s';
+        b.style.width=b.getAttribute('data-v')+'%';
       });
-    },i*70+350);
+    },i*60+280);
   });
 
   window.scrollTo({top:rp.offsetTop-20,behavior:'smooth'});
+  window._pState='idle';
 }
 
-// ── Reset ──────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+// RESET
+// ─────────────────────────────────────────────────────────────
 async function doReset(){
-  const rp=document.getElementById('results-phase');
-  await g.to(rp,{opacity:0,duration:.35}); rp.style.display='none';
-  document.getElementById('log-wrap').style.display='none';
+  const rp=document.getElementById('phase-results');
+  await fadeOut(rp,340); rp.style.display='none';
+  ['log-wrap','net-bar','counter','shortlist-feed'].forEach(id=>{ const el=document.getElementById(id); el.style.display='none'; });
   document.getElementById('log-body').innerHTML='';
-  document.getElementById('counter').style.display='none';
+  document.getElementById('shortlist-items').innerHTML='';
   document.getElementById('c-fill').style.width='0%';
   document.getElementById('cnum').textContent='0';
-  document.getElementById('a-heading').textContent='Running Pipeline';
-  document.getElementById('a-sub').textContent='Initialising TalentOS offline ranker…';
-  const sp=document.getElementById('setup-phase'); sp.style.display='grid';
-  g.fromTo(sp,{opacity:0,y:18},{opacity:1,y:0,duration:.5,ease:'power3.out'});
+  document.getElementById('net-fill').style.width='0%';
+  document.getElementById('a-heading').innerHTML='Running <em>Pipeline</em>';
+  document.getElementById('a-sub').textContent='Initialising TalentOS intelligence engine…';
+  _netN=0;
+  const sp=document.getElementById('phase-setup');
+  sp.style.display='grid'; sp.style.opacity='0';
+  await sleep(40); sp.style.transition='opacity 0.5s ease'; sp.style.opacity='1';
   document.getElementById('run-btn').disabled=false;
   window.scrollTo({top:0,behavior:'smooth'});
+  window._pState='idle';
 }
 
-// ── Confetti burst ─────────────────────────────────────────────────────────
-function fireConfetti(){
-  const cv=document.getElementById('confetti-cv');
-  cv.width=innerWidth; cv.height=innerHeight;
-  const ctx=cv.getContext('2d');
-  const cols=['#c4b5fd','#f6ad55','#6ee7b7','#f687b3','#a78bfa','#fde68a'];
-  const particles=Array.from({length:120},()=>({
-    x:innerWidth*.5+(Math.random()-.5)*200, y:innerHeight*.35,
-    vx:(Math.random()-.5)*9, vy:-(Math.random()*8+4),
-    r:Math.random()*5+2, col:cols[Math.floor(Math.random()*cols.length)],
-    rot:Math.random()*360, rv:(Math.random()-.5)*8, life:1
-  }));
-  let frame;
-  (function draw(){
-    ctx.clearRect(0,0,cv.width,cv.height);
-    let alive=false;
-    particles.forEach(p=>{
-      p.x+=p.vx; p.y+=p.vy; p.vy+=.28; p.rot+=p.rv; p.life-=.012;
-      if(p.life>0){alive=true;ctx.save();ctx.globalAlpha=Math.max(0,p.life);ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);ctx.fillStyle=p.col;ctx.fillRect(-p.r,-p.r*.5,p.r*2,p.r);ctx.restore();}
-    });
-    if(alive) frame=requestAnimationFrame(draw);
-    else ctx.clearRect(0,0,cv.width,cv.height);
-  })();
-  setTimeout(()=>{cancelAnimationFrame(frame);ctx.clearRect(0,0,cv.width,cv.height);},4000);
-}
-
-// ── Pool card scan ─────────────────────────────────────────────────────────
-function scanPoolCards(){
-  const cards=[...document.querySelectorAll('.pcard')];
-  cards.forEach((el,i)=>setTimeout(()=>el.classList.add('scanned'),i*90));
-}
-
-// ── Cursor glow ────────────────────────────────────────────────────────────
-function initCursorGlow(){
-  const g=document.getElementById('cursor-glow');
-  if(!g)return;
-  document.addEventListener('mousemove',e=>{g.style.left=e.clientX+'px';g.style.top=e.clientY+'px';});
-}
-
-// ── Init ───────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────────────────────
 function init(){
-  initThree();
-  initCursorGlow();
   renderPool();
-  g.from('.logo',        {opacity:0,y:26,delay:.1, ease:'power3.out',duration:.7});
-  g.from('.tagline',     {opacity:0,y:16,delay:.2, ease:'power3.out',duration:.7});
-  g.from('.header-right',{opacity:0,x:18,delay:.28,ease:'power3.out',duration:.7});
-  g.from('.divider',     {opacity:0,     delay:.35,ease:'none',       duration:.6});
-  g.from('#setup-phase', {opacity:0,y:14,delay:.44,ease:'power3.out', duration:.6});
-  setTimeout(()=>{
-    document.querySelectorAll('.pcard').forEach((el,i)=>{
-      g.fromTo(el,{opacity:0,y:14},{opacity:1,y:0,delay:i*.04,duration:.55,ease:'back.out(1.4)'});
-    });
-  },600);
+  // Staggered header entrance
+  ['logo-block','header-pills','.rule'].forEach((sel,i)=>{
+    const el=sel.startsWith('.')?document.querySelector(sel):document.querySelector('.'+sel);
+    if(el){ el.style.opacity='0'; fadeIn(el,100+i*80,600); }
+  });
+  const setup=document.getElementById('phase-setup');
+  setup.style.opacity='0'; fadeIn(setup,360,700);
+
   document.getElementById('run-btn').addEventListener('click',runAnalysis);
   document.getElementById('reset-btn').addEventListener('click',doReset);
 }
