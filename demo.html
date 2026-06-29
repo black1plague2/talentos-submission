@@ -262,11 +262,29 @@ header{padding:52px 0 40px;display:flex;align-items:flex-start;justify-content:s
 .flink.sec:hover{border-color:rgba(14,13,11,0.2)}
 .foot{text-align:center;font-family:var(--fm);font-size:0.48rem;color:var(--dim);letter-spacing:0.14em;padding:22px 0 0}
 
+/* ── Weight Donut ── */
+.weight-donut-wrap{display:flex;align-items:center;gap:14px;margin:10px 0 4px}
+.weight-donut{width:68px;height:68px;border-radius:50%;background:conic-gradient(#4A6B5A 0% 35%,#C9A84C 35% 65%,#7C6CB2 65% 85%,#3D7AB5 85% 95%,#9B4A2E 95% 100%);position:relative;flex-shrink:0}
+.weight-donut::after{content:'';position:absolute;inset:17px;border-radius:50%;background:var(--paper)}
+.weight-legend{display:flex;flex-direction:column;gap:3px;flex:1}
+.wleg-row{display:flex;align-items:center;gap:5px;font-family:var(--fm);font-size:0.47rem;color:var(--slate)}
+.wleg-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.wleg-n{flex:1}
+.wleg-v{font-weight:600;color:var(--ink);font-size:0.5rem}
+/* ── Explainer cards ── */
+.explain-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0 10px}
+.ex-card{background:white;border:1px solid var(--border);border-radius:16px;padding:18px 18px 16px;display:flex;flex-direction:column;gap:5px;box-shadow:0 2px 10px rgba(14,13,11,0.03)}
+.ex-icon{font-size:1.3rem;margin-bottom:3px;line-height:1}
+.ex-head{font-size:0.77rem;font-weight:700;letter-spacing:-0.02em;color:var(--ink)}
+.ex-body{font-family:var(--fm);font-size:0.52rem;color:var(--dim);line-height:1.65}
+/* ── Confetti canvas ── */
+#confetti-cv{position:fixed;inset:0;pointer-events:none;z-index:9999;display:none}
 @media(max-width:960px){
   #phase-setup{grid-template-columns:1fr}
   .job-panel{order:0}
   .pool-grid{grid-template-columns:repeat(2,1fr)}
   .explanation{left:16px;right:16px}
+  .explain-strip{grid-template-columns:1fr 1fr}
 }
 @media(max-width:580px){
   .wrap{padding:0 20px 80px}
@@ -275,11 +293,13 @@ header{padding:52px 0 40px;display:flex;align-items:flex-start;justify-content:s
   .sbars{grid-template-columns:1fr}
   .pool-grid{grid-template-columns:repeat(2,1fr)}
   .res-kpis{gap:16px}
+  .explain-strip{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
 <canvas id="canvas3d"></canvas>
+<canvas id="confetti-cv"></canvas>
 <div class="wrap">
 
   <header>
@@ -335,6 +355,18 @@ header{padding:52px 0 40px;display:flex;align-items:flex-start;justify-content:s
           <div class="signal"><div class="sig-mark"></div>Career relevance — built ranking/retrieval systems</div>
           <div class="signal"><div class="sig-mark"></div>Platform AI assessment scores (redrob_signals)</div>
           <div class="signal"><div class="sig-mark"></div>Recruiter response rate, GitHub activity, recency</div>
+        </div>
+        <div class="jrule"></div>
+        <div class="sec-label">Score Weights</div>
+        <div class="weight-donut-wrap">
+          <div class="weight-donut"></div>
+          <div class="weight-legend">
+            <div class="wleg-row"><div class="wleg-dot" style="background:#4A6B5A"></div><span class="wleg-n">AI Skill Match</span><span class="wleg-v">35%</span></div>
+            <div class="wleg-row"><div class="wleg-dot" style="background:#C9A84C"></div><span class="wleg-n">Career Quality</span><span class="wleg-v">30%</span></div>
+            <div class="wleg-row"><div class="wleg-dot" style="background:#7C6CB2"></div><span class="wleg-n">Availability</span><span class="wleg-v">20%</span></div>
+            <div class="wleg-row"><div class="wleg-dot" style="background:#3D7AB5"></div><span class="wleg-n">Experience Fit</span><span class="wleg-v">10%</span></div>
+            <div class="wleg-row"><div class="wleg-dot" style="background:#9B4A2E"></div><span class="wleg-n">Honeypot Filter</span><span class="wleg-v">5%</span></div>
+          </div>
         </div>
       </div>
     </div>
@@ -396,6 +428,23 @@ header{padding:52px 0 40px;display:flex;align-items:flex-start;justify-content:s
       </div>
     </div>
     <div class="board" id="board"></div>
+    <div class="explain-strip">
+      <div class="ex-card">
+        <div class="ex-icon">⚡</div>
+        <div class="ex-head">No AI Models Needed</div>
+        <div class="ex-body">Runs on plain Python, no internet. No GPU, no API calls. Processes 100,000 profiles in under 90 seconds on any laptop.</div>
+      </div>
+      <div class="ex-card">
+        <div class="ex-icon">🛡</div>
+        <div class="ex-head">Fake Profiles Auto-Filtered</div>
+        <div class="ex-body">Five automatic checks catch ghost experts, inflated experience, and impossible skill timelines before they reach your shortlist.</div>
+      </div>
+      <div class="ex-card">
+        <div class="ex-icon">📐</div>
+        <div class="ex-head">Ranked by What Actually Matters</div>
+        <div class="ex-body">Skills, career trajectory, availability, and experience — each weighted by the job description, not by how nicely the resume reads.</div>
+      </div>
+    </div>
     <div class="res-footer">
       <div>
         <div class="rf-hl">Submission Ready</div>
@@ -820,6 +869,7 @@ async function runAnalysis(){
   const rp=document.getElementById('phase-results');
   rp.style.display='flex'; rp.style.opacity='0';
   await sleep(40); rp.style.transition='opacity 0.5s ease'; rp.style.opacity='1';
+  launchConfetti();
 
   const CIRC=150;
   document.querySelectorAll('.rcard').forEach((card,i)=>{
@@ -835,6 +885,40 @@ async function runAnalysis(){
 
   window.scrollTo({top:rp.offsetTop-20,behavior:'smooth'});
   window._pState='idle';
+}
+
+// ─────────────────────────────────────────────────────────────
+// CONFETTI
+// ─────────────────────────────────────────────────────────────
+function launchConfetti(){
+  const cv=document.getElementById('confetti-cv');
+  cv.style.display='block';
+  cv.width=window.innerWidth; cv.height=window.innerHeight;
+  const ctx=cv.getContext('2d');
+  const COLS=['#C9A84C','#4A6B5A','#9B4A2E','#7C6CB2','#E8C97A','#7BA892','#3D7AB5'];
+  const pieces=[];
+  for(let i=0;i<110;i++) pieces.push({
+    x:Math.random()*cv.width, y:-10-Math.random()*180,
+    w:6+Math.random()*6, h:9+Math.random()*8,
+    rot:Math.random()*360, rv:(Math.random()-0.5)*5,
+    vy:3.5+Math.random()*4.5, vx:(Math.random()-0.5)*2.5,
+    c:COLS[Math.floor(Math.random()*COLS.length)], o:1
+  });
+  let frame=0;
+  (function tick(){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    pieces.forEach(p=>{
+      p.y+=p.vy; p.x+=p.vx; p.rot+=p.rv;
+      if(frame>70) p.o=Math.max(0,p.o-0.02);
+      ctx.save(); ctx.globalAlpha=p.o;
+      ctx.translate(p.x,p.y); ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle=p.c; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+      ctx.restore();
+    });
+    frame++;
+    if(frame<130) requestAnimationFrame(tick);
+    else cv.style.display='none';
+  })();
 }
 
 // ─────────────────────────────────────────────────────────────
