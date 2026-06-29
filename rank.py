@@ -140,21 +140,24 @@ def rank_candidates(cand_path: Path, top_n: int = 100) -> list[tuple[float, str,
 
 
 def write_csv(results: list[tuple[float, str, dict, dict]], out_path: Path) -> None:
+    # Compute rounded scores first, then re-sort to satisfy tie-break rule on
+    # the *written* values (rounding can collapse distinct raw scores into ties)
+    rows = []
+    for raw_score, cid, c, bd in results:
+        norm_score = round(raw_score / 100.0, 4)
+        rows.append((norm_score, cid, c, bd))
+    rows.sort(key=lambda x: (-x[0], x[1]))
+
     with open(out_path, "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerow(["candidate_id", "rank", "score", "reasoning"])
-
-        for rank, (raw_score, cid, c, bd) in enumerate(results, start=1):
-            # Normalise to 0-1 range for the submission (spec shows scores like 0.987)
-            norm_score = round(raw_score / 100.0, 4)
+        for rank, (norm_score, cid, c, bd) in enumerate(rows, start=1):
             reasoning = generate_reasoning(c, rank, norm_score, bd)
             writer.writerow([cid, rank, norm_score, reasoning])
 
-    print(f"[ranker] Wrote {len(results)} rows to {out_path}")
-    if results:
-        top_score = results[0][0] / 100
-        bot_score = results[-1][0] / 100
-        print(f"[ranker] Score range: {top_score:.4f} (rank 1) → {bot_score:.4f} (rank {len(results)})")
+    print(f"[ranker] Wrote {len(rows)} rows to {out_path}")
+    if rows:
+        print(f"[ranker] Score range: {rows[0][0]:.4f} (rank 1) -> {rows[-1][0]:.4f} (rank {len(rows)})")
 
 
 def main() -> None:
