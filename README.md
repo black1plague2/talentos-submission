@@ -12,6 +12,22 @@
 
 ---
 
+## Why this is different
+
+| | Normal ATS | Other AI approaches | TalentOS |
+|---|---|---|---|
+| Skill matching | keyword count | embeddings + FAISS | keyword × proficiency × duration × endorsements |
+| Career context | ignored | ignored | consulting firms penalised by name |
+| Availability | not checked | not checked | 23 Redrob behavioral signals |
+| Runtime on 100K | fast | 30+ min on CPU | 90 seconds |
+| API calls needed | no | yes (OpenAI) | zero |
+| Fake profiles | not detected | not detected | 5 impossibility checks, 7757 caught |
+| Explainability | none | GPT writes it | rule-generated, no hallucinations |
+
+The slide deck from round 1 proposed GPT-4o-mini + FAISS + LightGBM. That pipeline cannot run 100K candidates in under 5 minutes without a GPU. This submission is what actually works under the competition constraints.
+
+---
+
 ## What is this
 
 Redrob gave us 100,000 candidate profiles and said find the best Senior AI Engineers. We had 5 minutes, a normal laptop, no internet, and no GPU allowed.
