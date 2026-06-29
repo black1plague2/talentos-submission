@@ -1,209 +1,100 @@
-<div align="center">
+# TalentOS — Redrob AI Hackathon Submission
 
-# 🧠 TalentOS
-### AI-Powered Candidate Ranking System
+**India Runs: Data & AI Challenge — Intelligent Candidate Discovery & Ranking**
 
-*From job description to ranked shortlist — intelligently.*
-
-[![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
-[![FastAPI](https://img.shields.io/badge/FastAPI-API-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
-[![LightGBM](https://img.shields.io/badge/LightGBM-ML_Ranker-brightgreen?style=for-the-badge)](https://lightgbm.readthedocs.io)
+[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![No API calls](https://img.shields.io/badge/Offline-No%20API%20calls-success?style=for-the-badge)](https://github.com/black1plague2/talentos-submission)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://docker.com)
 
-**[▶ Live Pipeline Demo](https://black1plague2.github.io/talentos-submission/demo.html)** — Watch TalentOS rank 100,000 candidates in real time
-
-</div>
+**[▶ Live Demo](https://black1plague2.github.io/talentos-submission/demo.html)**
 
 ---
 
-## ✅ Submission Checklist
+## What it does
 
-| | Deliverable | Location |
-|:-:|:-----------|:---------|
-| ✅ | **The Code** — Complete implementation | This repository, `integration` branch |
-| ✅ | **The Blueprint** — Methodology & architecture | This README (below) |
-| ✅ | **The Results** — Ranked candidate shortlist | [`output/ranked_output.json`](output/ranked_output.json) |
+Ranks 100,000 candidates from the Redrob dataset against the **Senior AI Engineer — Founding Team** job description. Fully offline, no API calls, no GPU, runs in <5 minutes on CPU.
 
 ---
 
-## 📋 The Blueprint
-
-### What TalentOS Does
-
-Most recruitment filters match keywords. TalentOS understands meaning.
-
-Given a job description and a pool of candidate profiles, TalentOS:
-1. Finds candidates whose skills **semantically match** the role — not just by exact text
-2. Evaluates **practical capability** from their project history
-3. Scores **credential quality** — certifications, GitHub activity, career growth
-4. Calculates **skill and experience gaps** using the same semantic approach
-5. Combines all signals through a **trained ML model** to produce a final ranked shortlist
-
----
-
-### System Architecture
-
-```mermaid
-flowchart TD
-    A([Job Description + Candidate Profiles])
-
-    A --> B[Semantic Matcher\nFAISS vector search\nSkill alignment by meaning]
-    A --> C[Capability Scorer\nGPT-4o-mini\nProject evidence evaluation]
-    A --> D[Credential Verifier\nLearning · Growth · Career\nProject quality signals]
-    A --> E[Gap Analyser\nSkill gap · Experience gap\nCertification delta]
-
-    B --> F
-    C --> F
-    D --> F
-    E --> F
-
-    F[LightGBM Ranker\n15-feature ML model\nAuto-trained at startup]
-
-    F --> G[Alternative Role Matcher]
-    F --> H[Recruiter Copilot\nPlain-English explanation]
-
-    G --> OUT([Ranked Shortlist\nranked_output.json])
-    H --> OUT
-```
-
----
-
-### How Each Stage Works
-
-**Stage 1 — Semantic Skill Matching**
-
-Converts every skill (from the job and the candidate) into a vector using `all-MiniLM-L6-v2` sentence embeddings, then finds the closest matches using FAISS cosine similarity. A candidate listing "Node.js" can still match a job requirement for "server-side JavaScript" — because the model understands meaning, not just text.
-
-**Stage 2 — Capability Scoring**
-
-GPT-4o-mini reads each candidate's project list and estimates their practical ability for the role. This goes beyond what a CV says — it asks: does the evidence in their work history suggest they can actually do this job?
-
-**Stage 3 — Credential & Growth Verification**
-
-Six sub-scores are computed from the candidate's raw profile data:
-
-```
-Learning Score    = skills × certifications × projects (normalized)
-Growth Score      = total achievements ÷ years of experience
-Career Score      = number of distinct role levels progressed
-Project Score     = GitHub presence + readme quality + live deployment
-Evidence Score    = certifications + verified GitHub + platform presence
-Verification Score = average of the above five
-```
-
-**Stage 4 — Gap Intelligence**
-
-Uses the same FAISS semantic engine to measure gaps — so "React" being listed against a "Vue.js" requirement is scored as a *minor* gap, not a hard miss. Combines skill gap %, experience gap (years), and certification gap into a single penalty score.
-
-**Stage 5 — ML Ranking**
-
-All outputs are assembled into a 15-feature vector and scored by a LightGBM model trained on 1,000 synthetic candidate-job pairs. Unlike a fixed weighted formula, the model captures interactions:
-
-```
-A candidate needs BOTH strong skill match AND strong capability.
-Neither alone is enough.
-A 3-year experience gap penalises far more than a 6-month one.
-```
-
-The model trains automatically at first run (< 5 seconds). No manual weight tuning.
-
----
-
-### Technical Choices
-
-| Decision | What We Used | Why |
-|:---------|:------------|:----|
-| Skill matching | FAISS + sentence-transformers | Semantic similarity, not string comparison |
-| Capability evaluation | GPT-4o-mini | Reads project evidence, not just skill lists |
-| ML ranking | LightGBM | Captures non-linear feature interactions |
-| API framework | FastAPI | Auto-docs, fast, type-safe |
-| Fallback mode | Rule-based formula | Works fully without any API key |
-
----
-
-## 📊 The Results
-
-Ranked output for **Backend Engineer (JOB001)** across 8 candidates:
-
-```
-┌──────┬──────────────────────┬─────────┬──────────────┬───────────────────────────────────────┐
-│ Rank │ Candidate            │  Score  │ Missing      │ Verdict                               │
-├──────┼──────────────────────┼─────────┼──────────────┼───────────────────────────────────────┤
-│  #1  │ Sarah Wilson         │  84.7   │ None         │ Full match — recommend immediately    │
-│  #2  │ David Kim            │  68.3   │ FastAPI, PG  │ Strong profile, minor gaps — consider │
-│  #3  │ Raj Patel            │  65.1   │ PostgreSQL   │ Good fit, one gap — worth interview   │
-│  #4  │ Emma Brown           │  58.2   │ Python+2more │ Better fit for Cloud Engineer role    │
-│  #5  │ Meera Nair           │  52.4   │ FastAPI,Dock │ Redirect to Data Engineer role        │
-│  #6  │ John Doe             │  49.2   │ AWS          │ Reserve — junior-track candidate      │
-│  #7  │ Alex Martin          │  42.1   │ FastAPI+2more│ Wrong role — ideal for Data Engineer  │
-│  #8  │ Priya Sharma         │  28.5   │ FastAPI+2more│ Too early in career for this level    │
-└──────┴──────────────────────┴─────────┴──────────────┴───────────────────────────────────────┘
-```
-
-> Full detailed output (scores, alternative roles, explanations) → [`output/ranked_output.json`](output/ranked_output.json)
-
----
-
-## ⚡ Run It
-
-### Generate ranked output
+## Reproduce the submission
 
 ```bash
-git checkout integration
-pip install -r requirements.txt
-python run_ranking.py
-# → output/ranked_output.json
+# 1. Clone and enter the repo
+git clone https://github.com/black1plague2/talentos-submission.git
+cd talentos-submission
+
+# 2. No pip install needed — stdlib only
+#    (Python 3.10+ required)
+
+# 3. Place candidates.jsonl in this directory (from the hackathon bundle)
+#    Gzipped input also works: candidates.jsonl.gz
+
+# 4. Run the ranker
+python rank.py --candidates candidates.jsonl --out submission.csv
+
+# 5. Validate format before submitting
+python validate_submission.py submission.csv
 ```
 
-### Run as API server
-
-```bash
-python main.py
-# Docs at http://localhost:8000/docs
-```
-
-### Docker
-
-```bash
-docker-compose up
-```
-
-> **No OpenAI key?** The system works fully without one — capability scoring falls back to a rule-based engine automatically.
+**Expected runtime:** 60–120 seconds for 100K candidates on a standard CPU.  
+**Memory:** <200 MB peak.
 
 ---
 
-## 📁 Repository Structure
+## Scoring approach
+
+Five components, weighted for NDCG@10 emphasis (top-10 quality = 50% of final score):
+
+| Component | Weight | Signal |
+|---|---|---|
+| **AI Skill Match** | 35% | Embeddings, vector DBs (FAISS/Pinecone/Qdrant), retrieval, RAG, NLP, ranking eval — matched with proficiency/duration/endorsement weighting + `skill_assessment_scores` from Redrob |
+| **Career Quality** | 30% | Product company history, fraction of career in AI/ML roles, production evidence in role descriptions; penalises pure consulting (TCS/Infosys/Wipro/Accenture etc.) |
+| **Availability** | 20% | 23 Redrob behavioral signals: `open_to_work_flag`, `last_active_date`, `recruiter_response_rate`, `notice_period_days`, `interview_completion_rate`, `github_activity_score` |
+| **Experience Fit** | 10% | Piecewise score peaking at 6–8 yrs (JD's stated preferred range) |
+| **Location** | 5% | India-based (Pune/Noida/Hyderabad/Mumbai/Bangalore) preferred; non-India + `willing_to_relocate` gets partial credit |
+
+**Honeypot detection** (Stage 3): expert skills with 0 months used and 0 endorsements, career duration inflation vs actual date spans, total skill-months exceeding what's physically possible → scored 0.
+
+---
+
+## Why no embeddings/LLMs?
+
+The spec requires **<5 min on CPU-only, no network**. Running sentence-transformer embeddings on 100K candidates takes 20–40 min without GPU, and calling any hosted LLM is explicitly banned. Structured keyword matching on the skill fields achieves <2 min runtime and is fully reproducible.
+
+---
+
+## Repository structure
 
 ```
-talentos/ (integration branch)
-│
-├── main.py                   API server entry point
-├── run_ranking.py            Generates ranked_output.json
-├── requirements.txt
-├── Dockerfile + docker-compose.yml
-│
-├── services/                 Pipeline stages
-│   ├── semantic_matcher.py   Skill alignment (FAISS)
-│   ├── capability_engine.py  Project evaluation (GPT)
-│   ├── verification_scorer.py  Credential scoring
-│   ├── gap_engine.py         Gap intelligence
-│   ├── role_discovery.py     Alternative role matching
-│   └── recruiter_copilot.py  Explanation generation
-│
-├── ml/                       ML ranking layer
-│   ├── trainer.py            Synthetic data + LightGBM training
-│   └── ranker.py             Inference + formula fallback
-│
-├── data/
-│   ├── candidates.json       8 candidate profiles
-│   └── jobs.json             5 job descriptions
-│
-└── output/
-    └── ranked_output.json    ← Submission results file
+rank.py                    # Entry point: python rank.py --candidates X --out Y
+scoring/
+  jd_profile.py            # JD skill requirements + disqualifier lists (constants)
+  skills.py                # AI/IR skill matching with proficiency/duration weighting
+  career.py                # Career analysis: consulting penalty, AI role ratio
+  availability.py          # Redrob behavioral signals → availability score
+  honeypot.py              # Impossible profile detection
+  reasoning.py             # Per-candidate reasoning for Stage 4 review
+requirements.txt           # stdlib only; flask optional for demo
+Dockerfile                 # Stage 3 sandboxed reproduction
+demo.html                  # Sandbox/demo link (hosted on GitHub Pages)
+submission_metadata.yaml   # Team + compute metadata
 ```
+
+---
+
+## Design decisions
+
+**Why 35% skill / 30% career?**  
+The JD explicitly disqualifies candidates at purely consulting firms or non-AI roles, regardless of their skill list. A Marketing Manager with perfect AI keywords is stated as "not a fit" in the JD. Career background is nearly as decisive as skill match.
+
+**Why 20% availability?**  
+The JD is explicit: "a perfect-on-paper candidate who hasn't logged in for 6 months and has a 5% recruiter response rate is not actually available." Availability is a first-class ranking signal.
+
+**Honeypot avoidance**  
+Detecting ~80 honeypots protects the Stage 3 score. Our checks flag: ghost-expert skills (expert proficiency + 0 months used + 0 endorsements ≥4 occurrences), career duration inconsistencies vs actual start/end dates, and total skill-months impossibly large for the claimed experience.
 
 ---
 
 <div align="center">
-<b>TalentOS</b> — Built for the AI Recruitment Intelligence Challenge
+Built for the <b>India Runs: Data & AI Challenge</b> — Redrob AI
 </div>

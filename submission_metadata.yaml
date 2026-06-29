@@ -1,0 +1,68 @@
+team_name: "TalentOS"
+
+primary_contact:
+  name: "Garv Bansal"
+  email: "garv16sep@gmail.com"
+  phone: "+91-XXXXXXXXXX"
+
+team_members:
+  - name: "Garv Bansal"
+    email: "garv16sep@gmail.com"
+    role: "Semantic skill matching, FAISS embedding pipeline, submission ranker"
+  - name: "Harshith"
+    email: "balaachuanu@gmail.com"
+    role: "Node/TS backend, PostgreSQL schema, OpenAI embedding service"
+  - name: "Noel Ninan Sheri"
+    email: "noelninansheri@gmail.com"
+    role: "Decision intelligence, FastAPI backend, data loading utilities"
+  - name: "Poojit"
+    email: "pachipulusupoojitmit@gmail.com"
+    role: "Verification scoring (learning/growth/career/project/evidence sub-scores)"
+
+github_repo: "https://github.com/black1plague2/talentos-submission"
+
+sandbox_link: "https://black1plague2.github.io/talentos-submission/demo.html"
+
+reproduce_command: "python rank.py --candidates ./candidates.jsonl --out ./submission.csv"
+
+compute:
+  platform: "Windows 11, local machine"
+  cpu_cores: 8
+  ram_gb: 16
+  python_version: "3.11"
+  os: "Windows 11"
+  uses_gpu_for_inference: false
+  has_network_during_ranking: false
+  pre_computation_required: false
+  pre_computation_time_minutes: 0
+
+ai_tools_used:
+  - "Claude"
+
+ai_usage_summary: |
+  Claude used for architecture discussion, code review, and helping integrate
+  contributions from four team members into a single offline ranker.
+  No candidate data was fed to any LLM. All ranking logic is deterministic
+  and runs fully offline.
+
+methodology_summary: |
+  Five-component offline ranker (no API calls, no GPU):
+  (1) AI Skill Match (35%): keyword matching against JD's AI/IR skill inventory,
+  weighted by proficiency level, duration_months, endorsements, and
+  skill_assessment_scores from redrob_signals.
+  (2) Career Quality (30%): product company vs consulting ratio, fraction of
+  career in AI/ML roles, production evidence in role descriptions.
+  (3) Availability (20%): 23 redrob behavioral signals — open_to_work_flag,
+  last_active_date recency, recruiter_response_rate, notice_period_days,
+  interview_completion_rate, github_activity_score.
+  (4) Experience Fit (10%): piecewise scoring peaking at 6-8 years.
+  (5) Location (5%): India-based preferred; non-India + willing_to_relocate
+  gets partial credit.
+  Honeypot detection via impossible profile checks filters synthetic traps.
+
+declarations:
+  read_submission_spec: true
+  code_is_original_work: true
+  no_collusion: true
+  honeypot_check_done: true
+  reproduction_tested: false

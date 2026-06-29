@@ -8,3 +8,11 @@ venv/
 dist/
 node_modules/
 .DS_Store
+
+# The actual dataset — too large to commit (487MB)
+candidates.jsonl
+candidates.jsonl.gz
+
+# Generated output — regenerate with: python rank.py --candidates candidates.jsonl --out submission.csv
+# (Uncomment the line below if you want to exclude it from git too)
+# submission.csv

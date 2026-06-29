@@ -1,12 +1,9 @@
-fastapi==0.115.0
-uvicorn[standard]==0.30.0
-pydantic==2.9.0
-sentence-transformers==3.0.1
-faiss-cpu==1.8.0
-numpy==1.26.4
-openai==1.45.0
-lightgbm==4.5.0
-scikit-learn==1.5.2
-python-dotenv==1.0.1
-httpx==0.27.0
-python-multipart==0.0.9
+# Redrob Hackathon — rank.py uses only Python stdlib (no packages needed).
+# The ranker runs fully offline: no API calls, no GPU, no heavy ML deps.
+#
+# Optional — only needed if you want to run the demo Flask app (demo.html backend):
+flask>=3.0.0
+
+# Optional — if you extend the ranker with local embedding models in the future:
+# sentence-transformers>=3.0
+# faiss-cpu>=1.8
