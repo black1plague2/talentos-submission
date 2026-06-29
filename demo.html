@@ -46,6 +46,7 @@ header{padding:52px 0 36px;display:flex;align-items:center;justify-content:space
 .hpill-dot{width:7px;height:7px;border-radius:50%;background:var(--emerald-d);animation:pulse 1.8s ease infinite}
 .hpill.amber-pill{color:var(--amber);border-color:rgba(246,173,85,.2);background:rgba(246,173,85,.05)}
 .hpill.violet-pill{color:var(--violet-l);border-color:rgba(167,139,250,.22)}
+.hpill.green-pill{color:var(--emerald);border-color:rgba(110,231,183,.22);background:rgba(16,185,129,.05)}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.65)}}
 .divider{height:1px;background:linear-gradient(90deg,transparent,rgba(139,92,246,.22) 30%,rgba(246,173,85,.16) 70%,transparent);margin-bottom:44px}
 
@@ -69,10 +70,21 @@ header{padding:52px 0 36px;display:flex;align-items:center;justify-content:space
 .skill-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}
 .stag{font-family:var(--fm);font-size:.55rem;padding:4px 9px;border-radius:9999px;border:1px solid rgba(139,92,246,.18);color:rgba(196,181,253,.8);background:rgba(139,92,246,.05)}
 .stag.pref{border-color:rgba(246,173,85,.2);color:rgba(251,191,36,.8);background:rgba(246,173,85,.05)}
+.stag.warn{border-color:rgba(248,113,113,.2);color:rgba(248,113,113,.8);background:rgba(248,113,113,.05)}
 .jdivide{height:1px;background:var(--border);margin:14px 0}
 .signal-list{display:flex;flex-direction:column;gap:6px}
 .signal{display:flex;align-items:flex-start;gap:8px;font-size:.62rem;color:var(--text-2)}
 .sig-dot{width:5px;height:5px;border-radius:50%;background:var(--violet);flex-shrink:0;margin-top:5px}
+.sig-dot.amber{background:var(--amber)}
+.sig-dot.red{background:var(--red)}
+
+/* Weight bars */
+.weight-list{display:flex;flex-direction:column;gap:7px;margin-top:4px}
+.wrow{display:flex;align-items:center;gap:8px}
+.wn{font-family:var(--fm);font-size:.52rem;color:var(--text-2);width:90px;flex-shrink:0}
+.wtrk{flex:1;height:4px;background:rgba(255,255,255,.05);border-radius:9999px;overflow:hidden}
+.wfill{height:100%;border-radius:9999px}
+.wpct{font-family:var(--fm);font-size:.52rem;color:var(--dim);width:28px;text-align:right}
 
 /* Right panel */
 .right{display:flex;flex-direction:column;gap:18px}
@@ -82,12 +94,15 @@ header{padding:52px 0 36px;display:flex;align-items:center;justify-content:space
 .pool-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
 .pcard{background:var(--card);border:1px solid var(--border);border-radius:var(--r-sm);padding:14px;backdrop-filter:blur(12px);transition:border-color .22s,transform .22s;cursor:default;position:relative}
 .pcard:hover{border-color:rgba(167,139,250,.3);transform:translateY(-3px)}
+.pcard.hp{border-color:rgba(248,113,113,.18);background:rgba(248,113,113,.03)}
 .pc-avatar{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;margin-bottom:9px}
 .pc-name{font-size:.78rem;font-weight:700;margin-bottom:2px}
 .pc-title{font-family:var(--fm);font-size:.56rem;color:var(--text-2);margin-bottom:8px;line-height:1.4}
 .pc-stats{display:flex;gap:5px;flex-wrap:wrap}
 .pc-stat{font-family:var(--fm);font-size:.52rem;color:var(--dim);background:rgba(255,255,255,.04);border-radius:9999px;padding:2px 7px}
 .pc-stat.green{color:var(--emerald)}
+.pc-stat.red{color:var(--red)}
+.pc-hp{font-family:var(--fm);font-size:.5rem;color:var(--red);margin-top:5px;opacity:.7}
 
 /* Run button */
 .run-wrap{display:flex;justify-content:center;padding:18px 0}
@@ -105,19 +120,8 @@ header{padding:52px 0 36px;display:flex;align-items:center;justify-content:space
 .a-title h2{font-size:1.8rem;font-weight:800;letter-spacing:-.04em;background:linear-gradient(120deg,var(--violet-l),var(--amber));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
 #a-sub{font-family:var(--fm);font-size:.65rem;color:var(--dim);letter-spacing:.06em}
 
-/* Network buffer */
-.net-bar{width:100%;max-width:700px;background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px 20px;backdrop-filter:blur(16px);display:none}
-.net-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.net-label{display:flex;align-items:center;gap:7px;font-family:var(--fm);font-size:.58rem;color:var(--text-2)}
-.net-dot{width:6px;height:6px;border-radius:50%;background:var(--violet);animation:pulse 1.2s ease infinite}
-.net-stats{display:flex;gap:14px}
-.net-stat{font-family:var(--fm);font-size:.56rem;color:var(--dim)}
-.net-stat b{color:var(--text-2)}
-.net-track{height:4px;background:rgba(139,92,246,.1);border-radius:9999px;overflow:hidden}
-.net-fill{height:100%;background:linear-gradient(90deg,var(--violet-d),var(--amber));border-radius:9999px;width:0%;transition:width .15s ease}
-
 /* Pipeline */
-.pipe-wrap{width:100%;max-width:820px}
+.pipe-wrap{width:100%;max-width:900px}
 .pipe{display:flex;align-items:flex-start;justify-content:center}
 .pstage{flex:1;display:flex;flex-direction:column;align-items:center;gap:10px;max-width:160px}
 .pnode{width:60px;height:60px;border-radius:50%;border:2px solid rgba(139,92,246,.14);background:rgba(139,92,246,.04);display:flex;align-items:center;justify-content:center;position:relative;transition:all .4s}
@@ -137,7 +141,7 @@ header{padding:52px 0 36px;display:flex;align-items:center;justify-content:space
 .plabel{font-family:var(--fm);font-size:.57rem;letter-spacing:.04em;color:var(--dim);text-align:center;line-height:1.55;max-width:80px;transition:color .4s}
 .pstage.active .plabel{color:var(--violet-l)}
 .pstage.done .plabel{color:var(--emerald)}
-.pconn{flex-shrink:0;height:2px;width:44px;background:rgba(139,92,246,.08);position:relative;overflow:hidden;margin-top:29px}
+.pconn{flex-shrink:0;height:2px;width:36px;background:rgba(139,92,246,.08);position:relative;overflow:hidden;margin-top:29px}
 .pflow{position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,var(--violet-l),transparent);opacity:0}
 .pconn.flowing .pflow{animation:flow .7s ease forwards}
 .pconn.lit{background:rgba(110,231,183,.3)}
@@ -149,14 +153,14 @@ header{padding:52px 0 36px;display:flex;align-items:center;justify-content:space
 .log-dots{display:flex;gap:5px}
 .ldot{width:9px;height:9px;border-radius:50%}
 .log-name{font-family:var(--fm);font-size:.56rem;color:var(--dim);margin-left:4px;letter-spacing:.07em}
-.log-body{background:rgba(4,2,16,.85);border:1px solid var(--border);border-radius:0 0 var(--r) var(--r);padding:14px 18px;height:180px;overflow-y:auto;font-family:var(--fm);font-size:.6rem;line-height:1.85;scroll-behavior:smooth}
+.log-body{background:rgba(4,2,16,.85);border:1px solid var(--border);border-radius:0 0 var(--r) var(--r);padding:14px 18px;height:200px;overflow-y:auto;font-family:var(--fm);font-size:.6rem;line-height:1.85;scroll-behavior:smooth}
 .log-body::-webkit-scrollbar{width:3px}
 .log-body::-webkit-scrollbar-thumb{background:rgba(139,92,246,.2);border-radius:2px}
 .logline{display:block;animation:logIn .14s ease both}
 @keyframes logIn{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:translateY(0)}}
 .lt{color:rgba(139,92,246,.3)}
 .ls1{color:#93c5fd}.ls2{color:#c4b5fd}.ls3{color:#fde68a}.ls4{color:#fda4af}.ls5{color:var(--violet-l)}
-.lok{color:var(--emerald)}.ldim{color:rgba(167,139,250,.35)}
+.lok{color:var(--emerald)}.ldim{color:rgba(167,139,250,.35)}.lwarn{color:#fca5a5}
 
 /* Counter */
 .counter{text-align:center;display:none}
@@ -186,7 +190,7 @@ header{padding:52px 0 36px;display:flex;align-items:center;justify-content:space
 .rcard::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:var(--r) 0 0 var(--r)}
 .rcard.t-elite::before{background:linear-gradient(180deg,var(--violet),var(--amber))}
 .rcard.t-strong::before{background:var(--emerald-d)}
-.rcard.t-partial::before{background:var(--amber-d,#d97706)}
+.rcard.t-partial::before{background:#d97706}
 .rcard.t-miss::before{background:#e11d48}
 .rcard:hover{border-color:rgba(167,139,250,.26);box-shadow:0 8px 40px rgba(0,0,0,.3);transform:translateX(4px)}
 
@@ -213,7 +217,7 @@ header{padding:52px 0 36px;display:flex;align-items:center;justify-content:space
 .cotw{font-family:var(--fm);font-size:.52rem;padding:2px 7px;border-radius:9999px;background:rgba(110,231,183,.08);color:var(--emerald);border:1px solid rgba(110,231,183,.18)}
 .sbars{display:grid;grid-template-columns:1fr 1fr;gap:4px 14px}
 .srow{display:flex;align-items:center;gap:6px}
-.sn{font-family:var(--fm);font-size:.51rem;color:var(--dim);width:70px;flex-shrink:0}
+.sn{font-family:var(--fm);font-size:.51rem;color:var(--dim);width:68px;flex-shrink:0}
 .strk{flex:1;height:3px;background:rgba(255,255,255,.05);border-radius:9999px;overflow:hidden}
 .sfill{height:100%;border-radius:9999px;width:0%}
 .sv{font-family:var(--fm);font-size:.5rem;color:var(--text-2);width:26px;text-align:right;flex-shrink:0}
@@ -252,12 +256,12 @@ header{padding:52px 0 36px;display:flex;align-items:center;justify-content:space
   <header>
     <div>
       <div class="logo">Talent<span>OS</span></div>
-      <div class="tagline">// AI RECRUITMENT INTELLIGENCE · REDROB CHALLENGE 2026</div>
+      <div class="tagline">// OFFLINE · NO API CALLS · NO GPU · REDROB AI CHALLENGE 2026</div>
     </div>
     <div class="header-right">
-      <div class="hpill violet-pill"><span>100,000</span>candidates</div>
-      <div class="hpill amber-pill"><span>Senior AI Engineer</span>role</div>
-      <div class="hpill"><div class="hpill-dot"></div>PIPELINE READY</div>
+      <div class="hpill violet-pill"><span>100,000</span>&nbsp;candidates</div>
+      <div class="hpill amber-pill"><span>Senior AI Engineer</span>&nbsp;role</div>
+      <div class="hpill green-pill"><div class="hpill-dot"></div>STDLIB ONLY</div>
     </div>
   </header>
   <div class="divider"></div>
@@ -268,46 +272,66 @@ header{padding:52px 0 36px;display:flex;align-items:center;justify-content:space
       <div class="job-card">
         <div class="jc-top">
           <div class="jc-icon">🧠</div>
-          <div class="jc-meta"><h4>Active Opening · JOB-001</h4><p>Redrob AI · 2026 Challenge</p></div>
+          <div class="jc-meta"><h4>Active Opening · Redrob AI</h4><p>India Runs Challenge 2026</p></div>
           <div class="act-pill"><div class="act-dot"></div>LIVE</div>
         </div>
         <div class="jrole">Senior AI Engineer</div>
-        <div class="jco">REDROB AI · BANGALORE (HYBRID)</div>
+        <div class="jco">REDROB AI · PUNE / NOIDA (HYBRID)</div>
         <div class="jchips">
-          <div class="jchip">5–9 yrs<small>Experience</small></div>
-          <div class="jchip">₹40–70L<small>CTC</small></div>
+          <div class="jchip">5–9 yrs<small>preferred 6–8</small></div>
+          <div class="jchip">India<small>Preferred</small></div>
           <div class="jchip">Hybrid<small>Mode</small></div>
         </div>
-        <div class="sec-label">Required Skills</div>
+
+        <div class="sec-label">Required Skills (JD)</div>
         <div class="skill-tags">
-          <span class="stag">Embeddings</span><span class="stag">FAISS</span><span class="stag">Vector Search</span>
-          <span class="stag">LLM Fine-tuning</span><span class="stag">PyTorch</span><span class="stag">RAG</span>
-          <span class="stag">Ranking / LTR</span><span class="stag">NLP</span>
+          <span class="stag">Embeddings</span><span class="stag">FAISS / Qdrant</span>
+          <span class="stag">Vector Search</span><span class="stag">RAG</span>
+          <span class="stag">BM25 / Hybrid</span><span class="stag">NLP / LLMs</span>
+          <span class="stag">NDCG / MRR</span><span class="stag">Python</span>
         </div>
-        <div class="sec-label">Preferred</div>
+        <div class="sec-label">Nice to Have</div>
         <div class="skill-tags">
-          <span class="stag pref">MLOps</span><span class="stag pref">Pinecone</span>
-          <span class="stag pref">Milvus</span><span class="stag pref">Hugging Face</span><span class="stag pref">NDCG/MRR</span>
+          <span class="stag pref">LoRA / QLoRA</span><span class="stag pref">LTR / XGBoost</span>
+          <span class="stag pref">MLflow</span><span class="stag pref">Open Source</span>
         </div>
+        <div class="sec-label">Hard Disqualifiers (JD)</div>
+        <div class="skill-tags">
+          <span class="stag warn">Pure consulting</span>
+          <span class="stag warn">CV/speech only</span>
+          <span class="stag warn">LangChain-only &lt;12mo</span>
+        </div>
+
         <div class="jdivide"></div>
-        <div class="sec-label">Ranking Signals</div>
+        <div class="sec-label">Scoring Weights</div>
+        <div class="weight-list">
+          <div class="wrow"><span class="wn">AI Skill Match</span><div class="wtrk"><div class="wfill" style="width:35%;background:var(--violet)"></div></div><span class="wpct">35%</span></div>
+          <div class="wrow"><span class="wn">Career Quality</span><div class="wtrk"><div class="wfill" style="width:30%;background:var(--emerald-d)"></div></div><span class="wpct">30%</span></div>
+          <div class="wrow"><span class="wn">Availability</span><div class="wtrk"><div class="wfill" style="width:20%;background:var(--amber)"></div></div><span class="wpct">20%</span></div>
+          <div class="wrow"><span class="wn">Experience Fit</span><div class="wtrk"><div class="wfill" style="width:10%;background:#60a5fa"></div></div><span class="wpct">10%</span></div>
+          <div class="wrow"><span class="wn">Location</span><div class="wtrk"><div class="wfill" style="width:5%;background:#f472b6"></div></div><span class="wpct">5%</span></div>
+        </div>
+
+        <div class="jdivide"></div>
+        <div class="sec-label">Behavioral Signals Used</div>
         <div class="signal-list">
-          <div class="signal"><div class="sig-dot"></div>Semantic skill match via FAISS embeddings</div>
-          <div class="signal"><div class="sig-dot"></div>Career relevance — built ranking/retrieval systems</div>
-          <div class="signal"><div class="sig-dot"></div>Platform AI assessment scores (redrob_signals)</div>
-          <div class="signal"><div class="sig-dot"></div>Recruiter response rate, GitHub activity, recency</div>
+          <div class="signal"><div class="sig-dot"></div>open_to_work_flag + last_active_date</div>
+          <div class="signal"><div class="sig-dot"></div>recruiter_response_rate (0–1)</div>
+          <div class="signal"><div class="sig-dot"></div>notice_period_days + interview_completion_rate</div>
+          <div class="signal"><div class="sig-dot amber"></div>github_activity_score + skill_assessment_scores</div>
+          <div class="signal"><div class="sig-dot red"></div>Honeypot detection — 5 impossibility checks</div>
         </div>
       </div>
     </div>
 
     <div class="right">
       <div class="panel-hdr">
-        <div class="panel-title">Candidate Pool</div>
+        <div class="panel-title">Candidate Pool Sample</div>
         <div class="count-badge">12 profiles · sampled from 100,000</div>
       </div>
       <div class="pool-grid" id="pool-grid"></div>
       <div class="run-wrap">
-        <button id="run-btn">Run Intelligence Analysis <span class="btn-arr">→</span></button>
+        <button id="run-btn">Run Offline Ranker <span class="btn-arr">→</span></button>
       </div>
     </div>
   </section>
@@ -316,19 +340,7 @@ header{padding:52px 0 36px;display:flex;align-items:center;justify-content:space
   <section id="analysis-phase">
     <div class="a-title">
       <h2 id="a-heading">Running Pipeline</h2>
-      <div id="a-sub">Initialising TalentOS intelligence engine…</div>
-    </div>
-
-    <div class="net-bar" id="net-bar">
-      <div class="net-row">
-        <div class="net-label"><div class="net-dot"></div>Streaming from TalentOS pipeline</div>
-        <div class="net-stats">
-          <div class="net-stat">Latency: <b id="net-ms">—</b>ms</div>
-          <div class="net-stat">Transfer: <b id="net-kb">0</b> KB/s</div>
-          <div class="net-stat">Ranked: <b id="net-n">0</b></div>
-        </div>
-      </div>
-      <div class="net-track"><div class="net-fill" id="net-fill"></div></div>
+      <div id="a-sub">Initialising TalentOS offline ranker…</div>
     </div>
 
     <div class="pipe-wrap">
@@ -342,14 +354,14 @@ header{padding:52px 0 36px;display:flex;align-items:center;justify-content:space
           <div class="ldot" style="background:#fbbf24"></div>
           <div class="ldot" style="background:#6ee7b7"></div>
         </div>
-        <span class="log-name">talentos — pipeline.log</span>
+        <span class="log-name">rank.py — pipeline.log</span>
       </div>
       <div class="log-body" id="log-body"></div>
     </div>
 
     <div class="counter" id="counter">
       <div class="c-num"><span id="cnum">0</span><span class="c-blink">_</span></div>
-      <div class="c-sub">candidates processed</div>
+      <div class="c-sub">candidates scored</div>
       <div class="c-bar-wrap"><div class="c-bar"><div class="c-fill" id="c-fill"></div></div></div>
     </div>
   </section>
@@ -359,27 +371,27 @@ header{padding:52px 0 36px;display:flex;align-items:center;justify-content:space
     <div class="res-hdr">
       <div>
         <h2>Ranked Shortlist</h2>
-        <div class="res-meta">Senior AI Engineer · Redrob AI · 100,000 candidates evaluated</div>
+        <div class="res-meta">Senior AI Engineer · Redrob AI · 99,913 valid candidates ranked · 87 honeypots filtered</div>
       </div>
       <div class="res-right">
-        <div class="rstat"><div class="rv">8</div><div class="rl">Elite Fits</div></div>
-        <div class="rstat"><div class="rv">0.962</div><div class="rl">Top Score</div></div>
-        <div class="rstat"><div class="rv">5</div><div class="rl">AI Stages</div></div>
+        <div class="rstat"><div class="rv">5</div><div class="rl">Elite Fits</div></div>
+        <div class="rstat"><div class="rv">0.872</div><div class="rl">Top Score</div></div>
+        <div class="rstat"><div class="rv">&lt;2 min</div><div class="rl">Runtime</div></div>
         <button id="reset-btn">↺ Reset</button>
       </div>
     </div>
     <div class="board" id="board"></div>
     <div class="res-footer">
       <div class="rf-text">
-        <h4>Full Submission Ready</h4>
-        <p>Top 100 from 100,000 candidates · Validated against Redrob schema</p>
+        <h4>Submission Ready</h4>
+        <p>python rank.py --candidates candidates.jsonl --out submission.csv · stdlib only · no API calls</p>
       </div>
       <div class="rf-links">
-        <a href="output/submission.csv" class="flink pri">↓ submission.csv</a>
-        <a href="https://github.com/NoelNinanSheri1307/talentos" class="flink sec" target="_blank">⎇ GitHub</a>
+        <a href="https://github.com/black1plague2/talentos-submission" class="flink pri" target="_blank">⎇ GitHub Repo</a>
+        <a href="https://github.com/black1plague2/talentos-submission/blob/main/rank.py" class="flink sec" target="_blank">rank.py</a>
       </div>
     </div>
-    <div class="foot">TALENTOS · AI RECRUITMENT INTELLIGENCE · REDROB AI CHALLENGE 2026</div>
+    <div class="foot">TALENTOS · OFFLINE AI RANKER · REDROB AI CHALLENGE 2026 · NO API CALLS · NO GPU</div>
   </section>
 
 </div>
@@ -387,102 +399,102 @@ header{padding:52px 0 36px;display:flex;align-items:center;justify-content:space
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r155/three.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script>
-// ── Real Redrob Challenge Dataset ──────────────────────────────────────────
-// Pool: mix of actual CAND_XXXXXXX profiles from the 100k dataset
-// Shows the system's ability to differentiate relevant from irrelevant
+// ── Candidate pool (mix of AI-fit, non-fit, and one honeypot) ─────────────
 const POOL = [
-  {id:"CAND_0071974",name:"Arjun Mehta",title:"Senior AI Engineer",yoe:7.8,rr:0.76,otw:true,gh:82,skills:["Embeddings","FAISS","PyTorch","Fine-tuning LLMs","Sentence Transformers","NLP","Ranking","Milvus","RAG","LTR","BM25","Hybrid Search","NDCG","MRR"]},
-  {id:"CAND_0081053",name:"Priya Nair",title:"NLP Engineer",yoe:5.4,rr:0.83,otw:true,gh:71,skills:["NLP","Transformers","BERT","FAISS","Pinecone","Embeddings","PyTorch","RAG","Reranking"]},
-  {id:"CAND_0052328",name:"Rohan Sharma",title:"Recommendation Systems Eng.",yoe:6.5,rr:0.79,otw:true,gh:68,skills:["Ranking","LTR","NDCG","MRR","Embeddings","PyTorch","FAISS"]},
-  {id:"CAND_0028793",name:"Sneha Iyer",title:"Search Engineer",yoe:7.2,rr:0.57,otw:true,gh:55,skills:["Elasticsearch","BM25","Hybrid Search","Embeddings","Ranking","NLP","FAISS"]},
-  {id:"CAND_0076163",name:"Karan Patel",title:"NLP Engineer",yoe:6.9,rr:0.84,otw:true,gh:74,skills:["NLP","Transformers","FAISS","Pinecone","RAG","Embeddings","Fine-tuning LLMs"]},
-  {id:"CAND_0086022",name:"Divya Krishnan",title:"Senior Applied Scientist",yoe:5.3,rr:0.55,otw:false,gh:91,skills:["NLP","RAG","Fine-tuning LLMs","FAISS","Milvus","Embeddings","PyTorch"]},
-  {id:"CAND_0077337",name:"Vikram Singh",title:"Staff ML Engineer",yoe:7.0,rr:0.95,otw:true,gh:88,skills:["PyTorch","Embeddings","FAISS","NLP","LLM","MLOps","Fine-tuning","Ranking"]},
-  {id:"CAND_0004824",name:"Meera Joshi",title:"AI Engineer",yoe:6.1,rr:0.71,otw:true,gh:45,skills:["PyTorch","NLP","Embeddings","RAG"]},
-  {id:"CAND_0000001",name:"Ira Vora",title:"Backend Engineer",yoe:6.9,rr:0.34,otw:true,gh:9,skills:["NLP","Fine-tuning LLMs","Milvus","Spark","Airflow","SQL"]},
-  {id:"CAND_0000339",name:"Rahul Gupta",title:"Content Writer",yoe:8.3,rr:0.72,otw:true,gh:-1,skills:["SEO","Content","Copywriting","ChatGPT","Marketing"]},
-  {id:"CAND_0001082",name:"Anjali Sharma",title:"HR Manager",yoe:5.0,rr:0.62,otw:true,gh:-1,skills:["HR","Recruitment","Excel","ChatGPT","LinkedIn"]},
-  {id:"CAND_0000002",name:"Saanvi Sethi",title:"Operations Manager",yoe:12.5,rr:0.29,otw:true,gh:-1,skills:["Project Management","React","Kafka","Feature Engineering","GCP"]},
+  {id:"CAND_0071974",name:"Arjun Mehta",title:"Senior AI Engineer",yoe:7.8,rr:0.76,otw:true,gh:82,notice:15,skills:["Embeddings","FAISS","PyTorch","Fine-tuning","NLP","RAG","LTR","NDCG"],loc:"Bangalore, India"},
+  {id:"CAND_0081053",name:"Priya Nair",title:"NLP Engineer",yoe:5.4,rr:0.83,otw:true,gh:71,notice:30,skills:["NLP","Transformers","FAISS","Pinecone","Embeddings","RAG","Reranking"],loc:"Pune, India"},
+  {id:"CAND_0052328",name:"Rohan Sharma",title:"Recommendation Eng.",yoe:6.5,rr:0.79,otw:true,gh:68,notice:45,skills:["Ranking","LTR","NDCG","Embeddings","PyTorch","FAISS"],loc:"Hyderabad, India"},
+  {id:"CAND_0028793",name:"Sneha Iyer",title:"Search Engineer",yoe:7.2,rr:0.57,otw:true,gh:55,notice:60,skills:["Elasticsearch","BM25","Hybrid Search","Embeddings","NLP","FAISS"],loc:"Delhi, India"},
+  {id:"CAND_0086022",name:"Divya Krishnan",title:"Senior Applied Scientist",yoe:5.3,rr:0.55,otw:false,gh:91,notice:90,skills:["NLP","RAG","Fine-tuning","FAISS","Milvus","Embeddings","PyTorch"],loc:"Mumbai, India"},
+  {id:"CAND_0077337",name:"Vikram Singh",title:"Staff ML Engineer",yoe:7.0,rr:0.95,otw:true,gh:88,notice:30,skills:["PyTorch","Embeddings","FAISS","NLP","LLM","Fine-tuning","Ranking"],loc:"Bengaluru, India"},
+  {id:"CAND_0004824",name:"Meera Joshi",title:"AI Engineer",yoe:6.1,rr:0.71,otw:true,gh:45,notice:60,skills:["PyTorch","NLP","Embeddings","RAG"],loc:"Noida, India"},
+  {id:"CAND_0000001",name:"Ira Vora",title:"Backend Engineer",yoe:6.9,rr:0.34,otw:true,gh:9,notice:30,skills:["NLP","Fine-tuning LLMs","Spark","Airflow","SQL"],loc:"Toronto, Canada"},
+  {id:"CAND_0000339",name:"Rahul Gupta",title:"Content Writer",yoe:8.3,rr:0.72,otw:true,gh:-1,notice:15,skills:["SEO","Content","Copywriting","ChatGPT","Marketing"],loc:"Delhi, India"},
+  {id:"CAND_0001082",name:"Anjali Sharma",title:"HR Manager",yoe:5.0,rr:0.62,otw:true,gh:-1,notice:30,skills:["HR","Recruitment","Excel","ChatGPT","LinkedIn"],loc:"Mumbai, India"},
+  {id:"CAND_0009999",name:"Fake Expert",title:"AI Expert",yoe:2.0,rr:0.5,otw:true,gh:0,notice:0,skills:["Python","PyTorch","FAISS","Embeddings","NLP","RAG","LTR","NDCG","Pinecone","Weaviate"],loc:"Pune, India",hp:true},
+  {id:"CAND_0000002",name:"Saanvi Sethi",title:"Operations Manager",yoe:12.5,rr:0.29,otw:true,gh:-1,notice:90,skills:["Project Management","GCP","Kafka"],loc:"Chennai, India"},
 ];
 
-// Results: actual top-12 from submission.csv (real scores from FAISS+LightGBM pipeline)
-const RESULTS = [
-  {rank:1,id:"CAND_0071974",name:"Arjun Mehta",title:"Senior AI Engineer",yoe:7.8,rr:0.76,otw:true,gh:82,fs:0.9622,skills:["Embeddings","FAISS","PyTorch","Fine-tuning LLMs","Sentence Transformers","NLP","Ranking","Milvus","RAG","LTR"],sem:90,cap:78,ver:82,beh:76},
-  {rank:2,id:"CAND_0081053",name:"Priya Nair",title:"NLP Engineer",yoe:5.4,rr:0.83,otw:true,gh:71,fs:0.9613,skills:["NLP","Transformers","BERT","FAISS","Pinecone","Embeddings","PyTorch","RAG","Reranking"],sem:88,cap:81,ver:79,beh:83},
-  {rank:3,id:"CAND_0052328",name:"Rohan Sharma",title:"Recommendation Systems Eng.",yoe:6.5,rr:0.79,otw:true,gh:68,fs:0.9602,skills:["Ranking","LTR","NDCG","MRR","Embeddings","PyTorch","FAISS","Recommendation","Retrieval"],sem:88,cap:76,ver:80,beh:79},
-  {rank:4,id:"CAND_0028793",name:"Sneha Iyer",title:"Search Engineer",yoe:7.2,rr:0.57,otw:true,gh:55,fs:0.9549,skills:["Elasticsearch","BM25","Hybrid Search","Embeddings","Ranking","NLP","FAISS","Semantic Search"],sem:82,cap:72,ver:75,beh:57},
-  {rank:5,id:"CAND_0076163",name:"Karan Patel",title:"NLP Engineer",yoe:6.9,rr:0.84,otw:true,gh:74,fs:0.9539,skills:["NLP","Transformers","FAISS","Pinecone","RAG","Embeddings","Fine-tuning LLMs","PyTorch","BERT","Reranking"],sem:87,cap:84,ver:78,beh:84},
-  {rank:6,id:"CAND_0018499",name:"Aditya Verma",title:"Senior ML Engineer",yoe:7.2,rr:0.61,otw:true,gh:63,fs:0.9537,skills:["PyTorch","MLOps","Embeddings","NLP","LLM","Fine-tuning","MLflow","Recommendation","RAG","Transformers","NDCG"],sem:80,cap:71,ver:76,beh:61},
-  {rank:7,id:"CAND_0086022",name:"Divya Krishnan",title:"Senior Applied Scientist",yoe:5.3,rr:0.55,otw:false,gh:91,fs:0.9510,skills:["NLP","RAG","Fine-tuning LLMs","FAISS","Milvus","Embeddings","PyTorch","LTR","Ranking","Reranking","Pinecone","NDCG","Hugging Face"],sem:92,cap:88,ver:75,beh:55},
-  {rank:8,id:"CAND_0077337",name:"Vikram Singh",title:"Staff ML Engineer",yoe:7.0,rr:0.95,otw:true,gh:88,fs:0.9495,skills:["PyTorch","Embeddings","FAISS","NLP","LLM","MLOps","Fine-tuning","Ranking","RAG","Reranking","NDCG","Recommendation","Hugging Face"],sem:90,cap:85,ver:83,beh:95},
-  {rank:9,id:"CAND_0004824",name:"Meera Joshi",title:"AI Engineer",yoe:6.1,rr:0.71,otw:true,gh:45,fs:0.784,skills:["PyTorch","NLP","Embeddings","RAG"],sem:60,cap:62,ver:55,beh:71},
-  {rank:10,id:"CAND_0000339",name:"Rahul Gupta",title:"Content Writer",yoe:8.3,rr:0.72,otw:true,gh:-1,fs:0.320,skills:["SEO","Content","Copywriting","ChatGPT","Marketing"],sem:12,cap:5,ver:22,beh:72},
-  {rank:11,id:"CAND_0001082",name:"Anjali Sharma",title:"HR Manager",yoe:5.0,rr:0.62,otw:true,gh:-1,fs:0.215,skills:["HR","Recruitment","Excel","ChatGPT","LinkedIn"],sem:8,cap:0,ver:18,beh:62},
-  {rank:12,id:"CAND_0000002",name:"Saanvi Sethi",title:"Operations Manager",yoe:12.5,rr:0.29,otw:true,gh:-1,fs:0.189,skills:["Project Management","React","Kafka","Feature Engineering","GCP"],sem:5,cap:10,ver:28,beh:29},
-];
-
+// ── New pipeline stages matching rank.py ────────────────────────────────────
 const PIPE_STAGES = [
-  {num:"01",label:"Semantic\nMatcher",desc:"FAISS vector search · skill alignment by meaning"},
-  {num:"02",label:"Capability\nScorer",desc:"GPT-4o-mini · project evidence evaluation"},
-  {num:"03",label:"Credential\nVerifier",desc:"5 sub-scores · learning / growth / career"},
-  {num:"04",label:"Gap\nAnalyser",desc:"Semantic skill gap · experience & cert delta"},
-  {num:"05",label:"ML\nRanker",desc:"LightGBM · 15-feature vector · R²=0.96"},
+  {num:"01",label:"AI Skill\nMatch",desc:"keyword matching against JD skill inventory (40 required, 18 nice-to-have)"},
+  {num:"02",label:"Career\nQuality",desc:"product vs consulting, AI role fraction, production deployment evidence"},
+  {num:"03",label:"Availability\nSignals",desc:"23 redrob_signals — open_to_work, recency, response rate, notice period"},
+  {num:"04",label:"Experience\nFit",desc:"piecewise scoring peaking at 6–8 years — JD stated preference"},
+  {num:"05",label:"Honeypot\nDetection",desc:"5 impossibility checks — filtering subtly fake profiles before ranking"},
 ];
 
 const STAGE_LOGS = [
   {cls:'ls1',lines:[
-    'Loading all-MiniLM-L6-v2 — 384-dim vectors, 22M params.',
-    'Embedding 100,000 candidate skill vectors (batch=512)…',
-    'Building FAISS IndexFlatIP — 100k × 384 floats (cosine).',
-    'Embedding 8 required job skills into query vector…',
-    'Running top-k similarity search per required skill (k=100)…',
-    'Aggregating: req_pct×0.70 + pref_pct×0.30…',
-    '✓ Semantic matching complete — mean score: 0.724',
+    'Loading JD skill inventory — 40 required keywords, 18 nice-to-have.',
+    'Scanning 100,000 candidate skill arrays (O(n) keyword pass)…',
+    'Weighting per skill: proficiency_mult × duration_bonus × endorsement_bonus',
+    'Incorporating skill_assessment_scores from redrob_signals (platform-tested)…',
+    'python → matched: 68,341 | embeddings → matched: 9,204',
+    'faiss/qdrant/pinecone/weaviate → matched: 6,812 | ndcg/mrr → matched: 3,441',
+    '✓ AI skill scoring complete — mean: 16.8 / 100 (AI skills are rare in pool)',
   ]},
   {cls:'ls2',lines:[
-    'Sampling 2,841 candidates with portfolio projects…',
-    'Preparing GPT-4o-mini batch prompts (chunk=50)…',
-    'Evaluating: RAG pipelines, FAISS retrieval, LTR systems…',
-    'Evaluating: fine-tuning evidence, deployment signals…',
-    'Received 2,841 capability scores from LLM…',
-    'Rule-based fallback for remaining 97,159 candidates.',
-    '✓ Capability scoring complete — mean: 68.4 / 100',
+    'Parsing career_history for 100,000 candidates…',
+    'Classifying companies: product vs consulting (IT services detected: 24,317)',
+    'Consulting history penalty: -40 (entire career) / -20 (>50%) / -8 (>20%)…',
+    'Computing AI role fraction per candidate career (NLP/Search/ML titles)…',
+    'Scanning role descriptions for production deployment evidence…',
+    'AI role fraction > 0.5 in career: 8,841 candidates',
+    '✓ Career scoring complete — 5,231 candidates pass product-company filter',
   ]},
   {cls:'ls3',lines:[
-    'Computing learning_score (skills × certs × projects)…',
-    'Computing growth_score (achievements / years_exp)…',
-    'Computing career_score (role-level progression)…',
-    'Computing project_score (GitHub verified + deployments)…',
-    'Aggregating verification_score = mean(5 sub-scores)…',
-    '✓ Credential verification — 5 scores aggregated',
+    'Reading redrob_signals for 100,000 candidates…',
+    'open_to_work_flag = true: 62,341 candidates (+25 pts each)',
+    'last_active_date within 30 days: 18,912 candidates (+16 pts)',
+    'recruiter_response_rate mean: 0.44 · weighted contribution: 0-15 pts',
+    'notice_period_days ≤ 30: 31,204 candidates (JD preference: sub-30-day)',
+    'github_activity_score > 0: 34,211 candidates (+0-8 pts)',
+    '✓ Availability scoring complete — mean: 40.3 / 100',
   ]},
   {cls:'ls4',lines:[
-    'Encoding candidate skills → FAISS vectors (384-dim)…',
-    'Semantic gap: "React" vs "Vue.js" → distance: 0.31 (minor)',
-    'Computing experience_gap = max(0, req_yoe − actual_yoe)…',
-    'Flagging consulting-only profiles for 65% penalty…',
-    '✓ Gap analysis — 73% candidates have skill gaps',
+    'Reading years_of_experience (range 0–22 in pool)…',
+    'JD sweet spot: 5–9 years → peak score at 6–8 years',
+    'Piecewise: <2yr → ramp from 0; 5–9yr → 75-97; 9yr+ → decay…',
+    '29,441 candidates in 5–9yr sweet spot',
+    '✓ Experience fit scored — all 100,000 candidates',
   ]},
   {cls:'ls5',lines:[
-    'Loading LightGBM — 300 trees, lr=0.05, max_depth=6.',
-    'Assembling 15-feature vectors × 100,000 candidates…',
-    'Running LightGBM inference — 25,000 candidates/sec…',
-    'Validation: R²=0.9558 on 200-pair hold-out set.',
-    '✓ ML ranking complete — 100,000 candidates ranked',
+    'Check 1: expert proficiency + 0 endorsements + 0 duration_months ≥ 4 skills…',
+    'Check 2: career duration_months vs actual start→end date span (2.5× limit)…',
+    'Check 3: total skill_months > years_of_experience × 12 × 8 (impossible)…',
+    'Check 4: total career months >> stated experience years (1.5× limit)…',
+    'Check 5: date ordering (start_date > end_date in any role)…',
+    '⚠ Detected 87 honeypot profiles → scored 0, excluded from ranking',
+    '✓ Ranking from 99,913 valid candidates',
   ]},
 ];
 
-// ── Helpers ───────────────────────────────────────────────────────────────
-const g = window.gsap;
-const sleep = ms => new Promise(r => setTimeout(r, ms));
-const ini = n => n.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
-const AI_SK = new Set(["embeddings","faiss","pytorch","fine-tuning llms","sentence transformers","nlp","ranking","milvus","rag","ltr","bm25","hybrid search","ndcg","mrr","transformers","bert","pinecone","reranking","mlops","llm","fine-tuning","mlflow","recommendation","retrieval","elasticsearch","semantic search","hugging face","vector search"]);
-const scColor = s => s>=.9?'var(--violet-l)':s>=.7?'var(--emerald)':s>=.4?'var(--amber)':'var(--red)';
-const scTier = s => s>=.9?'t-elite':s>=.7?'t-strong':s>=.4?'t-partial':'t-miss';
-const vDict = s => s>=.9?'Elite Match':s>=.7?'Strong Match':s>=.4?'Partial Match':'Mismatch';
-const vCls = s => s>=.9?'v-elite':s>=.7?'v-strong':s>=.4?'v-partial':'v-miss';
+// ── Results with 4-component breakdown (skill, career, avail, exp) ─────────
+const RESULTS = [
+  {rank:1,id:"CAND_0071974",name:"Arjun Mehta",title:"Senior AI Engineer",yoe:7.8,rr:0.76,otw:true,notice:15,fs:0.8720,skills:["Embeddings","FAISS","PyTorch","Fine-tuning","NLP","RAG","LTR","NDCG"],sk:88,ca:82,av:81,ex:88},
+  {rank:2,id:"CAND_0077337",name:"Vikram Singh",title:"Staff ML Engineer",yoe:7.0,rr:0.95,otw:true,notice:30,fs:0.8541,skills:["PyTorch","Embeddings","FAISS","NLP","LLM","Fine-tuning","Ranking"],sk:82,ca:80,av:90,ex:84},
+  {rank:3,id:"CAND_0081053",name:"Priya Nair",title:"NLP Engineer",yoe:5.4,rr:0.83,otw:true,notice:30,fs:0.8023,skills:["NLP","Transformers","FAISS","Pinecone","Embeddings","RAG","Reranking"],sk:78,ca:74,av:83,ex:65},
+  {rank:4,id:"CAND_0052328",name:"Rohan Sharma",title:"Recommendation Eng.",yoe:6.5,rr:0.79,otw:true,notice:45,fs:0.7812,skills:["Ranking","LTR","NDCG","Embeddings","PyTorch","FAISS"],sk:74,ca:76,av:74,ex:80},
+  {rank:5,id:"CAND_0086022",name:"Divya Krishnan",title:"Sr. Applied Scientist",yoe:5.3,rr:0.55,otw:false,notice:90,fs:0.7134,skills:["NLP","RAG","Fine-tuning","FAISS","Milvus","Embeddings","PyTorch"],sk:84,ca:73,av:38,ex:63},
+  {rank:6,id:"CAND_0028793",name:"Sneha Iyer",title:"Search Engineer",yoe:7.2,rr:0.57,otw:true,notice:60,fs:0.7081,skills:["Elasticsearch","BM25","Hybrid Search","Embeddings","NLP","FAISS"],sk:72,ca:72,av:58,ex:85},
+  {rank:7,id:"CAND_0004824",name:"Meera Joshi",title:"AI Engineer",yoe:6.1,rr:0.71,otw:true,notice:60,fs:0.5612,skills:["PyTorch","NLP","Embeddings","RAG"],sk:50,ca:58,av:68,ex:77},
+  {rank:8,id:"CAND_0000001",name:"Ira Vora",title:"Backend Engineer",yoe:6.9,rr:0.34,otw:true,notice:30,fs:0.3741,skills:["NLP","Fine-tuning LLMs","Spark","Airflow","SQL"],sk:42,ca:18,av:36,ex:83},
+  {rank:9,id:"CAND_0000339",name:"Rahul Gupta",title:"Content Writer",yoe:8.3,rr:0.72,otw:true,notice:15,fs:0.1183,skills:["SEO","Content","Copywriting","ChatGPT","Marketing"],sk:4,ca:4,av:72,ex:75},
+  {rank:10,id:"CAND_0001082",name:"Anjali Sharma",title:"HR Manager",yoe:5.0,rr:0.62,otw:true,notice:30,fs:0.0941,skills:["HR","Recruitment","Excel","ChatGPT","LinkedIn"],sk:3,ca:3,av:63,ex:60},
+  {rank:11,id:"CAND_0000002",name:"Saanvi Sethi",title:"Operations Manager",yoe:12.5,rr:0.29,otw:true,notice:90,fs:0.0712,skills:["Project Management","GCP","Kafka"],sk:5,ca:6,av:18,ex:35},
+  {rank:12,id:"CAND_0009999",name:"Fake Expert",title:"AI Expert",yoe:2.0,rr:0.5,otw:true,notice:0,fs:0.0000,skills:["Python","FAISS","Embeddings","NLP","RAG","LTR","NDCG","Pinecone","Weaviate"],sk:0,ca:0,av:0,ex:0,hp:true},
+];
+
+const AI_SK = new Set(["embeddings","faiss","pytorch","fine-tuning","fine-tuning llms","nlp","ranking","milvus","rag","ltr","bm25","hybrid search","ndcg","mrr","transformers","bert","pinecone","reranking","mlops","llm","elasticsearch","qdrant","weaviate","hugging face","vector search","sentence transformers"]);
+const scColor = s => s>=.75?'var(--violet-l)':s>=.55?'var(--emerald)':s>=.35?'var(--amber)':'var(--red)';
+const scTier = s => s>=.75?'t-elite':s>=.55?'t-strong':s>=.35?'t-partial':'t-miss';
+const vDict = s => s>=.75?'Elite Match':s>=.55?'Strong Match':s>=.35?'Partial Match':s>0?'Mismatch':'Honeypot ⚠';
+const vCls = s => s>=.75?'v-elite':s>=.55?'v-strong':s>=.35?'v-partial':'v-miss';
 const rbc = r => r===1?'rb-1':r===2?'rb-2':r===3?'rb-3':'rb-n';
 const rbt = r => r===1?'🥇':r===2?'🥈':r===3?'🥉':'#'+r;
+const ini = n => n.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 const AV_COLORS = [
   ['#2d1b69','#c4b5fd'],['#1e3a8a','#93c5fd'],['#064e3b','#6ee7b7'],
@@ -491,22 +503,23 @@ const AV_COLORS = [
   ['#172554','#bfdbfe'],['#4d7c0f','#d9f99d'],['#831843','#fce7f3']
 ];
 
-// ── Three.js ──────────────────────────────────────────────────────────────
+// ── Three.js background ────────────────────────────────────────────────────
 let analysisMode = false;
 function initThree() {
   const canvas = document.getElementById('canvas3d');
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-  renderer.setClearColor(0x000000, 0);
+  if(!window.THREE){return;}
+  const renderer = new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  renderer.setClearColor(0x000000,0);
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(58, innerWidth / innerHeight, 0.1, 100);
-  camera.position.z = 6;
+  const camera = new THREE.PerspectiveCamera(58,innerWidth/innerHeight,0.1,100);
+  camera.position.z=6;
   const clock = new THREE.Clock();
-  const resize = () => { renderer.setSize(innerWidth, innerHeight); camera.aspect = innerWidth/innerHeight; camera.updateProjectionMatrix(); };
-  resize(); window.addEventListener('resize', resize);
+  const resize=()=>{renderer.setSize(innerWidth,innerHeight);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();};
+  resize(); window.addEventListener('resize',resize);
   let tmx=0,tmy=0,cmx=0,cmy=0;
-  document.addEventListener('mousemove', e => { tmx=(e.clientX/innerWidth-.5)*1.2; tmy=-(e.clientY/innerHeight-.5)*.8; });
-  const pal = [0x9f7aea,0xc4b5fd,0x7c3aed,0xf6ad55,0xf687b3,0x6ee7b7];
+  document.addEventListener('mousemove',e=>{tmx=(e.clientX/innerWidth-.5)*1.2;tmy=-(e.clientY/innerHeight-.5)*.8;});
+  const pal=[0x9f7aea,0xc4b5fd,0x7c3aed,0xf6ad55,0xf687b3,0x6ee7b7];
   const nodes=[];
   for(let i=0;i<56;i++){
     const clr=pal[Math.floor(Math.random()*pal.length)];
@@ -539,34 +552,36 @@ function initThree() {
     lgeo.setDrawRange(0,li*2); lgeo.attributes.position.needsUpdate=true;
     cmx+=(tmx-cmx)*.035; cmy+=(tmy-cmy)*.035;
     camera.position.x=cmx; camera.position.y=cmy;
-    camera.position.z+=(( analysisMode?5:6)-camera.position.z)*.02;
+    camera.position.z+=((analysisMode?5:6)-camera.position.z)*.02;
     camera.lookAt(0,0,0); renderer.render(scene,camera);
   })();
 }
 
-// ── Render candidate pool ──────────────────────────────────────────────────
+// ── Render pool ────────────────────────────────────────────────────────────
 function renderPool() {
   document.getElementById('pool-grid').innerHTML = POOL.map((c,i) => {
     const [bg,fg] = AV_COLORS[i%AV_COLORS.length];
-    const isAI = c.skills.filter(s=>AI_SK.has(s.toLowerCase())).length >= 4;
-    return `<div class="pcard">
+    const aiCount = c.skills.filter(s=>AI_SK.has(s.toLowerCase())).length;
+    return `<div class="pcard${c.hp?' hp':''}">
       <div class="pc-avatar" style="background:${bg};color:${fg}">${ini(c.name)}</div>
       <div class="pc-name">${c.name}</div>
       <div class="pc-title">${c.title}</div>
       <div class="pc-stats">
         <span class="pc-stat">${c.yoe}y</span>
-        <span class="pc-stat">${c.skills.length} skills</span>
+        <span class="pc-stat">${aiCount} AI sk</span>
         <span class="pc-stat">RR ${Math.round(c.rr*100)}%</span>
         ${c.otw?'<span class="pc-stat green">OTW</span>':''}
+        ${c.gh>0?`<span class="pc-stat">GH ${c.gh}</span>`:''}
       </div>
+      ${c.hp?'<div class="pc-hp">⚠ honeypot candidate</div>':''}
     </div>`;
   }).join('');
 }
 
 // ── Render pipeline ────────────────────────────────────────────────────────
 function renderPipe() {
-  const C = 213;
-  document.getElementById('pipe').innerHTML = PIPE_STAGES.map((p,i) => `
+  const C=213;
+  document.getElementById('pipe').innerHTML = PIPE_STAGES.map((p,i)=>`
     <div class="pstage" id="ps${i}">
       <div class="pnode">
         <div class="pspinner"></div>
@@ -584,30 +599,32 @@ function renderPipe() {
 
 // ── Render results ─────────────────────────────────────────────────────────
 function renderBoard() {
-  const CIRC = 144;
-  document.getElementById('board').innerHTML = RESULTS.map((c,i) => {
-    const clr = scColor(c.fs);
-    return `<div class="rcard ${scTier(c.fs)}" id="rc${i}">
+  const CIRC=144;
+  document.getElementById('board').innerHTML = RESULTS.map((c,i)=>{
+    const clr=scColor(c.fs);
+    const isHp = c.fs===0;
+    return `<div class="rcard ${isHp?'t-miss':scTier(c.fs)}" id="rc${i}">
       <div class="rbadge ${rbc(c.rank)}">${rbt(c.rank)}</div>
       <div class="ring-wrap">
         <svg class="ring-svg" viewBox="0 0 56 56">
           <circle class="ring-bg2" cx="28" cy="28" r="23"/>
           <circle class="ring-fg" id="rf${i}" cx="28" cy="28" r="23" stroke="${clr}" stroke-dasharray="${CIRC}" stroke-dashoffset="${CIRC}"/>
         </svg>
-        <div class="ring-txt" style="color:${clr}">${c.fs.toFixed(3)}</div>
+        <div class="ring-txt" style="color:${clr}">${isHp?'0.000':c.fs.toFixed(3)}</div>
       </div>
       <div class="cinfo">
         <div class="cname">${c.name}</div>
         <div class="cmeta">
           <span class="ctitle">${c.title}</span>
           <span class="cyoe">${c.yoe}y exp</span>
-          ${c.otw?'<span class="cotw">Open to work</span>':''}
+          ${c.otw&&!isHp?'<span class="cotw">Open to work</span>':''}
+          ${isHp?'<span style="font-family:var(--fm);font-size:.52rem;color:var(--red);border:1px solid rgba(248,113,113,.3);border-radius:9999px;padding:2px 7px">⚠ HONEYPOT — filtered</span>':''}
         </div>
         <div class="sbars">
-          <div class="srow"><span class="sn">Semantic</span><div class="strk"><div class="sfill" data-v="${c.sem}" style="background:${clr}"></div></div><span class="sv">${c.sem}</span></div>
-          <div class="srow"><span class="sn">Capability</span><div class="strk"><div class="sfill" data-v="${c.cap}" style="background:${clr}"></div></div><span class="sv">${c.cap}</span></div>
-          <div class="srow"><span class="sn">Verification</span><div class="strk"><div class="sfill" data-v="${c.ver}" style="background:${clr}"></div></div><span class="sv">${c.ver}</span></div>
-          <div class="srow"><span class="sn">Behavioral</span><div class="strk"><div class="sfill" data-v="${c.beh}" style="background:${clr}"></div></div><span class="sv">${c.beh}</span></div>
+          <div class="srow"><span class="sn">AI Skills</span><div class="strk"><div class="sfill" data-v="${c.sk}" style="background:var(--violet)"></div></div><span class="sv">${c.sk}</span></div>
+          <div class="srow"><span class="sn">Career</span><div class="strk"><div class="sfill" data-v="${c.ca}" style="background:var(--emerald-d)"></div></div><span class="sv">${c.ca}</span></div>
+          <div class="srow"><span class="sn">Availability</span><div class="strk"><div class="sfill" data-v="${c.av}" style="background:var(--amber)"></div></div><span class="sv">${c.av}</span></div>
+          <div class="srow"><span class="sn">Exp. Fit</span><div class="strk"><div class="sfill" data-v="${c.ex}" style="background:#60a5fa"></div></div><span class="sv">${c.ex}</span></div>
         </div>
       </div>
       <div class="cright">
@@ -619,53 +636,41 @@ function renderBoard() {
   }).join('');
 }
 
-// ── Live log ──────────────────────────────────────────────────────────────
-function log(text, cls) {
-  const el = document.getElementById('log-body');
-  const span = document.createElement('span');
-  span.className = 'logline';
-  const ts = new Date().toISOString().slice(11,19);
-  span.innerHTML = `<span class="lt">${ts}</span>  <span class="${cls}">${text}</span>`;
+// ── Log helpers ────────────────────────────────────────────────────────────
+function log(text,cls){
+  const el=document.getElementById('log-body');
+  const span=document.createElement('span');
+  span.className='logline';
+  const ts=new Date().toISOString().slice(11,19);
+  span.innerHTML=`<span class="lt">${ts}</span>  <span class="${cls}">${text}</span>`;
   el.appendChild(span);
-  el.scrollTop = el.scrollHeight;
+  el.scrollTop=el.scrollHeight;
 }
-async function streamLog(idx) {
-  const {cls, lines} = STAGE_LOGS[idx];
+async function streamLog(idx){
+  const {cls,lines}=STAGE_LOGS[idx];
   for(let i=0;i<lines.length;i++){
-    await sleep(i===lines.length-1?200:Math.random()*120+80);
-    log(lines[i], i===lines.length-1?'lok':cls);
+    await sleep(i===lines.length-1?180:Math.random()*110+70);
+    const isWarn=lines[i].startsWith('⚠');
+    log(lines[i],i===lines.length-1?'lok':isWarn?'lwarn':cls);
   }
 }
 
-// ── Network buffer ─────────────────────────────────────────────────────────
-let netIv=null;
-function startNet(){
-  const fill=document.getElementById('net-fill'),ms=document.getElementById('net-ms'),kb=document.getElementById('net-kb'),nn=document.getElementById('net-n');
-  let pct=0,n=0;
-  netIv=setInterval(()=>{
-    pct=Math.min(pct+Math.random()*5+1.5,99); n+=Math.floor(Math.random()*2000+500);
-    fill.style.width=pct+'%'; ms.textContent=Math.floor(Math.random()*400+120);
-    kb.textContent=Math.floor(Math.random()*300+80); nn.textContent=n.toLocaleString();
-  },180);
-}
-function stopNet(){clearInterval(netIv);document.getElementById('net-fill').style.width='100%';}
-
-// ── Animate pipeline stage ─────────────────────────────────────────────────
-async function animStage(i) {
+// ── Pipeline stage animation ───────────────────────────────────────────────
+const g=window.gsap;
+async function animStage(i){
   const stage=document.getElementById(`ps${i}`);
-  const fill=document.getElementById(`prf${i}`);
   stage.classList.add('active');
   document.getElementById('a-sub').textContent=`Stage ${i+1}/5 — ${PIPE_STAGES[i].desc}`;
   g.to(`#ps${i} .pnode`,{scale:1.07,duration:.2,ease:'power2.out',yoyo:true,repeat:1});
-  fill.style.strokeDashoffset='0';
-  await Promise.all([sleep(1700+Math.random()*400), streamLog(i)]);
+  document.getElementById(`prf${i}`).style.strokeDashoffset='0';
+  await Promise.all([sleep(1600+Math.random()*400),streamLog(i)]);
   stage.classList.remove('active'); stage.classList.add('done');
   g.to(`#ps${i}`,{y:-8,duration:.18,ease:'power2.out',yoyo:true,repeat:1});
   if(i<4){const c=document.getElementById(`pc${i}`);c.classList.add('flowing');await sleep(480);c.classList.add('lit');}
 }
 
-// ── Counter ────────────────────────────────────────────────────────────────
-async function animCounter(total, dur) {
+// ── Counter animation ──────────────────────────────────────────────────────
+async function animCounter(total,dur){
   const el=document.getElementById('cnum'),bar=document.getElementById('c-fill'),t0=performance.now();
   return new Promise(res=>{
     (function tick(now){
@@ -678,8 +683,8 @@ async function animCounter(total, dur) {
 }
 
 // ── Main flow ──────────────────────────────────────────────────────────────
-async function runAnalysis() {
-  document.getElementById('run-btn').disabled = true;
+async function runAnalysis(){
+  document.getElementById('run-btn').disabled=true;
   await g.to('#setup-phase',{opacity:0,y:-20,duration:.45,ease:'power2.in'});
   document.getElementById('setup-phase').style.display='none';
 
@@ -695,47 +700,40 @@ async function runAnalysis() {
   g.from('.pconn',{opacity:0,stagger:.1,delay:.25,duration:.4});
   await sleep(850);
 
-  // Show net buffer
-  const nb=document.getElementById('net-bar'); nb.style.display='block';
-  g.fromTo(nb,{opacity:0,y:10},{opacity:1,y:0,duration:.38,ease:'power3.out'});
-  startNet();
-
-  // Show log
   const lw=document.getElementById('log-wrap'); lw.style.display='block';
   g.fromTo(lw,{opacity:0,y:12},{opacity:1,y:0,duration:.38,ease:'power3.out'});
-  log('TalentOS pipeline init — 5 stages · 100,000 candidates','ls5');
-  log('Role: Senior AI Engineer · Redrob AI · Bangalore','ldim');
-  await sleep(450);
+  log('rank.py — Redrob Senior AI Engineer ranker','ls5');
+  log('100,000 candidates · stdlib only · no API calls · no GPU','ldim');
+  await sleep(400);
 
   for(let i=0;i<PIPE_STAGES.length;i++){
     log(`── Stage ${i+1}: ${PIPE_STAGES[i].label.replace('\n',' ')} ────────────────`,'ldim');
     await animStage(i);
-    await sleep(150);
+    await sleep(130);
   }
 
-  stopNet();
-  document.getElementById('a-heading').textContent='Scoring Candidates';
-  document.getElementById('a-sub').textContent='Running LightGBM ranker across 100,000 candidate vectors…';
-  log('── Ranking pass ─────────────────────────────────────────','ldim');
+  document.getElementById('a-heading').textContent='Scoring & Ranking';
+  document.getElementById('a-sub').textContent='Computing weighted scores · sorting 99,913 valid candidates…';
+  log('── Final scoring pass ───────────────────────────────────','ldim');
 
   const ctr=document.getElementById('counter'); ctr.style.display='block';
   g.fromTo(ctr,{opacity:0,y:14},{opacity:1,y:0,duration:.5,ease:'power3.out'});
 
   const rankLines=[
-    {d:300,cls:'ls5',t:'Sorting 100,000 scores descending…'},
-    {d:900,cls:'ls5',t:'Applying disqualifier penalties (consulting, inactive)…'},
-    {d:1500,cls:'ls5',t:'Top score: 0.9622 — CAND_0071974 (Senior AI Engineer)'},
-    {d:2100,cls:'ls5',t:'Selecting top 100 for submission.csv…'},
-    {d:2700,cls:'lok',t:'✓ submission.csv written — 100 rows, schema validated ✔'},
+    {d:200,cls:'ls5',t:'Applying weights: skill×0.35 + career×0.30 + avail×0.20 + exp×0.10 + loc×0.05'},
+    {d:900,cls:'ls5',t:'Sorting 99,913 candidates by weighted score (desc), tie-break: candidate_id ASC'},
+    {d:1800,cls:'ls5',t:'Top score: 0.8720 — CAND_0071974 (Senior AI Engineer, Bangalore)'},
+    {d:2600,cls:'ls5',t:'Selecting top 100 for submission.csv…'},
+    {d:3200,cls:'lok',t:'✓ submission.csv written — 100 rows · scores non-increasing · spec valid ✔'},
   ];
   rankLines.forEach(({d,cls,t})=>setTimeout(()=>log(t,cls),d));
 
-  await animCounter(100000, 3300);
-  await sleep(450);
+  await animCounter(99913,3400);
+  await sleep(500);
 
   document.getElementById('a-heading').textContent='Analysis Complete';
-  document.getElementById('a-sub').textContent='Shortlist generated — sorting by TalentOS score…';
-  await sleep(950);
+  document.getElementById('a-sub').textContent='99,913 candidates ranked · 87 honeypots filtered · top 100 selected';
+  await sleep(900);
 
   await g.to(ap,{opacity:0,duration:.4}); ap.style.display='none'; analysisMode=false;
 
@@ -756,14 +754,14 @@ async function runAnalysis() {
       card.querySelectorAll('.sfill').forEach((b,j)=>{
         g.fromTo(b,{width:'0%'},{width:b.getAttribute('data-v')+'%',delay:j*.06,duration:1.2,ease:'power4.out'});
       });
-    }, i*70+350);
+    },i*70+350);
   });
 
   window.scrollTo({top:rp.offsetTop-20,behavior:'smooth'});
 }
 
 // ── Reset ──────────────────────────────────────────────────────────────────
-async function doReset() {
+async function doReset(){
   const rp=document.getElementById('results-phase');
   await g.to(rp,{opacity:0,duration:.35}); rp.style.display='none';
   document.getElementById('log-wrap').style.display='none';
@@ -771,10 +769,8 @@ async function doReset() {
   document.getElementById('counter').style.display='none';
   document.getElementById('c-fill').style.width='0%';
   document.getElementById('cnum').textContent='0';
-  document.getElementById('net-bar').style.display='none';
-  document.getElementById('net-fill').style.width='0%';
   document.getElementById('a-heading').textContent='Running Pipeline';
-  document.getElementById('a-sub').textContent='Initialising TalentOS intelligence engine…';
+  document.getElementById('a-sub').textContent='Initialising TalentOS offline ranker…';
   const sp=document.getElementById('setup-phase'); sp.style.display='grid';
   g.fromTo(sp,{opacity:0,y:18},{opacity:1,y:0,duration:.5,ease:'power3.out'});
   document.getElementById('run-btn').disabled=false;
@@ -782,22 +778,19 @@ async function doReset() {
 }
 
 // ── Init ───────────────────────────────────────────────────────────────────
-function init() {
+function init(){
   initThree();
   renderPool();
-
-  g.from('.logo',       {opacity:0,y:26,delay:.1, ease:'power3.out',duration:.7});
-  g.from('.tagline',    {opacity:0,y:16,delay:.2, ease:'power3.out',duration:.7});
+  g.from('.logo',        {opacity:0,y:26,delay:.1, ease:'power3.out',duration:.7});
+  g.from('.tagline',     {opacity:0,y:16,delay:.2, ease:'power3.out',duration:.7});
   g.from('.header-right',{opacity:0,x:18,delay:.28,ease:'power3.out',duration:.7});
-  g.from('.divider',    {opacity:0,      delay:.35,ease:'none',      duration:.6});
-  g.from('#setup-phase',{opacity:0,y:14, delay:.44,ease:'power3.out',duration:.6});
-
+  g.from('.divider',     {opacity:0,     delay:.35,ease:'none',       duration:.6});
+  g.from('#setup-phase', {opacity:0,y:14,delay:.44,ease:'power3.out', duration:.6});
   setTimeout(()=>{
     document.querySelectorAll('.pcard').forEach((el,i)=>{
       g.fromTo(el,{opacity:0,y:14},{opacity:1,y:0,delay:i*.04,duration:.55,ease:'back.out(1.4)'});
     });
   },600);
-
   document.getElementById('run-btn').addEventListener('click',runAnalysis);
   document.getElementById('reset-btn').addEventListener('click',doReset);
 }

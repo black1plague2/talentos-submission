@@ -1,100 +1,161 @@
-# TalentOS — Redrob AI Hackathon Submission
+# TalentOS
 
-**India Runs: Data & AI Challenge — Intelligent Candidate Discovery & Ranking**
+> *Finding the needle in a haystack of 100,000 candidates — without any AI.*
 
-[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
-[![No API calls](https://img.shields.io/badge/Offline-No%20API%20calls-success?style=for-the-badge)](https://github.com/black1plague2/talentos-submission)
-[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://docker.com)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10+-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
+[![Fully Offline](https://img.shields.io/badge/Runs-Fully%20Offline-22c55e?style=flat-square)](https://github.com/black1plague2/talentos-submission)
+[![No API Calls](https://img.shields.io/badge/API%20Calls-Zero-f97316?style=flat-square)](https://github.com/black1plague2/talentos-submission)
+[![Docker Ready](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat-square&logo=docker&logoColor=white)](https://docker.com)
 
-**[▶ Live Demo](https://black1plague2.github.io/talentos-submission/demo.html)**
-
----
-
-## What it does
-
-Ranks 100,000 candidates from the Redrob dataset against the **Senior AI Engineer — Founding Team** job description. Fully offline, no API calls, no GPU, runs in <5 minutes on CPU.
+**[▶ Watch it rank 100,000 candidates in real-time →](https://black1plague2.github.io/talentos-submission/demo.html)**
 
 ---
 
-## Reproduce the submission
+## The problem
+
+Redrob dropped 100,000 candidate profiles on us and said: *"Find us the best Senior AI Engineers. You have 5 minutes, a regular laptop, no internet, and no GPU."*
+
+Most people's instinct: run embeddings, call GPT, train a model. None of that works here — 100K candidates through a sentence-transformer takes 30+ minutes on CPU, and the rules explicitly ban API calls.
+
+So we built something different.
+
+---
+
+## The solution
+
+TalentOS reads every candidate in one pass, scores them across five dimensions, filters out ~80 fake "honeypot" profiles, and writes a ranked CSV — all in under 2 minutes using nothing but Python's standard library.
+
+No heavy models. No internet. No GPU. Just careful scoring logic built directly from the job description.
+
+---
+
+## How scoring works
+
+We read the JD closely. It says five things matter:
+
+**1. Can they actually do the AI work? (35%)**
+
+We match each candidate's skill list against 40+ role-specific keywords: embeddings, FAISS, Qdrant, BM25, RAG, NDCG, fine-tuning, etc. But we don't just count matches — we weight them. A skill you've used for 18 months with 20 endorsements counts more than one you listed but never used. The Redrob platform even provides skill assessment scores, which we factor in.
+
+**2. Have they built real AI products — not just consulted? (30%)**
+
+The JD explicitly says: *no pure consulting backgrounds*. So we look at where candidates have worked, what fraction of their career was in actual AI roles, and whether their job descriptions mention production systems. Someone who spent 10 years at TCS doing Java migrations gets penalised, even if they took an ML course last year.
+
+**3. Are they actually reachable right now? (20%)**
+
+The Redrob dataset includes 23 behavioral signals about each candidate. We use them: Are they open to work? When did they last log in? What's their recruiter response rate? What's their notice period? A candidate who hasn't been active in 6 months and responds to 5% of recruiter messages isn't really available — and the JD says so explicitly.
+
+**4. Do their years match the role? (10%)**
+
+The JD wants 5–9 years, ideally 6–8. We score experience on a curve that peaks right there, then slowly drops off for people with too little or too much experience.
+
+**5. Are they in India? (5%)**
+
+Pune or Noida are preferred. Anywhere in India gets full credit. Willing-to-relocate gets partial credit. The rest gets less.
+
+---
+
+## The honeypot problem
+
+Hidden in the 100K candidates are about 80 "honeypot" profiles — subtly fake candidates designed to trap naive rankers. An example: someone with 10 "Expert"-level skills, all with 0 months of usage and 0 endorsements. Or a career history where the total months of work is physically impossible given their age and experience.
+
+We run 5 impossibility checks before ranking. Any candidate that fails gets scored zero and excluded. This protects our Stage 3 evaluation score.
+
+---
+
+## Run it yourself
 
 ```bash
-# 1. Clone and enter the repo
+# Clone the repo
 git clone https://github.com/black1plague2/talentos-submission.git
 cd talentos-submission
 
-# 2. No pip install needed — stdlib only
-#    (Python 3.10+ required)
+# No pip install needed — uses Python stdlib only
+# (Python 3.10+ required)
 
-# 3. Place candidates.jsonl in this directory (from the hackathon bundle)
-#    Gzipped input also works: candidates.jsonl.gz
+# Put candidates.jsonl in this folder (from the hackathon bundle)
+# Gzipped input also works: candidates.jsonl.gz
 
-# 4. Run the ranker
+# Run
 python rank.py --candidates candidates.jsonl --out submission.csv
 
-# 5. Validate format before submitting
+# Verify your output format
 python validate_submission.py submission.csv
 ```
 
-**Expected runtime:** 60–120 seconds for 100K candidates on a standard CPU.  
-**Memory:** <200 MB peak.
+**Runtime:** 60–120 seconds for all 100K candidates.
+**Memory:** Under 200 MB peak (streams the file, never loads it all at once).
 
 ---
 
-## Scoring approach
+## Reproduce with Docker (Stage 3)
 
-Five components, weighted for NDCG@10 emphasis (top-10 quality = 50% of final score):
+```bash
+docker build -t talentos-submission .
 
-| Component | Weight | Signal |
-|---|---|---|
-| **AI Skill Match** | 35% | Embeddings, vector DBs (FAISS/Pinecone/Qdrant), retrieval, RAG, NLP, ranking eval — matched with proficiency/duration/endorsement weighting + `skill_assessment_scores` from Redrob |
-| **Career Quality** | 30% | Product company history, fraction of career in AI/ML roles, production evidence in role descriptions; penalises pure consulting (TCS/Infosys/Wipro/Accenture etc.) |
-| **Availability** | 20% | 23 Redrob behavioral signals: `open_to_work_flag`, `last_active_date`, `recruiter_response_rate`, `notice_period_days`, `interview_completion_rate`, `github_activity_score` |
-| **Experience Fit** | 10% | Piecewise score peaking at 6–8 yrs (JD's stated preferred range) |
-| **Location** | 5% | India-based (Pune/Noida/Hyderabad/Mumbai/Bangalore) preferred; non-India + `willing_to_relocate` gets partial credit |
-
-**Honeypot detection** (Stage 3): expert skills with 0 months used and 0 endorsements, career duration inflation vs actual date spans, total skill-months exceeding what's physically possible → scored 0.
+docker run --rm \
+  -v /path/to/candidates.jsonl:/data/candidates.jsonl \
+  talentos-submission \
+  python rank.py --candidates /data/candidates.jsonl --out /data/submission.csv
+```
 
 ---
 
-## Why no embeddings/LLMs?
-
-The spec requires **<5 min on CPU-only, no network**. Running sentence-transformer embeddings on 100K candidates takes 20–40 min without GPU, and calling any hosted LLM is explicitly banned. Structured keyword matching on the skill fields achieves <2 min runtime and is fully reproducible.
-
----
-
-## Repository structure
+## What's in the repo
 
 ```
-rank.py                    # Entry point: python rank.py --candidates X --out Y
+rank.py                    # The whole ranker — start here
 scoring/
-  jd_profile.py            # JD skill requirements + disqualifier lists (constants)
-  skills.py                # AI/IR skill matching with proficiency/duration weighting
-  career.py                # Career analysis: consulting penalty, AI role ratio
-  availability.py          # Redrob behavioral signals → availability score
-  honeypot.py              # Impossible profile detection
-  reasoning.py             # Per-candidate reasoning for Stage 4 review
-requirements.txt           # stdlib only; flask optional for demo
-Dockerfile                 # Stage 3 sandboxed reproduction
-demo.html                  # Sandbox/demo link (hosted on GitHub Pages)
-submission_metadata.yaml   # Team + compute metadata
+  jd_profile.py            # All the JD requirements as constants
+  skills.py                # AI skill matching with proficiency/duration weighting
+  career.py                # Career quality — consulting penalty, AI role ratio
+  availability.py          # 23 behavioral signals → availability score
+  honeypot.py              # Fake profile detection
+  reasoning.py             # Human-readable explanation per candidate (Stage 4)
+Dockerfile                 # For Stage 3 sandboxed reproduction
+demo.html                  # Interactive visualisation (GitHub Pages)
+submission_metadata.yaml   # Team info + reproduce command
 ```
 
 ---
 
-## Design decisions
+## Why not use embeddings?
 
-**Why 35% skill / 30% career?**  
-The JD explicitly disqualifies candidates at purely consulting firms or non-AI roles, regardless of their skill list. A Marketing Manager with perfect AI keywords is stated as "not a fit" in the JD. Career background is nearly as decisive as skill match.
+We considered it. The JD literally lists FAISS and vector search as required skills — wouldn't it make sense to use them for ranking?
 
-**Why 20% availability?**  
-The JD is explicit: "a perfect-on-paper candidate who hasn't logged in for 6 months and has a 5% recruiter response rate is not actually available." Availability is a first-class ranking signal.
+The constraint is time: embedding 100K candidates through `sentence-transformers` takes 25–45 minutes on CPU. Even with batching, we'd blow past the 5-minute limit. And calling a hosted embedding API is banned.
 
-**Honeypot avoidance**  
-Detecting ~80 honeypots protects the Stage 3 score. Our checks flag: ghost-expert skills (expert proficiency + 0 months used + 0 endorsements ≥4 occurrences), career duration inconsistencies vs actual start/end dates, and total skill-months impossibly large for the claimed experience.
+The skills field in the dataset is already structured — candidates list their skills explicitly, with proficiency levels, durations, and endorsements attached. Matching against those directly is both faster and more accurate than comparing embedding vectors.
+
+We build the search index; we don't need to infer it.
+
+---
+
+## Why 30% on career quality?
+
+Because the JD says so, directly. It lists these as automatic disqualifiers:
+
+- "Pure consulting firm backgrounds (TCS, Infosys, Wipro, Accenture, etc.)"
+- "CV/speech-only AI engineers without NLP or search experience"
+- "AI experience limited to LangChain wrappers, <12 months"
+
+A Marketing Manager with a perfect skill list is not a fit. Career context matters nearly as much as skills, so we gave it 30%.
+
+---
+
+## Team
+
+**TalentOS** — Redrob AI India Runs Challenge 2026
+
+| Person | Role |
+|---|---|
+| Garv Bansal | Offline ranker architecture, scoring pipeline |
+| Harshith | Candidate embedding research, data analysis |
+| Noel Ninan Sheri | Backend infrastructure, system design |
+| Poojit | Career quality scoring, evaluation metrics |
 
 ---
 
 <div align="center">
-Built for the <b>India Runs: Data & AI Challenge</b> — Redrob AI
+  Built for the <b>India Runs: Data & AI Challenge</b> · Redrob AI · 2026
 </div>
