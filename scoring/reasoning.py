@@ -73,12 +73,18 @@ def generate_reasoning(c: dict, rank: int, score: float, breakdown: dict) -> str
     # ── Sentence 1: who they are + key JD-aligned signal ────────────────────
     s1_parts = [f"{title} ({years:.1f} yrs", f"{location})"]
 
-    if skill_score >= 60:
-        s1_parts.append(f"with strong AI/IR skills ({top_sk})")
+    # Use rank-relative language: the pool has no perfect JD match, so absolute
+    # skill-score thresholds mislead — rank 1 with score 0.62 IS the best available.
+    if rank <= 5:
+        s1_parts.append(f"best available AI/IR match in pool ({top_sk})")
+    elif rank <= 15:
+        s1_parts.append(f"strong pool-relative AI/IR match ({top_sk})")
+    elif rank <= 40:
+        s1_parts.append(f"with relevant AI/IR skills ({top_sk})")
     elif skill_score >= 35:
         s1_parts.append(f"with partial JD skill overlap ({top_sk})")
     else:
-        s1_parts.append(f"— limited AI/IR skill match ({top_sk})")
+        s1_parts.append(f"limited AI/IR skill match ({top_sk})")
 
     sentence1 = " ".join(s1_parts) + "."
 

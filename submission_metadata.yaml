@@ -1,4 +1,4 @@
-team_name: "TalentOS"
+team_name: "CJP"
 
 primary_contact:
   name: "Garv Bansal"
@@ -8,16 +8,16 @@ primary_contact:
 team_members:
   - name: "Garv Bansal"
     email: "garv16sep@gmail.com"
-    role: "Semantic skill matching, FAISS embedding pipeline, submission ranker"
+    role: "Offline keyword scorer, AI skill match module (skills.py), submission ranker (rank.py)"
   - name: "Harshith"
     email: "balaachuanu@gmail.com"
-    role: "Node/TS backend, PostgreSQL schema, OpenAI embedding service"
+    role: "Node/TS backend, PostgreSQL schema, candidate data pipeline"
   - name: "Noel Ninan Sheri"
     email: "noelninansheri@gmail.com"
-    role: "Decision intelligence, FastAPI backend, data loading utilities"
+    role: "Decision intelligence, FastAPI backend, data loading and validation utilities"
   - name: "Poojit"
     email: "pachipulusupoojitmit@gmail.com"
-    role: "Verification scoring (learning/growth/career/project/evidence sub-scores)"
+    role: "Availability and career scoring modules, behavioral signal analysis"
 
 github_repo: "https://github.com/black1plague2/talentos-submission"
 
@@ -65,4 +65,4 @@ declarations:
   code_is_original_work: true
   no_collusion: true
   honeypot_check_done: true
-  reproduction_tested: false
+  reproduction_tested: true
