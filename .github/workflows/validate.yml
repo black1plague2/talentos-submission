@@ -1,0 +1,41 @@
+name: Validate Submission
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check Python syntax (all scoring modules)
+        run: |
+          python -m py_compile rank.py
+          python -m py_compile scoring/jd_profile.py
+          python -m py_compile scoring/skills.py
+          python -m py_compile scoring/career.py
+          python -m py_compile scoring/availability.py
+          python -m py_compile scoring/honeypot.py
+          python -m py_compile scoring/reasoning.py
+
+      - name: Validate submission.csv format
+        run: python validate_submission.py submission.csv
+
+      - name: Check submission row count
+        run: |
+          ROWS=$(tail -n +2 submission.csv | wc -l)
+          echo "Rows in submission: $ROWS"
+          if [ "$ROWS" -ne 100 ]; then
+            echo "ERROR: Expected 100 rows, got $ROWS"
+            exit 1
+          fi
+          echo "Row count OK"
